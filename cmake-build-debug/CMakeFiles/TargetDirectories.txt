@@ -1,0 +1,3 @@
+/home/jian/Desktop/TankAttack/cmake-build-debug/CMakeFiles/TankAttack.dir
+/home/jian/Desktop/TankAttack/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/jian/Desktop/TankAttack/cmake-build-debug/CMakeFiles/rebuild_cache.dir

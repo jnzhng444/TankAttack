@@ -16,7 +16,15 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 
 # Compila el ejecutable del proyecto TankAttack
-add_executable(TankAttack main.cpp)
+add_executable(TankAttack main.cpp
+        GameWindow.cpp
+        GameWindow.h
+        GameArea.cpp
+        GameArea.h
+        GameLogic.cpp
+        GameLogic.h
+        Map.cpp
+        Map.h)
 
 # Enlaza las bibliotecas de GTK3 con el ejecutable
 target_link_libraries(TankAttack ${GTK3_LIBRARIES})

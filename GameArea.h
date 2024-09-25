@@ -8,6 +8,8 @@ class GameArea {
 public:
     static GtkWidget* create(GameLogic* game_logic);
     static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+    static gboolean on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data);  // Agregar la declaración
+
 private:
     static GameLogic* game_logic;  // Agregar referencia a GameLogic
 };

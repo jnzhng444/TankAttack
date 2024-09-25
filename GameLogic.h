@@ -36,11 +36,11 @@ public:
     std::vector<int> dijkstra(int start_x, int start_y, int goal_x, int goal_y);  // Dijkstra
     void random_movement_with_los(Tank& tank, int target_x, int target_y);  // Movimiento aleatorio con línea de vista
     static gboolean move_tank_step_by_step(gpointer data);
+    std::vector<int> current_route;
 private:
     Map* map;
     std::vector<Tank> tanks;
     int num_tanks_per_player;
-    // Función para mover el tanque paso a paso
 
 };
 

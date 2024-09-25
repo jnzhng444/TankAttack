@@ -52,6 +52,11 @@ void GameLogic::move_tank(int tank_id, int x, int y) {
                 tank.x = x;
                 tank.y = y;
                 std::cout << "Tanque " << tank_id << " movido a (" << x << ", " << y << ")" << std::endl;
+
+                // Verificar que el widget es válido antes de redibujar
+                if (GTK_IS_WIDGET(tank.widget)) {
+                    gtk_widget_queue_draw(tank.widget);  // Redibujar el área de juego
+                }
             } else {
                 std::cout << "Movimiento inválido." << std::endl;
             }
@@ -61,8 +66,10 @@ void GameLogic::move_tank(int tank_id, int x, int y) {
 }
 
 
-
 void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
+    // Borrar la ruta anterior
+    current_route.clear();
+
     int prob = std::rand() % 100;
 
     if (tank.color == "blue" || tank.color == "lightblue") {
@@ -70,7 +77,8 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
             std::vector<int> path = bfs(tank.x, tank.y, target_x, target_y);
             if (!path.empty()) {
                 tank.route = path;
-                g_timeout_add(100, move_tank_step_by_step, &tank);  // Iniciar el temporizador con el tanque
+                current_route = path;  // Guardar la ruta actual
+                g_timeout_add(100, move_tank_step_by_step, &tank);
             }
         } else {
             random_movement_with_los(tank, target_x, target_y);
@@ -80,7 +88,8 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
             std::vector<int> path = dijkstra(tank.x, tank.y, target_x, target_y);
             if (!path.empty()) {
                 tank.route = path;
-                g_timeout_add(100, move_tank_step_by_step, &tank);  // Iniciar el temporizador con el tanque
+                current_route = path;  // Guardar la ruta actual
+                g_timeout_add(100, move_tank_step_by_step, &tank);
             }
         } else {
             random_movement_with_los(tank, target_x, target_y);
@@ -89,7 +98,6 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
 }
 
 
-// Función que mueve el tanque un paso a lo largo de su ruta
 gboolean GameLogic::move_tank_step_by_step(gpointer data) {
     Tank* tank = static_cast<Tank*>(data);
 
@@ -102,11 +110,11 @@ gboolean GameLogic::move_tank_step_by_step(gpointer data) {
         // Mover el tanque a la nueva posición
         tank->game_logic->move_tank(tank->id, new_x, new_y);
 
-        // Verificar que el widget es válido antes de redibujar
+        // Forzar el redibujado solo si el widget es válido
         if (GTK_IS_WIDGET(tank->widget)) {
             gtk_widget_queue_draw(tank->widget);  // Redibujar el área de dibujo
         } else {
-            std::cout << "Widget no válido para redibujar" << std::endl;
+            std::cout << "Widget no válido para redibujar." << std::endl;
         }
 
         return TRUE;  // Mantener el temporizador activo hasta que la ruta esté vacía
@@ -122,22 +130,51 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
     int new_x, new_y;
     bool moved = false;
 
-    // Intentar dos veces encontrar una posición sin obstáculos en un radio definido
+    // Intentar dos veces encontrar una posición sin obstáculos en un radio de 2 casillas
     for (int attempt = 0; attempt < 2; ++attempt) {
-        new_x = tank.x + (std::rand() % 3 - 1);  // Movimiento aleatorio en X (-1, 0, +1)
-        new_y = tank.y + (std::rand() % 3 - 1);  // Movimiento aleatorio en Y (-1, 0, +1)
+        int dx = std::rand() % 5 - 2;  // Movimiento aleatorio en X (-2 a +2)
+        int dy = std::rand() % 5 - 2;  // Movimiento aleatorio en Y (-2 a +2)
 
+        new_x = tank.x + dx;
+        new_y = tank.y + dy;
+
+        // Verificar que la nueva posición está dentro del mapa y sin obstáculos
         if (new_x >= 0 && new_x < map->get_width() && new_y >= 0 && new_y < map->get_height() && !map->has_obstacle(new_x, new_y)) {
             move_tank(tank.id, new_x, new_y);
             moved = true;
-            break;
+            std::cout << "Movimiento aleatorio: Tanque movido a (" << new_x << ", " << new_y << ")" << std::endl;
+
+            // Forzar el redibujado si el widget es válido
+            if (GTK_IS_WIDGET(tank.widget)) {
+                gtk_widget_queue_draw(tank.widget);  // Redibujar el área de juego
+            }
+
+            break;  // Si se movió correctamente, salir del bucle
         }
     }
 
+    // Si después de dos intentos no se pudo mover, avanzar lo más posible sin romper la línea de vista
     if (!moved) {
-        std::cout << "No se pudo mover por línea de vista." << std::endl;
+        std::cout << "No se pudo mover por línea de vista, avanzando lo más posible." << std::endl;
+
+        // Aquí se puede aplicar una lógica para avanzar sin romper la línea de vista
+        if (target_x > tank.x) {
+            move_tank(tank.id, tank.x + 1, tank.y);
+        } else if (target_x < tank.x) {
+            move_tank(tank.id, tank.x - 1, tank.y);
+        } else if (target_y > tank.y) {
+            move_tank(tank.id, tank.x, tank.y + 1);
+        } else if (target_y < tank.y) {
+            move_tank(tank.id, tank.x, tank.y - 1);
+        }
+
+        // Forzar el redibujado si el widget es válido
+        if (GTK_IS_WIDGET(tank.widget)) {
+            gtk_widget_queue_draw(tank.widget);  // Redibujar el área de juego
+        }
     }
 }
+
 
 std::vector<int> GameLogic::bfs(int start_x, int start_y, int goal_x, int goal_y) {
     int width = map->get_width();

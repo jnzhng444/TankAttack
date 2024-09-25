@@ -42,7 +42,7 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         cairo_stroke(cr);
     }
 
-    // Dibujar obstáculos (rojo)
+    // Dibujar obstáculos (negro)
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             if (game_logic->get_map()->has_obstacle(i, j)) {
@@ -53,6 +53,22 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         }
     }
 
+    // Dibujar la ruta actual
+    const std::vector<int>& route = game_logic->current_route;
+    if (!route.empty()) {
+        cairo_set_source_rgb(cr, 0, 1, 0);  // Color verde para la ruta
+        for (size_t i = 1; i < route.size(); ++i) {
+            int prev_x = route[i - 1] / cols;
+            int prev_y = route[i - 1] % cols;
+            int curr_x = route[i] / cols;
+            int curr_y = route[i] % cols;
+
+            cairo_move_to(cr, prev_y * cell_width + cell_width / 2, prev_x * cell_height + cell_height / 2);
+            cairo_line_to(cr, curr_y * cell_width + cell_width / 2, curr_x * cell_height + cell_height / 2);
+            cairo_stroke(cr);
+        }
+    }
+    
     // Dibujar tanques
     const std::vector<Tank>& tanks = game_logic->get_tanks();
     for (const Tank& tank : tanks) {

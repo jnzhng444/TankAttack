@@ -16,9 +16,28 @@ GtkWidget* GameArea::create(GameLogic* logic) {
     // Conectar señales de dibujo y eventos del mouse
     g_signal_connect(area, "draw", G_CALLBACK(GameArea::on_draw), NULL);
     g_signal_connect(area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
-    gtk_widget_add_events(area, GDK_BUTTON_PRESS_MASK);  // Permitir eventos de clic
+    g_signal_connect(area, "motion-notify-event", G_CALLBACK(GameArea::on_motion_notify), game_logic);  // Conectar el evento de movimiento
+    gtk_widget_add_events(area, GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
 
     return area;
+}
+
+gboolean GameArea::on_motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data) {
+    GameLogic* game_logic = static_cast<GameLogic*>(user_data);
+
+    if (selected_tank != nullptr) {  // Solo dibujamos la línea si hay un tanque seleccionado
+        int mouse_x = event->x / 25;
+        int mouse_y = event->y / 25;
+
+        // Guardar las coordenadas del objetivo (el punto al que se apunta)
+        game_logic->aim_target_x = mouse_x;
+        game_logic->aim_target_y = mouse_y;
+
+        // Redibujar el área de juego para mostrar la línea de dirección
+        gtk_widget_queue_draw(widget);
+    }
+
+    return TRUE;
 }
 
 gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
@@ -116,7 +135,44 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         cairo_stroke(cr);
     }
 
+    // Dibujar la línea de dirección si hay un tanque seleccionado y el cursor no está encima del tanque
+    if (selected_tank != nullptr) {
+        // Coordenadas del tanque
+        int tank_center_x = selected_tank->y * cell_width + cell_width / 2;
+        int tank_center_y = selected_tank->x * cell_height + cell_height / 2;
+
+        // Coordenadas del objetivo (posición del ratón)
+        int aim_x = game_logic->aim_target_x * cell_width + cell_width / 2;
+        int aim_y = game_logic->aim_target_y * cell_height + cell_height / 2;
+
+        // Calcular si el cursor está encima del tanque
+        if (!(aim_x >= tank_center_x - cell_width / 2 && aim_x <= tank_center_x + cell_width / 2 &&
+              aim_y >= tank_center_y - cell_height / 2 && aim_y <= tank_center_y + cell_height / 2)) {
+
+            // Calcular la dirección entre el tanque y el cursor
+            double dx = aim_x - tank_center_x;
+            double dy = aim_y - tank_center_y;
+            double distance = sqrt(dx * dx + dy * dy);
+
+            // Limitar la longitud máxima de la línea
+            double max_length = 15.0;  // Ajusta este valor según lo que necesites
+            double line_length = std::min(max_length, distance);  // Escoger la longitud más pequeña entre la distancia y la longitud fija
+
+            // Calcular las coordenadas finales de la línea con longitud limitada
+            double end_x = tank_center_x + (dx / distance) * line_length;
+            double end_y = tank_center_y + (dy / distance) * line_length;
+
+            // Dibujar la línea desde el tanque hacia la dirección deseada (con longitud limitada)
+            cairo_set_source_rgb(cr, 1, 1, 1);  // Color blanco para la línea
+            cairo_set_line_width(cr, 2);  // Línea delgada
+            cairo_move_to(cr, tank_center_x, tank_center_y);
+            cairo_line_to(cr, end_x, end_y);
+            cairo_stroke(cr);
+              }
+    }
+
     return FALSE;
+
 }
 
 

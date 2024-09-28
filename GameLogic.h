@@ -41,6 +41,8 @@ public:
     void end_game();               // Termina el juego y determina el ganador
     int current_player;
     GtkWidget* time_label;    // Etiqueta para mostrar el tiempo restante en la interfaz
+    int aim_target_x;  // Coordenada X del objetivo
+    int aim_target_y;  // Coordenada Y del objetivo
 
 private:
     int num_tanks_per_player;       // Número de tanques por jugador

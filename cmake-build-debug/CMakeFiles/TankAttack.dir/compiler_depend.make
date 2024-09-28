@@ -91,6 +91,7 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/jian/Desktop/TankAttack/GameArea
   /usr/include/c++/13/bits/ranges_util.h \
   /usr/include/c++/13/bits/refwrap.h \
   /usr/include/c++/13/bits/requires_hosted.h \
+  /usr/include/c++/13/bits/specfun.h \
   /usr/include/c++/13/bits/std_abs.h \
   /usr/include/c++/13/bits/stl_algobase.h \
   /usr/include/c++/13/bits/stl_bvector.h \
@@ -113,6 +114,7 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/jian/Desktop/TankAttack/GameArea
   /usr/include/c++/13/cctype \
   /usr/include/c++/13/cerrno \
   /usr/include/c++/13/clocale \
+  /usr/include/c++/13/cmath \
   /usr/include/c++/13/compare \
   /usr/include/c++/13/concepts \
   /usr/include/c++/13/cstddef \
@@ -134,6 +136,8 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/jian/Desktop/TankAttack/GameArea
   /usr/include/c++/13/iosfwd \
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
+  /usr/include/c++/13/limits \
+  /usr/include/c++/13/math.h \
   /usr/include/c++/13/new \
   /usr/include/c++/13/numbers \
   /usr/include/c++/13/ostream \
@@ -144,6 +148,18 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/jian/Desktop/TankAttack/GameArea
   /usr/include/c++/13/string \
   /usr/include/c++/13/string_view \
   /usr/include/c++/13/system_error \
+  /usr/include/c++/13/tr1/bessel_function.tcc \
+  /usr/include/c++/13/tr1/beta_function.tcc \
+  /usr/include/c++/13/tr1/ell_integral.tcc \
+  /usr/include/c++/13/tr1/exp_integral.tcc \
+  /usr/include/c++/13/tr1/gamma.tcc \
+  /usr/include/c++/13/tr1/hypergeometric.tcc \
+  /usr/include/c++/13/tr1/legendre_function.tcc \
+  /usr/include/c++/13/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/13/tr1/poly_hermite.tcc \
+  /usr/include/c++/13/tr1/poly_laguerre.tcc \
+  /usr/include/c++/13/tr1/riemann_zeta.tcc \
+  /usr/include/c++/13/tr1/special_function_util.h \
   /usr/include/c++/13/tuple \
   /usr/include/c++/13/type_traits \
   /usr/include/c++/13/typeinfo \
@@ -752,6 +768,7 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/jian/Desktop/TankAttack/GameArea
   /usr/include/linux/errno.h \
   /usr/include/linux/limits.h \
   /usr/include/locale.h \
+  /usr/include/math.h \
   /usr/include/pango-1.0/pango/pango-attributes.h \
   /usr/include/pango-1.0/pango/pango-bidi-type.h \
   /usr/include/pango-1.0/pango/pango-break.h \
@@ -808,12 +825,21 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/jian/Desktop/TankAttack/GameArea
   /usr/include/x86_64-linux-gnu/bits/errno.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
   /usr/include/x86_64-linux-gnu/bits/local_lim.h \
   /usr/include/x86_64-linux-gnu/bits/locale.h \
   /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
   /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
   /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
@@ -3852,8 +3878,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
 
-/usr/include/c++/13/limits:
-
 /usr/include/c++/13/bits/stl_tempbuf.h:
 
 /usr/include/c++/13/bits/algorithmfwd.h:
@@ -3994,7 +4018,17 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
 
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
+
 /usr/include/x86_64-linux-gnu/bits/locale.h:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
@@ -4062,6 +4096,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/pango-1.0/pango/pango-break.h:
 
+/usr/include/math.h:
+
 /usr/include/linux/close_range.h:
 
 /usr/include/pango-1.0/pango/pangocairo.h:
@@ -4108,6 +4144,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtktreeview.h:
 
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
+
 /usr/include/gtk-3.0/gtk/gtktreestore.h:
 
 /usr/include/gtk-3.0/gtk/gtktreesortable.h:
@@ -4124,25 +4162,31 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtktoolitemgroup.h:
 
-/usr/include/glib-2.0/glib/deprecated/grel.h:
+/usr/include/c++/13/bits/ranges_algo.h:
 
-/usr/include/glib-2.0/glib/deprecated/gmain.h:
+/usr/include/gtk-3.0/gtk/gtktoolbutton.h:
 
-/usr/include/pango-1.0/pango/pango-matrix.h:
+/usr/include/gtk-3.0/gtk/gtktoolbar.h:
 
-/usr/include/atk-1.0/atk/atktable.h:
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
-/usr/include/glib-2.0/glib/deprecated/gcompletion.h:
+/usr/include/gtk-3.0/gtk/gtktoggletoolbutton.h:
 
-/usr/include/c++/13/bits/exception_ptr.h:
+/usr/include/gtk-3.0/gtk/gtktogglebutton.h:
 
-/usr/include/glib-2.0/glib-object.h:
+/usr/include/gtk-3.0/gtk/gtktexttagtable.h:
 
-/usr/include/glib-2.0/gobject/gsourceclosure.h:
+/usr/include/gtk-3.0/gtk/gtktexttag.h:
 
-/usr/include/glib-2.0/gio/gvolumemonitor.h:
+/usr/include/pango-1.0/pango/pango-language.h:
 
-/usr/include/glib-2.0/glib/galloca.h:
+/usr/include/gtk-3.0/gtk/gtktextiter.h:
+
+/usr/include/gtk-3.0/gtk/gtktextchild.h:
+
+/usr/include/gtk-3.0/gtk/gtktextbuffer.h:
+
+/usr/include/gtk-3.0/gtk/gtktextattributes.h:
 
 /usr/include/glib-2.0/gio/gvfs.h:
 
@@ -4168,8 +4212,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gthreadedsocketservice.h:
 
-/usr/include/gtk-3.0/gtk/gtkprintsettings.h:
-
 /usr/include/glib-2.0/gio/gsubprocesslauncher.h:
 
 /usr/include/glib-2.0/glib/gconvert.h:
@@ -4188,8 +4230,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gnetworkservice.h:
 
-/usr/include/glib-2.0/gio/gsocketconnectable.h:
-
 /usr/include/glib-2.0/gio/gsimpleproxyresolver.h:
 
 /usr/include/glib-2.0/glib/gmessages.h:
@@ -4207,6 +4247,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/gtk-3.0/gtk/gtkimcontextsimple.h:
 
 /usr/include/glib-2.0/gio/gseekable.h:
+
+/usr/include/c++/13/tr1/gamma.tcc:
 
 /usr/include/glib-2.0/gio/gproxyresolver.h:
 
@@ -4230,15 +4272,17 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gmount.h:
 
+/usr/include/gtk-3.0/gtk/gtktoolitem.h:
+
+/usr/include/glib-2.0/gio/gmenuexporter.h:
+
+/usr/include/glib-2.0/gio/gsocketconnectable.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
 /usr/include/glib-2.0/gio/gmenu.h:
 
 /usr/include/glib-2.0/gio/gmemoryoutputstream.h:
-
-/usr/include/glib-2.0/gio/gliststore.h:
-
-/usr/include/gtk-3.0/gtk/deprecated/gtkhscale.h:
 
 /usr/include/glib-2.0/gio/giostream.h:
 
@@ -4246,13 +4290,11 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gioerror.h:
 
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
 /usr/include/c++/13/cwchar:
 
 /usr/include/gtk-3.0/gtk/gtkbuilder.h:
-
-/usr/include/glib-2.0/gio/gmenuexporter.h:
-
-/usr/include/gtk-3.0/gtk/gtktoolitem.h:
 
 /usr/include/glib-2.0/gio/gioenumtypes.h:
 
@@ -4300,6 +4342,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/giotypes.h:
 
+/usr/include/c++/13/tr1/hypergeometric.tcc:
+
 /usr/include/glib-2.0/glib/gsequence.h:
 
 /usr/include/glib-2.0/gio/gemblem.h:
@@ -4316,9 +4360,9 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gdtlsconnection.h:
 
-/usr/include/glib-2.0/gio/gdbusaddress.h:
-
 /usr/include/glib-2.0/gio/gdtlsclientconnection.h:
+
+/usr/include/glib-2.0/gio/gdbusaddress.h:
 
 /usr/include/glib-2.0/gobject/gtypemodule.h:
 
@@ -4340,6 +4384,14 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gdbusmenumodel.h:
 
+/usr/include/gtk-3.0/gtk/gtktextmark.h:
+
+/usr/include/gtk-3.0/gtk/gtkseparatormenuitem.h:
+
+/usr/include/gtk-3.0/gtk/gtktestutils.h:
+
+/usr/include/glib-2.0/gio/gpowerprofilemonitor.h:
+
 /usr/include/glib-2.0/gio/gdbusinterface.h:
 
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-core.h:
@@ -4349,10 +4401,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/gtk-3.0/gtk/gtkmenuitem.h:
 
 /usr/include/glib-2.0/gio/gunixconnection.h:
-
-/usr/include/glib-2.0/gio/gtcpwrapperconnection.h:
-
-/usr/include/glib-2.0/gio/gdbusactiongroup.h:
 
 /usr/include/glib-2.0/gio/gsocketaddressenumerator.h:
 
@@ -4386,8 +4434,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gbufferedoutputstream.h:
 
-/usr/include/gtk-3.0/gtk/gtktexttag.h:
-
 /usr/include/glib-2.0/gio/gappinfo.h:
 
 /usr/include/glib-2.0/gio/gresolver.h:
@@ -4412,6 +4458,52 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-transform.h:
 
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-macros.h:
+
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h:
+
+/usr/include/gtk-3.0/gdk/gdkwindow.h:
+
+/usr/include/gtk-3.0/gtk/gtkframe.h:
+
+/usr/include/glib-2.0/gio/ginetsocketaddress.h:
+
+/usr/include/c++/13/tr1/riemann_zeta.tcc:
+
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-enum-types.h:
+
+/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:
+
+/usr/include/gtk-3.0/gtk/gtkappchooserbutton.h:
+
+/usr/include/gtk-3.0/gtk/gtkgesturezoom.h:
+
+/usr/include/glib-2.0/gio/gsimplepermission.h:
+
+/usr/include/glib-2.0/gio/gioscheduler.h:
+
+/usr/include/c++/13/ostream:
+
+/usr/include/c++/13/pstl/execution_defs.h:
+
+/usr/include/ctype.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/include/cairo/cairo.h:
+
+/usr/include/gtk-3.0/gtk/gtkadjustment.h:
+
+/usr/include/c++/13/tr1/legendre_function.tcc:
+
+/usr/include/gtk-3.0/gtk/gtkpaned.h:
+
+/usr/include/glib-2.0/glib/grefstring.h:
+
+/usr/include/gtk-3.0/gtk/gtkentry.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+
 /usr/include/c++/13/bits/memory_resource.h:
 
 /home/jian/Desktop/TankAttack/GameWindow.cpp:
@@ -4433,14 +4525,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/c++/13/cwctype:
 
 /usr/include/atk-1.0/atk/atkregistry.h:
-
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h:
-
-/usr/include/gtk-3.0/gdk/gdkwindow.h:
-
-/usr/include/gtk-3.0/gtk/gtkframe.h:
-
-/usr/include/glib-2.0/glib/deprecated/gthread.h:
 
 /usr/include/glib-2.0/gio/gproxyaddressenumerator.h:
 
@@ -4470,25 +4554,11 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkmountoperation.h:
 
-/usr/include/c++/13/bits/locale_facets.tcc:
-
-/usr/include/glib-2.0/glib.h:
-
-/usr/include/gtk-3.0/gdk/gdkglcontext.h:
-
 /usr/include/c++/13/bits/char_traits.h:
-
-/usr/include/glib-2.0/gio/gio-autocleanups.h:
-
-/usr/include/glib-2.0/glib/grefcount.h:
 
 /usr/include/glib-2.0/gio/gpermission.h:
 
 /usr/include/gtk-3.0/gtk/gtkaccessible.h:
-
-/usr/include/c++/13/string_view:
-
-/usr/include/c++/13/bits/iterator_concepts.h:
 
 /usr/include/glib-2.0/gio/gfile.h:
 
@@ -4496,9 +4566,9 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkcellrenderertoggle.h:
 
-/usr/include/atk-1.0/atk/atkdocument.h:
-
 /usr/include/dirent.h:
+
+/usr/include/atk-1.0/atk/atkdocument.h:
 
 /usr/include/glib-2.0/gio/gdbusmethodinvocation.h:
 
@@ -4509,10 +4579,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/gtk-3.0/gtk/gtkgesturerotate.h:
 
 /usr/include/glib-2.0/gio/gpropertyaction.h:
-
-/usr/include/glib-2.0/glib/deprecated/gcache.h:
-
-/usr/include/gtk-3.0/gtk/gtkcellarea.h:
 
 /usr/include/c++/13/ext/string_conversions.h:
 
@@ -4528,11 +4594,25 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/c++/13/compare:
 
+/usr/include/c++/13/bits/exception_ptr.h:
+
+/usr/include/glib-2.0/glib/deprecated/gcompletion.h:
+
 /usr/include/glib-2.0/gio/gapplicationcommandline.h:
 
 /usr/include/c++/13/bits/charconv.h:
 
 /usr/include/c++/13/bits/exception_defines.h:
+
+/usr/include/glib-2.0/gio/gliststore.h:
+
+/usr/include/gtk-3.0/gtk/deprecated/gtkhscale.h:
+
+/usr/include/gtk-3.0/gtk/gtktooltip.h:
+
+/usr/include/glib-2.0/glib/gtrashstack.h:
+
+/usr/include/features-time64.h:
 
 /usr/include/gtk-3.0/gtk/gtkcellareabox.h:
 
@@ -4544,9 +4624,9 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gtlscertificate.h:
 
-/usr/include/gtk-3.0/gtk/gtkgesturestylus.h:
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-simple-anim.h:
 
-/usr/include/gtk-3.0/gtk/gtkpapersize.h:
+/usr/include/c++/13/bits/basic_ios.h:
 
 /usr/include/glib-2.0/gio/gremoteactiongroup.h:
 
@@ -4572,6 +4652,10 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkpopovermenu.h:
 
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-features.h:
+
+/usr/include/c++/13/bit:
+
 /usr/include/gtk-3.0/gtk/gtkfontchooser.h:
 
 /usr/include/c++/13/bits/move.h:
@@ -4580,11 +4664,15 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gfileenumerator.h:
 
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-animation.h:
+
+/usr/include/gtk-3.0/gtk/gtklabel.h:
+
+/usr/include/endian.h:
+
+/usr/include/c++/13/backward/binders.h:
+
 /usr/include/atk-1.0/atk/atkstreamablecontent.h:
-
-/usr/include/gtk-3.0/gtk/gtktypebuiltins.h:
-
-/usr/include/glib-2.0/glib/garray.h:
 
 /usr/include/gtk-3.0/gtk/gtkviewport.h:
 
@@ -4593,14 +4681,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/atk-1.0/atk/atktablecell.h:
 
 /usr/include/gtk-3.0/gtk/gtkrender.h:
-
-/usr/include/harfbuzz/hb-font.h:
-
-/usr/include/glib-2.0/glib/gatomic.h:
-
-/usr/include/glib-2.0/glib/gvariant.h:
-
-/usr/include/c++/13/bits/stringfwd.h:
 
 /usr/include/glib-2.0/gio/gmenumodel.h:
 
@@ -4628,14 +4708,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/c++/13/bits/memoryfwd.h:
 
-/usr/include/glib-2.0/gio/ginetsocketaddress.h:
-
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-enum-types.h:
-
-/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:
-
-/usr/include/gtk-3.0/gtk/gtkappchooserbutton.h:
-
 /usr/include/atk-1.0/atk/atkcomponent.h:
 
 /usr/include/c++/13/exception:
@@ -4644,10 +4716,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/atk-1.0/atk/atkhypertext.h:
 
-/usr/include/glib-2.0/glib/deprecated/gallocator.h:
-
-/usr/include/gtk-3.0/gtk/gtkclipboard.h:
-
 /usr/include/atk-1.0/atk/atknoopobjectfactory.h:
 
 /usr/include/x86_64-linux-gnu/bits/ss_flags.h:
@@ -4655,16 +4723,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/atk-1.0/atk/atk-enum-types.h:
 
 /usr/include/cairo/cairo-version.h:
-
-/usr/include/glib-2.0/gio/gsimplepermission.h:
-
-/usr/include/glib-2.0/gio/gioscheduler.h:
-
-/usr/include/c++/13/ostream:
-
-/usr/include/c++/13/backward/binders.h:
-
-/usr/include/endian.h:
 
 /usr/include/atk-1.0/atk/atkmisc.h:
 
@@ -4728,6 +4786,22 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkrecentmanager.h:
 
+/usr/include/glib-2.0/glib/grefcount.h:
+
+/usr/include/glib-2.0/gio/gio-autocleanups.h:
+
+/usr/include/c++/13/bits/locale_facets.tcc:
+
+/usr/include/c++/13/tr1/exp_integral.tcc:
+
+/usr/include/glib-2.0/glib.h:
+
+/usr/include/gtk-3.0/gdk/gdkglcontext.h:
+
+/usr/include/c++/13/tr1/ell_integral.tcc:
+
+/usr/include/gtk-3.0/gtk/gtkeditable.h:
+
 /usr/include/glib-2.0/gio/gdbusutils.h:
 
 /usr/include/gtk-3.0/gtk/gtksizegroup.h:
@@ -4737,10 +4811,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/gtk-3.0/gtk/gtkaspectframe.h:
 
 /usr/include/c++/13/bits/cxxabi_forced.h:
-
-/home/jian/Desktop/TankAttack/main.cpp:
-
-/usr/include/glib-2.0/glib/gchecksum.h:
 
 /usr/include/glib-2.0/glib/ghash.h:
 
@@ -4786,17 +4856,19 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/c++/13/bits/cxxabi_init_exception.h:
 
-/usr/include/features-time64.h:
+/usr/include/c++/13/bits/iterator_concepts.h:
+
+/usr/include/c++/13/string_view:
+
+/usr/include/glib-2.0/gio/gvolumemonitor.h:
+
+/usr/include/glib-2.0/glib/galloca.h:
 
 /usr/include/glib-2.0/gio/gdbusintrospection.h:
 
 /usr/include/atk-1.0/atk/atksocket.h:
 
 /usr/include/atk-1.0/atk/atkrelationset.h:
-
-/usr/include/gtk-3.0/gtk/gtktooltip.h:
-
-/usr/include/glib-2.0/glib/gtrashstack.h:
 
 /usr/include/glib-2.0/gio/gnativesocketaddress.h:
 
@@ -4818,9 +4890,19 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/atk-1.0/atk/atkhyperlink.h:
 
+/usr/include/c++/13/bits/specfun.h:
+
 /usr/include/gtk-3.0/gtk/gtkmenubar.h:
 
 /usr/include/atk-1.0/atk/atkplug.h:
+
+/usr/include/gtk-3.0/gtk/gtkswitch.h:
+
+/usr/include/gtk-3.0/gdk/gdkversionmacros.h:
+
+/usr/include/glib-2.0/gio/gtlspassword.h:
+
+/usr/include/c++/13/tr1/poly_hermite.tcc:
 
 /usr/include/glib-2.0/gio/gdtlsserverconnection.h:
 
@@ -4830,13 +4912,15 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/deprecated/gtkalignment.h:
 
-/usr/include/gtk-3.0/gtk/gtkcellview.h:
+/home/jian/Desktop/TankAttack/main.cpp:
 
-/usr/include/c++/13/bits/new_allocator.h:
+/usr/include/glib-2.0/glib/gchecksum.h:
 
-/usr/include/gtk-3.0/gtk/gtklabel.h:
+/usr/include/c++/13/limits:
 
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-animation.h:
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/gtk-3.0/gtk/gtkpagesetup.h:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
 
@@ -4866,10 +4950,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkiconview.h:
 
-/usr/include/glib-2.0/glib/gasyncqueue.h:
-
-/usr/include/c++/13/istream:
-
 /usr/include/glib-2.0/gio/gtlsconnection.h:
 
 /usr/include/glib-2.0/gio/gsimpleasyncresult.h:
@@ -4879,6 +4959,16 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/gtk-3.0/gtk/gtklockbutton.h:
 
 /usr/include/gtk-3.0/gtk/gtkaccellabel.h:
+
+/usr/include/glib-2.0/gio/gdbusactiongroup.h:
+
+/usr/include/glib-2.0/gio/gtcpwrapperconnection.h:
+
+/usr/include/gtk-3.0/gtk/gtkpapersize.h:
+
+/usr/include/gtk-3.0/gtk/gtkgesturestylus.h:
+
+/usr/include/gtk-3.0/gtk/gtkprintsettings.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
 
@@ -4922,6 +5012,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkcellareacontext.h:
 
+/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
+
 /usr/include/c++/13/bits/stl_iterator.h:
 
 /usr/include/c++/13/bits/stl_iterator_base_types.h:
@@ -4944,17 +5036,21 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/c++/13/bits/stl_vector.h:
 
+/usr/include/pango-1.0/pango/pango-matrix.h:
+
+/usr/include/atk-1.0/atk/atktable.h:
+
+/usr/include/glib-2.0/glib/deprecated/gmain.h:
+
+/usr/include/c++/13/bits/new_allocator.h:
+
+/usr/include/gtk-3.0/gtk/gtkcellview.h:
+
 /usr/include/c++/13/bits/ranges_base.h:
 
 /usr/include/gtk-3.0/gtk/gtkfilefilter.h:
 
 /usr/include/c++/13/bits/streambuf.tcc:
-
-/usr/include/gtk-3.0/gtk/gtkprogressbar.h:
-
-/usr/include/c++/13/bits/streambuf_iterator.h:
-
-/usr/include/gtk-3.0/gtk/gtkstack.h:
 
 /usr/include/glib-2.0/gio/gcontenttype.h:
 
@@ -4970,13 +5066,15 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gbufferedinputstream.h:
 
+/usr/include/c++/13/cmath:
+
 /usr/include/gtk-3.0/gdk/gdkframetimings.h:
 
 /usr/include/c++/13/bits/uses_allocator_args.h:
 
-/usr/include/glib-2.0/gio/gpowerprofilemonitor.h:
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h:
 
-/usr/include/gtk-3.0/gtk/gtktestutils.h:
+/usr/include/glib-2.0/glib/glib-typeof.h:
 
 /usr/include/glib-2.0/gio/gcredentials.h:
 
@@ -4992,17 +5090,23 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkselection.h:
 
+/usr/include/gtk-3.0/gtk/gtktextview.h:
+
+/usr/include/c++/13/cstddef:
+
 /usr/include/glib-2.0/glib/gbookmarkfile.h:
-
-/usr/include/glib-2.0/glib/glib-typeof.h:
-
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h:
-
-/usr/include/gtk-3.0/gtk/gtkgesturezoom.h:
 
 /usr/include/c++/13/cstdio:
 
 /usr/include/glib-2.0/glib/gtestutils.h:
+
+/usr/include/gtk-3.0/gtk/gtkprogressbar.h:
+
+/usr/include/c++/13/bits/streambuf_iterator.h:
+
+/usr/include/gtk-3.0/gtk/gtkstack.h:
+
+/usr/include/c++/13/tr1/modified_bessel_func.tcc:
 
 /usr/include/glib-2.0/gio/gfilteroutputstream.h:
 
@@ -5012,13 +5116,11 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/gio/gmemorymonitor.h:
 
-/usr/include/glib-2.0/gio/gvolume.h:
-
 /usr/include/glib-2.0/gio/gtlsfiledatabase.h:
 
 /usr/include/gtk-3.0/gtk/gtkliststore.h:
 
-/usr/include/gtk-3.0/gtk/gtktogglebutton.h:
+/usr/include/c++/13/math.h:
 
 /usr/include/c++/13/bits/postypes.h:
 
@@ -5030,12 +5132,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/deprecated/gtkhpaned.h:
 
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
-
-/usr/include/cairo/cairo.h:
-
-/usr/include/gtk-3.0/gtk/gtkadjustment.h:
-
 /usr/include/glib-2.0/gio/gdatagrambased.h:
 
 /usr/include/c++/13/pstl/pstl_config.h:
@@ -5043,6 +5139,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
 /usr/include/glib-2.0/glib/glib-visibility.h:
+
+/usr/include/c++/13/tr1/beta_function.tcc:
 
 /usr/include/gtk-3.0/gtk/gtkmodules.h:
 
@@ -5060,9 +5158,21 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkactionbar.h:
 
-/usr/include/glib-2.0/gio/gsimpleiostream.h:
+/usr/include/c++/13/tr1/bessel_function.tcc:
 
 /usr/include/c++/13/system_error:
+
+/usr/include/glib-2.0/gio/gsimpleiostream.h:
+
+/usr/include/harfbuzz/hb-font.h:
+
+/usr/include/glib-2.0/glib/gatomic.h:
+
+/usr/include/glib-2.0/glib/gvariant.h:
+
+/usr/include/c++/13/bits/stringfwd.h:
+
+/usr/include/c++/13/tr1/special_function_util.h:
 
 /usr/include/glib-2.0/gio/gmountoperation.h:
 
@@ -5078,19 +5188,31 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkmenushell.h:
 
-/usr/include/c++/13/pstl/execution_defs.h:
+/usr/include/glib-2.0/gio/gvolume.h:
 
-/usr/include/ctype.h:
+/usr/include/glib-2.0/glib-object.h:
 
-/usr/include/c++/13/bit:
+/usr/include/glib-2.0/gobject/gsourceclosure.h:
 
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-features.h:
+/usr/include/glib-2.0/glib/deprecated/gallocator.h:
 
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-macros.h:
+/usr/include/gtk-3.0/gtk/gtkclipboard.h:
 
-/usr/include/c++/13/bits/basic_ios.h:
+/usr/include/glib-2.0/glib/deprecated/gcache.h:
 
-/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-simple-anim.h:
+/usr/include/gtk-3.0/gtk/gtkcellarea.h:
+
+/usr/include/glib-2.0/glib/deprecated/grel.h:
+
+/usr/include/glib-2.0/glib/deprecated/gthread.h:
+
+/usr/include/gtk-3.0/gtk/gtktypebuiltins.h:
+
+/usr/include/glib-2.0/glib/garray.h:
+
+/usr/include/c++/13/istream:
+
+/usr/include/glib-2.0/glib/gasyncqueue.h:
 
 /usr/include/glib-2.0/glib/gbacktrace.h:
 
@@ -5174,6 +5296,8 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/glib-2.0/glib/gqsort.h:
 
+/usr/include/c++/13/tr1/poly_laguerre.tcc:
+
 /usr/include/gtk-3.0/gtk/gtkgesture.h:
 
 /usr/include/glib-2.0/glib/grcbox.h:
@@ -5181,16 +5305,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/glib-2.0/glib/gquark.h:
 
 /usr/include/glib-2.0/glib/gqueue.h:
-
-/usr/include/c++/13/bits/ranges_algo.h:
-
-/usr/include/gtk-3.0/gtk/gtktoolbutton.h:
-
-/usr/include/gtk-3.0/gtk/gtkpaned.h:
-
-/usr/include/glib-2.0/glib/grefstring.h:
-
-/usr/include/gtk-3.0/gtk/gtkentry.h:
 
 /usr/include/gtk-3.0/gtk/deprecated/gtkactiongroup.h:
 
@@ -5406,8 +5520,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/deprecated/gtkimagemenuitem.h:
 
-/usr/include/gtk-3.0/gtk/gtktexttagtable.h:
-
 /usr/include/gtk-3.0/gtk/deprecated/gtknumerableicon.h:
 
 /usr/include/gtk-3.0/gtk/deprecated/gtkradioaction.h:
@@ -5434,9 +5546,9 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/deprecated/gtksymboliccolor.h:
 
-/usr/include/glib-2.0/glib/gdatetime.h:
-
 /usr/include/gtk-3.0/gtk/gtktextbufferrichtext.h:
+
+/usr/include/glib-2.0/glib/gdatetime.h:
 
 /usr/include/gtk-3.0/gtk/deprecated/gtktearoffmenuitem.h:
 
@@ -5556,8 +5668,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkdragsource.h:
 
-/usr/include/gtk-3.0/gtk/gtkeditable.h:
-
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/gtk-3.0/gtk/gtkentrybuffer.h:
@@ -5632,10 +5742,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 
 /usr/include/gtk-3.0/gtk/gtkoverlay.h:
 
-/usr/include/x86_64-linux-gnu/bits/timex.h:
-
-/usr/include/gtk-3.0/gtk/gtkpagesetup.h:
-
 /usr/include/gtk-3.0/gtk/gtkplacessidebar.h:
 
 /usr/include/gtk-3.0/gtk/gtkpopover.h:
@@ -5659,10 +5765,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/gtk-3.0/gtk/gtkrecentchooserdialog.h:
 
 /usr/include/gtk-3.0/gtk/gtkscale.h:
-
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
-
-/usr/include/gtk-3.0/gtk/gtktoggletoolbutton.h:
 
 /usr/include/gtk-3.0/gdk/deprecated/gdkcolor.h:
 
@@ -5695,29 +5797,3 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/jian/Desktop/TankAttack/main.cpp \
 /usr/include/glib-2.0/gio/gproxy.h:
 
 /usr/include/gtk-3.0/gtk/gtkstacksidebar.h:
-
-/usr/include/glib-2.0/gio/gtlspassword.h:
-
-/usr/include/gtk-3.0/gdk/gdkversionmacros.h:
-
-/usr/include/gtk-3.0/gtk/gtkswitch.h:
-
-/usr/include/gtk-3.0/gtk/gtktextattributes.h:
-
-/usr/include/gtk-3.0/gtk/gtktextbuffer.h:
-
-/usr/include/gtk-3.0/gtk/gtktextchild.h:
-
-/usr/include/pango-1.0/pango/pango-language.h:
-
-/usr/include/gtk-3.0/gtk/gtktextiter.h:
-
-/usr/include/gtk-3.0/gtk/gtkseparatormenuitem.h:
-
-/usr/include/gtk-3.0/gtk/gtktextmark.h:
-
-/usr/include/c++/13/cstddef:
-
-/usr/include/gtk-3.0/gtk/gtktextview.h:
-
-/usr/include/gtk-3.0/gtk/gtktoolbar.h:

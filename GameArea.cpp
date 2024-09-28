@@ -1,6 +1,7 @@
 #include "GameArea.h"
 #include "Map.h"
 #include <iostream>
+#include <math.h>
 
 GameLogic* GameArea::game_logic = nullptr;  // Inicializar el puntero estático
 Tank* selected_tank = nullptr;  // Tanque seleccionado por el jugador
@@ -27,6 +28,11 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
 
     int rows = 30;
     int cols = 30;
+
+    // Establecer el color de fondo
+    //cairo_set_source_rgb(cr, 0.9, 0.9, 0.9);  // Color gris claro, puedes cambiarlo por cualquier color
+    //cairo_rectangle(cr, 0, 0, cols * cell_width, rows * cell_height);  // Dibuja el fondo para todo el área
+    //cairo_fill(cr);
 
     // Dibujar cuadrícula
     cairo_set_source_rgb(cr, 0, 0, 0); // Líneas negras para la cuadrícula
@@ -68,10 +74,11 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
             cairo_stroke(cr);
         }
     }
-    
-    // Dibujar tanques
+
+    // Dibujar tanques más detallados
     const std::vector<Tank>& tanks = game_logic->get_tanks();
     for (const Tank& tank : tanks) {
+        // Resaltar el color del tanque
         if (tank.color == "blue") {
             cairo_set_source_rgb(cr, 0, 0, 1);  // Azul
         } else if (tank.color == "red") {
@@ -82,12 +89,38 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
             cairo_set_source_rgb(cr, 1, 1, 0);  // Amarillo
         }
 
-        cairo_rectangle(cr, tank.y * cell_width, tank.x * cell_height, cell_width, cell_height);
+        // Dibujar el contorno del tanque
+        cairo_set_line_width(cr, 2);  // Contorno más grueso
+        cairo_set_source_rgb(cr, 0, 0, 0);  // Negro para el contorno
+        cairo_rectangle(cr, tank.y * cell_width + 2, tank.x * cell_height + 2, cell_width - 4, cell_height - 4);
+        cairo_stroke(cr);
+
+        // Dibujar el cuerpo del tanque dentro del contorno
+        cairo_set_source_rgb(cr,
+            tank.color == "blue" ? 0 : tank.color == "red" ? 1 : tank.color == "lightblue" ? 0.5 : 1,
+            tank.color == "blue" ? 0 : tank.color == "red" ? 0 : tank.color == "lightblue" ? 0.8 : 1,
+            tank.color == "blue" ? 1 : tank.color == "red" ? 0 : tank.color == "lightblue" ? 1 : 0);
+        cairo_rectangle(cr, tank.y * cell_width + 4, tank.x * cell_height + 4, cell_width - 8, cell_height - 8);
         cairo_fill(cr);
+
+        // Dibujar la torreta (círculo en el centro del tanque)
+        cairo_set_source_rgb(cr, 0.3, 0.3, 0.3);  // Color más oscuro para la torreta
+        cairo_arc(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + cell_height / 2, cell_width / 6, 0, 2 * M_PI);
+        cairo_fill(cr);
+
+        // Dibujar el cañón (una línea que sale de la torreta)
+        cairo_set_source_rgb(cr, 0, 0, 0);  // Color negro para el cañón
+        cairo_set_line_width(cr, 2);
+        cairo_move_to(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + cell_height / 2);
+        cairo_line_to(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + 2);  // Cañón hacia arriba
+        cairo_stroke(cr);
     }
 
     return FALSE;
 }
+
+
+
 
 gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
     int clicked_x = event->y / 25;  // Dividir la posición del clic por el tamaño de las celdas

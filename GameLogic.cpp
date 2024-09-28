@@ -1,13 +1,9 @@
 #include "GameLogic.h"
-
-#include <algorithm>
+#include "Pathfinding.h"  // Incluir el archivo de pathfinding
 #include <cstdlib>
 #include <ctime>
-#include <queue>
-#include <cmath>  // Para std::abs
 #include <iostream>
-#include <glib.h>
-#include <gtk/gtk.h>
+
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
     : num_tanks_per_player(num_tanks_per_player), map(map) {
     std::srand(std::time(0));  // Inicializar el generador aleatorio
@@ -43,7 +39,6 @@ void GameLogic::generate_tanks() {
     }
 }
 
-
 void GameLogic::move_tank(int tank_id, int x, int y) {
     for (Tank& tank : tanks) {
         if (tank.id == tank_id) {
@@ -65,7 +60,6 @@ void GameLogic::move_tank(int tank_id, int x, int y) {
     }
 }
 
-
 void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
     // Borrar la ruta anterior
     current_route.clear();
@@ -74,7 +68,7 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
 
     if (tank.color == "blue" || tank.color == "lightblue") {
         if (prob < 50) {
-            std::vector<int> path = bfs(tank.x, tank.y, target_x, target_y);
+            std::vector<int> path = Pathfinding::bfs(map, tank.x, tank.y, target_x, target_y);
             if (!path.empty()) {
                 tank.route = path;
                 current_route = path;  // Guardar la ruta actual
@@ -85,7 +79,7 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
         }
     } else if (tank.color == "red" || tank.color == "yellow") {
         if (prob < 80) {
-            std::vector<int> path = dijkstra(tank.x, tank.y, target_x, target_y);
+            std::vector<int> path = Pathfinding::dijkstra(map, tank.x, tank.y, target_x, target_y);
             if (!path.empty()) {
                 tank.route = path;
                 current_route = path;  // Guardar la ruta actual
@@ -96,7 +90,6 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
         }
     }
 }
-
 
 gboolean GameLogic::move_tank_step_by_step(gpointer data) {
     Tank* tank = static_cast<Tank*>(data);
@@ -122,9 +115,6 @@ gboolean GameLogic::move_tank_step_by_step(gpointer data) {
 
     return FALSE;  // Detener el temporizador cuando no haya más movimientos
 }
-
-
-
 
 void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y) {
     int new_x, new_y;
@@ -174,121 +164,6 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
         }
     }
 }
-
-
-std::vector<int> GameLogic::bfs(int start_x, int start_y, int goal_x, int goal_y) {
-    int width = map->get_width();
-    int height = map->get_height();
-
-    // Crear una matriz de distancias y una matriz para registrar el predecesor de cada celda
-    std::vector<std::vector<int>> dist(width, std::vector<int>(height, -1));
-    std::vector<std::vector<int>> prev(width, std::vector<int>(height, -1));
-
-    // Cola para BFS y un vector de direcciones de movimiento (arriba, abajo, izquierda, derecha)
-    std::queue<std::pair<int, int>> q;
-    std::vector<std::pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-
-    // Inicializar BFS desde el punto de partida
-    q.push({start_x, start_y});
-    dist[start_x][start_y] = 0;
-
-    while (!q.empty()) {
-        auto [x, y] = q.front();
-        q.pop();
-
-        // Si llegamos al objetivo, reconstruimos el camino
-        if (x == goal_x && y == goal_y) {
-            std::vector<int> path;
-            while (x != start_x || y != start_y) {
-                path.push_back(x * width + y);
-                int p = prev[x][y];
-                x = p / width;
-                y = p % width;
-            }
-            std::reverse(path.begin(), path.end());
-            return path;
-        }
-
-        // Explorar los vecinos
-        for (const auto& [dx, dy] : directions) {
-            int nx = x + dx, ny = y + dy;
-            if (nx >= 0 && ny >= 0 && nx < width && ny < height && dist[nx][ny] == -1 && !map->has_obstacle(nx, ny)) {
-                q.push({nx, ny});
-                dist[nx][ny] = dist[x][y] + 1;
-                prev[nx][ny] = x * width + y;
-            }
-        }
-    }
-
-    // Si no hay un camino válido, retornar una ruta vacía
-    return {};
-}
-
-#include <queue>
-#include <vector>
-#include <limits>
-
-std::vector<int> GameLogic::dijkstra(int start_x, int start_y, int goal_x, int goal_y) {
-    int width = map->get_width();
-    int height = map->get_height();
-
-    // Crear una matriz de distancias y una matriz para registrar el predecesor de cada celda
-    std::vector<std::vector<int>> dist(width, std::vector<int>(height, std::numeric_limits<int>::max()));
-    std::vector<std::vector<int>> prev(width, std::vector<int>(height, -1));
-
-    // Cola de prioridad para Dijkstra, la cola almacena pares (distancia, {x, y})
-    std::priority_queue<std::pair<int, std::pair<int, int>>, std::vector<std::pair<int, std::pair<int, int>>>, std::greater<>> pq;
-
-    // Direcciones de movimiento (arriba, abajo, izquierda, derecha)
-    std::vector<std::pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-
-    // Inicializar Dijkstra desde el punto de partida
-    pq.push({0, {start_x, start_y}});
-    dist[start_x][start_y] = 0;
-
-    while (!pq.empty()) {
-        auto [current_dist, pos] = pq.top();
-        int x = pos.first, y = pos.second;
-        pq.pop();
-
-        // Si llegamos al objetivo, reconstruimos el camino
-        if (x == goal_x && y == goal_y) {
-            std::vector<int> path;
-            while (x != start_x || y != start_y) {
-                path.push_back(x * width + y);
-                int p = prev[x][y];
-                x = p / width;
-                y = p % width;
-            }
-            std::reverse(path.begin(), path.end());
-            return path;
-        }
-
-        // Si ya encontramos una mejor distancia para este nodo, continuamos
-        if (current_dist > dist[x][y]) {
-            continue;
-        }
-
-        // Explorar los vecinos
-        for (const auto& [dx, dy] : directions) {
-            int nx = x + dx, ny = y + dy;
-            if (nx >= 0 && ny >= 0 && nx < width && ny < height && !map->has_obstacle(nx, ny)) {
-                int new_dist = current_dist + 1;  // El peso de cada movimiento es 1 (uniforme)
-                if (new_dist < dist[nx][ny]) {
-                    dist[nx][ny] = new_dist;
-                    prev[nx][ny] = x * width + y;
-                    pq.push({new_dist, {nx, ny}});
-                }
-            }
-        }
-    }
-
-    // Si no hay un camino válido, retornar una ruta vacía
-    return {};
-}
-
-
-
 
 std::vector<Tank>& GameLogic::get_tanks() {
     return tanks;  // Devolver referencia no constante

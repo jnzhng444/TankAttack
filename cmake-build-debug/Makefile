@@ -225,6 +225,30 @@ Map.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/Map.cpp.s
 .PHONY : Map.cpp.s
 
+Pathfinding.o: Pathfinding.cpp.o
+.PHONY : Pathfinding.o
+
+# target to build an object file
+Pathfinding.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/Pathfinding.cpp.o
+.PHONY : Pathfinding.cpp.o
+
+Pathfinding.i: Pathfinding.cpp.i
+.PHONY : Pathfinding.i
+
+# target to preprocess a source file
+Pathfinding.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/Pathfinding.cpp.i
+.PHONY : Pathfinding.cpp.i
+
+Pathfinding.s: Pathfinding.cpp.s
+.PHONY : Pathfinding.s
+
+# target to generate assembly for a file
+Pathfinding.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/Pathfinding.cpp.s
+.PHONY : Pathfinding.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -270,6 +294,9 @@ help:
 	@echo "... Map.o"
 	@echo "... Map.i"
 	@echo "... Map.s"
+	@echo "... Pathfinding.o"
+	@echo "... Pathfinding.i"
+	@echo "... Pathfinding.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

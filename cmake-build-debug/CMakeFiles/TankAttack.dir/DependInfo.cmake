@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/jian/Desktop/TankAttack/GameLogic.cpp" "CMakeFiles/TankAttack.dir/GameLogic.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameLogic.cpp.o.d"
   "/home/jian/Desktop/TankAttack/GameWindow.cpp" "CMakeFiles/TankAttack.dir/GameWindow.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameWindow.cpp.o.d"
   "/home/jian/Desktop/TankAttack/Map.cpp" "CMakeFiles/TankAttack.dir/Map.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/Map.cpp.o.d"
+  "/home/jian/Desktop/TankAttack/Pathfinding.cpp" "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o.d"
   "/home/jian/Desktop/TankAttack/main.cpp" "CMakeFiles/TankAttack.dir/main.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/main.cpp.o.d"
   )
 

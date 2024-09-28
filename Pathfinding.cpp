@@ -1,0 +1,100 @@
+#include "Pathfinding.h"
+#include "Map.h"  // Asegúrate de tener la definición de Map
+#include <queue>
+#include <vector>
+#include <limits>
+#include <algorithm>
+
+// Implementación de BFS
+std::vector<int> Pathfinding::bfs(Map* map, int start_x, int start_y, int goal_x, int goal_y) {
+    int width = map->get_width();
+    int height = map->get_height();
+
+    std::vector<std::vector<int>> dist(width, std::vector<int>(height, -1));
+    std::vector<std::vector<int>> prev(width, std::vector<int>(height, -1));
+
+    std::queue<std::pair<int, int>> q;
+    std::vector<std::pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    q.push({start_x, start_y});
+    dist[start_x][start_y] = 0;
+
+    while (!q.empty()) {
+        auto [x, y] = q.front();
+        q.pop();
+
+        if (x == goal_x && y == goal_y) {
+            std::vector<int> path;
+            while (x != start_x || y != start_y) {
+                path.push_back(x * width + y);
+                int p = prev[x][y];
+                x = p / width;
+                y = p % width;
+            }
+            std::reverse(path.begin(), path.end());
+            return path;
+        }
+
+        for (const auto& [dx, dy] : directions) {
+            int nx = x + dx, ny = y + dy;
+            if (nx >= 0 && ny >= 0 && nx < width && ny < height && dist[nx][ny] == -1 && !map->has_obstacle(nx, ny)) {
+                q.push({nx, ny});
+                dist[nx][ny] = dist[x][y] + 1;
+                prev[nx][ny] = x * width + y;
+            }
+        }
+    }
+
+    return {};
+}
+
+// Implementación de Dijkstra
+std::vector<int> Pathfinding::dijkstra(Map* map, int start_x, int start_y, int goal_x, int goal_y) {
+    int width = map->get_width();
+    int height = map->get_height();
+
+    std::vector<std::vector<int>> dist(width, std::vector<int>(height, std::numeric_limits<int>::max()));
+    std::vector<std::vector<int>> prev(width, std::vector<int>(height, -1));
+
+    std::priority_queue<std::pair<int, std::pair<int, int>>, std::vector<std::pair<int, std::pair<int, int>>>, std::greater<>> pq;
+    std::vector<std::pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    pq.push({0, {start_x, start_y}});
+    dist[start_x][start_y] = 0;
+
+    while (!pq.empty()) {
+        auto [current_dist, pos] = pq.top();
+        int x = pos.first, y = pos.second;
+        pq.pop();
+
+        if (x == goal_x && y == goal_y) {
+            std::vector<int> path;
+            while (x != start_x || y != start_y) {
+                path.push_back(x * width + y);
+                int p = prev[x][y];
+                x = p / width;
+                y = p % width;
+            }
+            std::reverse(path.begin(), path.end());
+            return path;
+        }
+
+        if (current_dist > dist[x][y]) {
+            continue;
+        }
+
+        for (const auto& [dx, dy] : directions) {
+            int nx = x + dx, ny = y + dy;
+            if (nx >= 0 && ny >= 0 && nx < width && ny < height && !map->has_obstacle(nx, ny)) {
+                int new_dist = current_dist + 1;
+                if (new_dist < dist[nx][ny]) {
+                    dist[nx][ny] = new_dist;
+                    prev[nx][ny] = x * width + y;
+                    pq.push({new_dist, {nx, ny}});
+                }
+            }
+        }
+    }
+
+    return {};
+}

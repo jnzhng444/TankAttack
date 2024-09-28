@@ -1,47 +1,46 @@
-#ifndef GAME_LOGIC_H
-#define GAME_LOGIC_H
+#ifndef GAMELOGIC_H
+#define GAMELOGIC_H
 
-#include <string>
 #include <vector>
-#include <glib.h>  // Incluir correctamente
-#include <gtk/gtk.h>  // Incluir correctamente
-
 #include "Map.h"
-
-class GameLogic;  // Declaración adelantada de GameLogic
-typedef struct _GtkWidget GtkWidget;  // Declaración adelantada de GtkWidget
-
-struct Tank {
-    int id;
-    int x, y;  // Posición del tanque en el mapa
-    int player;  // Jugador al que pertenece
-    std::string color;  // Color del tanque
-    std::vector<int> route;  // Ruta calculada
-    GameLogic* game_logic;  // Puntero a la lógica del juego
-    GtkWidget* widget;  // Puntero al área de dibujo para redibujar
-};
+#include "Tank.h"  // Asegúrate de incluir la definición de Tank
+#include "Pathfinding.h"
+#include <glib.h>
+#include <gtk/gtk.h>
 
 class GameLogic {
 public:
+    // Constructor
     GameLogic(int num_tanks_per_player, Map* map);
+
+    // Generar tanques
+    void generate_tanks();
+
+    // Mover un tanque a una nueva posición
     void move_tank(int tank_id, int x, int y);
-    void shoot(int tank_id, int target_x, int target_y);
-    void generate_tanks();  // Generar los tanques
-    std::vector<Tank>& get_tanks();  // Obtener los tanques
-    Map* get_map() const;
 
-    // Declaraciones faltantes
-    void calculate_route(Tank& tank, int target_x, int target_y);  // Mover tanque según la ruta
-    std::vector<int> bfs(int start_x, int start_y, int goal_x, int goal_y);  // BFS
-    std::vector<int> dijkstra(int start_x, int start_y, int goal_x, int goal_y);  // Dijkstra
-    void random_movement_with_los(Tank& tank, int target_x, int target_y);  // Movimiento aleatorio con línea de vista
+    // Calcular la ruta para un tanque
+    void calculate_route(Tank& tank, int target_x, int target_y);
+
+    // Movimiento paso a paso de un tanque
     static gboolean move_tank_step_by_step(gpointer data);
-    std::vector<int> current_route;
-private:
-    Map* map;
-    std::vector<Tank> tanks;
-    int num_tanks_per_player;
 
+    // Movimiento aleatorio con línea de vista
+    void random_movement_with_los(Tank& tank, int target_x, int target_y);
+
+    // Obtener la referencia a la lista de tanques
+    std::vector<Tank>& get_tanks();
+
+    // Obtener el puntero al mapa
+    Map* get_map() const;
+    
+    std::vector<int> current_route; // Ruta actual calculada
+
+private:
+    int num_tanks_per_player;       // Número de tanques por jugador
+    std::vector<Tank> tanks;        // Vector de tanques
+
+    Map* map;                       // Puntero al mapa de juego
 };
 
-#endif  // GAME_LOGIC_H
+#endif // GAMELOGIC_H

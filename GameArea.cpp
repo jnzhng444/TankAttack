@@ -15,7 +15,7 @@ GtkWidget* GameArea::create(GameLogic* logic) {
 
     // Conectar señales de dibujo y eventos del mouse
     g_signal_connect(area, "draw", G_CALLBACK(GameArea::on_draw), NULL);
-    g_signal_connect(area, "button-press-event", G_CALLBACK(GameArea::on_button_press), NULL);
+    g_signal_connect(area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
     gtk_widget_add_events(area, GDK_BUTTON_PRESS_MASK);  // Permitir eventos de clic
 
     return area;
@@ -126,19 +126,22 @@ gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpo
     int clicked_x = event->y / 25;  // Dividir la posición del clic por el tamaño de las celdas
     int clicked_y = event->x / 25;
 
+    GameLogic* game_logic = static_cast<GameLogic*>(user_data);  // Obtener el puntero a la lógica del juego
+
     if (event->button == 1) {  // Clic derecho para seleccionar el tanque
         for (Tank& tank : game_logic->get_tanks()) {
-            if (tank.x == clicked_x && tank.y == clicked_y) {
+            if (tank.x == clicked_x && tank.y == clicked_y && tank.player == game_logic->current_player) {
                 selected_tank = &tank;
                 selected_tank->widget = widget;  // Asociar el área de dibujo al tanque seleccionado
-                std::cout << "Tanque seleccionado en (" << clicked_x << ", " << clicked_y << ")" << std::endl;
+                std::cout << "Tanque del jugador " << tank.player << " seleccionado en (" << clicked_x << ", " << clicked_y << ")" << std::endl;
                 return TRUE;
             }
         }
-    } else if (event->button == 3 && selected_tank != nullptr) {  // Clic izquierdo para mover
+    } else if (event->button == 3 && selected_tank != nullptr && selected_tank->player == game_logic->current_player) {  // Clic izquierdo para mover
         selected_tank->widget = widget;  // Asegurarse de que el widget esté asociado antes de mover
         game_logic->calculate_route(*selected_tank, clicked_x, clicked_y);  // Calcular la ruta hacia el destino
         g_timeout_add(100, GameLogic::move_tank_step_by_step, selected_tank);  // Mover tanque paso a paso
+        game_logic->end_turn();  // Cambiar turno
         return TRUE;
     }
 

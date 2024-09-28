@@ -5,8 +5,64 @@
 #include <iostream>
 
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
-    : num_tanks_per_player(num_tanks_per_player), map(map) {
+    : num_tanks_per_player(num_tanks_per_player), map(map), current_player(1), game_time_left(300) {
     std::srand(std::time(0));  // Inicializar el generador aleatorio
+}
+
+void GameLogic::end_turn() {
+    current_player = (current_player == 1) ? 2 : 1;  // Alternar entre jugador 1 y 2
+    std::cout << "Es el turno del jugador " << current_player << std::endl;
+}
+
+void GameLogic::start_game_timer() {
+    g_timeout_add_seconds(1, GameLogic::update_timer, this);  // Iniciar temporizador
+}
+
+gboolean GameLogic::update_timer(gpointer user_data) {
+    GameLogic* logic = static_cast<GameLogic*>(user_data);
+
+    // Disminuir el tiempo restante
+    logic->game_time_left--;
+
+    // Convertir el tiempo restante a formato mm:ss
+    int minutes = logic->game_time_left / 60;
+    int seconds = logic->game_time_left % 60;
+
+    // Aumentar el tamaño de time_str para evitar truncamientos
+    char time_str[32];  // Ahora tiene espacio suficiente para el formato
+    snprintf(time_str, sizeof(time_str), "Tiempo restante: %02d:%02d", minutes, seconds);
+    gtk_label_set_text(GTK_LABEL(logic->time_label), time_str);
+
+    // Verificar si el tiempo se ha agotado
+    if (logic->game_time_left <= 0) {
+        logic->end_game();
+        return FALSE;  // Detener el temporizador
+    }
+
+    return TRUE;  // Mantener el temporizador activo
+}
+
+
+void GameLogic::end_game() {
+    int player1_tanks = 0;
+    int player2_tanks = 0;
+
+    // Contar los tanques de cada jugador
+    for (const Tank& tank : tanks) {
+        if (tank.player == 1) {
+            player1_tanks++;
+        } else if (tank.player == 2) {
+            player2_tanks++;
+        }
+    }
+
+    if (player1_tanks > player2_tanks) {
+        std::cout << "¡El jugador 1 gana!" << std::endl;
+    } else if (player2_tanks > player1_tanks) {
+        std::cout << "¡El jugador 2 gana!" << std::endl;
+    } else {
+        std::cout << "¡Empate!" << std::endl;
+    }
 }
 
 void GameLogic::generate_tanks() {

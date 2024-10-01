@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/jian/Desktop/TankAttack/GameArea.cpp" "CMakeFiles/TankAttack.dir/GameArea.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameArea.cpp.o.d"
-  "/home/jian/Desktop/TankAttack/GameLogic.cpp" "CMakeFiles/TankAttack.dir/GameLogic.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameLogic.cpp.o.d"
-  "/home/jian/Desktop/TankAttack/GameWindow.cpp" "CMakeFiles/TankAttack.dir/GameWindow.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameWindow.cpp.o.d"
-  "/home/jian/Desktop/TankAttack/Map.cpp" "CMakeFiles/TankAttack.dir/Map.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/Map.cpp.o.d"
-  "/home/jian/Desktop/TankAttack/Pathfinding.cpp" "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o.d"
-  "/home/jian/Desktop/TankAttack/main.cpp" "CMakeFiles/TankAttack.dir/main.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/main.cpp.o.d"
+  "/home/brema026/Documentos/GitHub/TankAttack/GameArea.cpp" "CMakeFiles/TankAttack.dir/GameArea.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameArea.cpp.o.d"
+  "/home/brema026/Documentos/GitHub/TankAttack/GameLogic.cpp" "CMakeFiles/TankAttack.dir/GameLogic.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameLogic.cpp.o.d"
+  "/home/brema026/Documentos/GitHub/TankAttack/GameWindow.cpp" "CMakeFiles/TankAttack.dir/GameWindow.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/GameWindow.cpp.o.d"
+  "/home/brema026/Documentos/GitHub/TankAttack/Map.cpp" "CMakeFiles/TankAttack.dir/Map.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/Map.cpp.o.d"
+  "/home/brema026/Documentos/GitHub/TankAttack/Pathfinding.cpp" "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o.d"
+  "/home/brema026/Documentos/GitHub/TankAttack/main.cpp" "CMakeFiles/TankAttack.dir/main.cpp.o" "gcc" "CMakeFiles/TankAttack.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -67,33 +67,36 @@ void GameLogic::end_game() {
 
 void GameLogic::generate_tanks() {
     for (int player = 1; player <= 2; ++player) {
-        for (int i = 0; i < 2; ++i) {  // Solo 2 tanques por jugador
-            Tank tank;
-            tank.id = player * 10 + i;  // ID único para cada tanque
-            tank.player = player;
-            tank.game_logic = this;  // Asignar puntero a game_logic
-            tank.widget = nullptr;  // Asignar widget más adelante cuando se pase el área de juego
+        for (int i = 0; i < 2; ++i) {  // 2 tanques de cada color
+            for (int j = 0; j < 2; ++j) {  // 2 tanques de cada jugador
+                Tank tank;
+                tank.id = player * 10 + i * 2 + j;  // ID único para cada tanque
+                tank.player = player;
+                tank.game_logic = this;  // Asignar puntero a game_logic
+                tank.widget = nullptr;  // Asignar widget más adelante cuando se pase el área de juego
 
-            // Definir color del tanque basado en el jugador
-            if (player == 1) {
-                tank.color = (i == 0) ? "blue" : "red";
-            } else {
-                tank.color = (i == 0) ? "lightblue" : "yellow";
+                // Definir color del tanque basado en el jugador
+                if (player == 1) {
+                    tank.color = (j == 0) ? "blue" : "red";  // Colores para el jugador 1
+                } else {
+                    tank.color = (j == 0) ? "lightblue" : "yellow";  // Colores para el jugador 2
+                }
+
+                // Encontrar una posición accesible para el tanque
+                int x, y;
+                do {
+                    x = std::rand() % map->get_width();  // Usar get_width()
+                    y = std::rand() % map->get_height();  // Usar get_height()
+                } while (!map->is_accessible(x, y) || map->has_obstacle(x, y));
+
+                tank.x = x;
+                tank.y = y;
+                tanks.push_back(tank);  // Agregar el tanque al vector
             }
-
-            // Encontrar una posición accesible para el tanque
-            int x, y;
-            do {
-                x = std::rand() % map->get_width();  // Usar get_width()
-                y = std::rand() % map->get_height();  // Usar get_height()
-            } while (!map->is_accessible(x, y) || map->has_obstacle(x, y));
-
-            tank.x = x;
-            tank.y = y;
-            tanks.push_back(tank);  // Agregar el tanque al vector
         }
     }
 }
+
 
 void GameLogic::move_tank(int tank_id, int x, int y) {
     for (Tank& tank : tanks) {

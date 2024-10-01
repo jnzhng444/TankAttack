@@ -1,6 +1,7 @@
 CMakeFiles/TankAttack.dir/GameWindow.cpp.o: \
- /home/jian/Desktop/TankAttack/GameWindow.cpp /usr/include/stdc-predef.h \
- /home/jian/Desktop/TankAttack/GameWindow.h \
+ /home/brema026/Documentos/GitHub/TankAttack/GameWindow.cpp \
+ /usr/include/stdc-predef.h \
+ /home/brema026/Documentos/GitHub/TankAttack/GameWindow.h \
  /usr/include/gtk-3.0/gtk/gtk.h /usr/include/gtk-3.0/gdk/gdk.h \
  /usr/include/gtk-3.0/gdk/gdkconfig.h /usr/include/glib-2.0/glib.h \
  /usr/include/glib-2.0/glib/galloca.h /usr/include/glib-2.0/glib/gtypes.h \
@@ -738,9 +739,9 @@ CMakeFiles/TankAttack.dir/GameWindow.cpp.o: \
  /usr/include/gtk-3.0/gtk/deprecated/gtkvscrollbar.h \
  /usr/include/gtk-3.0/gtk/deprecated/gtkvseparator.h \
  /usr/include/gtk-3.0/gtk/gtk-autocleanups.h \
- /home/jian/Desktop/TankAttack/GameArea.h \
- /home/jian/Desktop/TankAttack/GameLogic.h /usr/include/c++/13/vector \
- /usr/include/c++/13/bits/requires_hosted.h \
+ /home/brema026/Documentos/GitHub/TankAttack/GameArea.h \
+ /home/brema026/Documentos/GitHub/TankAttack/GameLogic.h \
+ /usr/include/c++/13/vector /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/c++/13/bits/stl_algobase.h \
  /usr/include/c++/13/bits/functexcept.h \
  /usr/include/c++/13/bits/exception_defines.h \
@@ -785,9 +786,10 @@ CMakeFiles/TankAttack.dir/GameWindow.cpp.o: \
  /usr/include/c++/13/bits/ranges_util.h \
  /usr/include/c++/13/bits/ranges_base.h \
  /usr/include/c++/13/bits/max_size_type.h /usr/include/c++/13/numbers \
- /home/jian/Desktop/TankAttack/Map.h /usr/include/c++/13/ctime \
- /home/jian/Desktop/TankAttack/Tank.h /usr/include/c++/13/string \
- /usr/include/c++/13/bits/stringfwd.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Map.h \
+ /usr/include/c++/13/ctime \
+ /home/brema026/Documentos/GitHub/TankAttack/Tank.h \
+ /usr/include/c++/13/string /usr/include/c++/13/bits/stringfwd.h \
  /usr/include/c++/13/bits/char_traits.h \
  /usr/include/c++/13/bits/postypes.h /usr/include/c++/13/cwchar \
  /usr/include/wchar.h /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
@@ -804,4 +806,4 @@ CMakeFiles/TankAttack.dir/GameWindow.cpp.o: \
  /usr/include/c++/13/ext/string_conversions.h /usr/include/c++/13/cstdio \
  /usr/include/c++/13/cerrno /usr/include/c++/13/bits/charconv.h \
  /usr/include/c++/13/bits/basic_string.tcc \
- /home/jian/Desktop/TankAttack/Pathfinding.h
+ /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h

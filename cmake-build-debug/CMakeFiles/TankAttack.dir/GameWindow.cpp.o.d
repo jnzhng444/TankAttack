@@ -806,4 +806,5 @@ CMakeFiles/TankAttack.dir/GameWindow.cpp.o: \
  /usr/include/c++/13/ext/string_conversions.h /usr/include/c++/13/cstdio \
  /usr/include/c++/13/cerrno /usr/include/c++/13/bits/charconv.h \
  /usr/include/c++/13/bits/basic_string.tcc \
- /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h
+ /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Projectile.h

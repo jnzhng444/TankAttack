@@ -1,4 +1,7 @@
 #include "GameLogic.h"
+
+#include <cmath>
+
 #include "Pathfinding.h"  // Incluir el archivo de pathfinding
 #include <cstdlib>
 #include <ctime>
@@ -231,6 +234,33 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
     // Forzar redibujado del área del juego si el widget del tanque es válido
     if (GTK_IS_WIDGET(tank.widget)) {
         gtk_widget_queue_draw(tank.widget);
+    }
+}
+
+void GameLogic::shoot(Tank& tank) {
+    double dx = aim_target_x - tank.y; // Direccion en x
+    double dy = aim_target_y - tank.x; // Direccion en y
+    double length = sqrt(dx * dx + dy * dy); // Longitud de la dirección
+
+    if (length > 0) {
+        dx /= length; // Normalizar
+        dy /= length; // Normalizar
+    }
+
+    // Crear un proyectil
+    projectiles.emplace_back(tank.x, tank.y, dx, dy, 5.0); // Suponiendo que la velocidad es 5.0
+}
+
+void GameLogic::update_projectiles() {
+    for (auto it = projectiles.begin(); it != projectiles.end();) {
+        it->update(); // Actualiza la posición del proyectil
+
+        // Verificar si el proyectil ha salido del mapa
+        if (it->x < 0 || it->x >= map->get_width() || it->y < 0 || it->y >= map->get_height()) {
+            it = projectiles.erase(it); // Eliminar proyectil si está fuera de los límites
+        } else {
+            ++it;
+        }
     }
 }
 

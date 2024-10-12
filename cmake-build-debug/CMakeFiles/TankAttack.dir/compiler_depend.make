@@ -6,6 +6,7 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: /home/brema026/Documentos/GitHub/TankA
   /home/brema026/Documentos/GitHub/TankAttack/GameLogic.h \
   /home/brema026/Documentos/GitHub/TankAttack/Map.h \
   /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
+  /home/brema026/Documentos/GitHub/TankAttack/Projectile.h \
   /home/brema026/Documentos/GitHub/TankAttack/Tank.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
@@ -946,6 +947,7 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /home/brema026/Documentos/GitHub/TankAttack/GameLogic.h \
   /home/brema026/Documentos/GitHub/TankAttack/Map.h \
   /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
+  /home/brema026/Documentos/GitHub/TankAttack/Projectile.h \
   /home/brema026/Documentos/GitHub/TankAttack/Tank.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
@@ -1031,6 +1033,7 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /usr/include/c++/13/bits/ranges_util.h \
   /usr/include/c++/13/bits/refwrap.h \
   /usr/include/c++/13/bits/requires_hosted.h \
+  /usr/include/c++/13/bits/specfun.h \
   /usr/include/c++/13/bits/std_abs.h \
   /usr/include/c++/13/bits/stl_algobase.h \
   /usr/include/c++/13/bits/stl_bvector.h \
@@ -1053,6 +1056,7 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /usr/include/c++/13/cctype \
   /usr/include/c++/13/cerrno \
   /usr/include/c++/13/clocale \
+  /usr/include/c++/13/cmath \
   /usr/include/c++/13/compare \
   /usr/include/c++/13/concepts \
   /usr/include/c++/13/cstddef \
@@ -1074,6 +1078,7 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /usr/include/c++/13/iosfwd \
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
+  /usr/include/c++/13/limits \
   /usr/include/c++/13/new \
   /usr/include/c++/13/numbers \
   /usr/include/c++/13/ostream \
@@ -1084,6 +1089,18 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /usr/include/c++/13/string \
   /usr/include/c++/13/string_view \
   /usr/include/c++/13/system_error \
+  /usr/include/c++/13/tr1/bessel_function.tcc \
+  /usr/include/c++/13/tr1/beta_function.tcc \
+  /usr/include/c++/13/tr1/ell_integral.tcc \
+  /usr/include/c++/13/tr1/exp_integral.tcc \
+  /usr/include/c++/13/tr1/gamma.tcc \
+  /usr/include/c++/13/tr1/hypergeometric.tcc \
+  /usr/include/c++/13/tr1/legendre_function.tcc \
+  /usr/include/c++/13/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/13/tr1/poly_hermite.tcc \
+  /usr/include/c++/13/tr1/poly_laguerre.tcc \
+  /usr/include/c++/13/tr1/riemann_zeta.tcc \
+  /usr/include/c++/13/tr1/special_function_util.h \
   /usr/include/c++/13/tuple \
   /usr/include/c++/13/type_traits \
   /usr/include/c++/13/typeinfo \
@@ -1692,6 +1709,7 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /usr/include/linux/errno.h \
   /usr/include/linux/limits.h \
   /usr/include/locale.h \
+  /usr/include/math.h \
   /usr/include/pango-1.0/pango/pango-attributes.h \
   /usr/include/pango-1.0/pango/pango-bidi-type.h \
   /usr/include/pango-1.0/pango/pango-break.h \
@@ -1748,12 +1766,21 @@ CMakeFiles/TankAttack.dir/GameLogic.cpp.o: /home/brema026/Documentos/GitHub/Tank
   /usr/include/x86_64-linux-gnu/bits/errno.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
   /usr/include/x86_64-linux-gnu/bits/local_lim.h \
   /usr/include/x86_64-linux-gnu/bits/locale.h \
   /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
   /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
   /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
@@ -1862,6 +1889,7 @@ CMakeFiles/TankAttack.dir/GameWindow.cpp.o: /home/brema026/Documentos/GitHub/Tan
   /home/brema026/Documentos/GitHub/TankAttack/GameWindow.h \
   /home/brema026/Documentos/GitHub/TankAttack/Map.h \
   /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
+  /home/brema026/Documentos/GitHub/TankAttack/Projectile.h \
   /home/brema026/Documentos/GitHub/TankAttack/Tank.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
@@ -4192,9 +4220,7 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/gtk-3.0/gtk/gtktextattributes.h:
 
-/usr/include/glib-2.0/gio/gvfs.h:
-
-/usr/include/gtk-3.0/gtk/gtkpadcontroller.h:
+/usr/include/gtk-3.0/gtk/gtkstyleprovider.h:
 
 /usr/include/glib-2.0/gio/gunixsocketaddress.h:
 
@@ -4492,23 +4518,15 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/gtk-3.0/gtk/gtkadjustment.h:
 
-/usr/include/c++/13/tr1/legendre_function.tcc:
+/usr/include/cairo/cairo-version.h:
 
-/usr/include/gtk-3.0/gtk/gtkpaned.h:
+/usr/include/x86_64-linux-gnu/bits/ss_flags.h:
 
-/usr/include/glib-2.0/glib/grefstring.h:
-
-/usr/include/gtk-3.0/gtk/gtkentry.h:
+/usr/include/atk-1.0/atk/atk-enum-types.h:
 
 /usr/include/glib-2.0/gio/gproxyaddressenumerator.h:
 
 /usr/include/c++/13/bits/stl_iterator_base_funcs.h:
-
-/usr/include/c++/13/bits/range_access.h:
-
-/usr/include/c++/13/bits/deque.tcc:
-
-/usr/include/c++/13/bits/localefwd.h:
 
 /usr/include/atk-1.0/atk/atkobject.h:
 
@@ -4540,9 +4558,9 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/gtk-3.0/gtk/gtkcellrenderertoggle.h:
 
-/usr/include/dirent.h:
-
 /usr/include/atk-1.0/atk/atkdocument.h:
+
+/usr/include/dirent.h:
 
 /usr/include/glib-2.0/gio/gdbusmethodinvocation.h:
 
@@ -4684,18 +4702,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/c++/13/ctime:
 
-/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/c++/13/tuple:
-
-/usr/include/gtk-3.0/gtk/gtkborder.h:
-
-/usr/include/gtk-3.0/gtk/gtkimcontextinfo.h:
-
-/usr/include/atk-1.0/atk/atkversion.h:
-
 /usr/include/atk-1.0/atk/atkvalue.h:
 
 /usr/include/gtk-3.0/gdk/gdkselection.h:
@@ -4731,12 +4737,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 /usr/include/atk-1.0/atk/atkhypertext.h:
 
 /usr/include/atk-1.0/atk/atknoopobjectfactory.h:
-
-/usr/include/x86_64-linux-gnu/bits/ss_flags.h:
-
-/usr/include/atk-1.0/atk/atk-enum-types.h:
-
-/usr/include/cairo/cairo-version.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h:
 
@@ -4796,6 +4796,16 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/features-time64.h:
 
+/usr/include/glib-2.0/gio/gsocketaddress.h:
+
+/usr/include/gtk-3.0/gtk/gtkselection.h:
+
+/usr/include/atk-1.0/atk/atkhyperlinkimpl.h:
+
+/usr/include/c++/13/bits/locale_classes.tcc:
+
+/usr/include/gtk-3.0/gtk/gtkassistant.h:
+
 /usr/include/c++/13/bits/cxxabi_forced.h:
 
 /home/brema026/Documentos/GitHub/TankAttack/GameArea.h:
@@ -4814,33 +4824,25 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/gtk-3.0/gdk/gdkcairo.h:
 
-/usr/include/glib-2.0/gio/gsocketaddress.h:
+/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
 
-/usr/include/gtk-3.0/gtk/gtkselection.h:
+/usr/include/linux/errno.h:
 
-/usr/include/atk-1.0/atk/atkhyperlinkimpl.h:
+/usr/include/c++/13/tuple:
 
-/usr/include/c++/13/bits/locale_classes.tcc:
+/usr/include/gtk-3.0/gtk/gtkborder.h:
 
-/usr/include/gtk-3.0/gtk/gtkassistant.h:
+/usr/include/gtk-3.0/gtk/gtkimcontextinfo.h:
 
-/usr/include/glib-2.0/glib/ghash.h:
+/usr/include/atk-1.0/atk/atkversion.h:
 
-/usr/include/c++/13/bits/nested_exception.h:
+/usr/include/atk-1.0/atk/atkwindow.h:
 
-/usr/include/c++/13/ext/atomicity.h:
+/usr/include/glib-2.0/gio/gsettings.h:
 
-/usr/include/atk-1.0/atk/atk-autocleanups.h:
+/usr/include/gtk-3.0/gtk/deprecated/gtkalignment.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/gtk-3.0/gdk/gdkkeys.h:
-
-/usr/include/c++/13/debug/debug.h:
-
-/usr/include/gtk-3.0/gtk/deprecated/gtkvbox.h:
-
-/usr/include/c++/13/type_traits:
+/usr/include/atk-1.0/atk/atkrelationset.h:
 
 /usr/include/c++/13/bits/iterator_concepts.h:
 
@@ -4853,8 +4855,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 /usr/include/glib-2.0/gio/gdbusintrospection.h:
 
 /usr/include/atk-1.0/atk/atksocket.h:
-
-/usr/include/atk-1.0/atk/atkrelationset.h:
 
 /usr/include/pango-1.0/pango/pango-attributes.h:
 
@@ -4908,11 +4908,37 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/c++/13/cctype:
 
-/usr/include/atk-1.0/atk/atkwindow.h:
+/usr/include/atk-1.0/atk/atk-autocleanups.h:
 
-/usr/include/glib-2.0/gio/gsettings.h:
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
-/usr/include/gtk-3.0/gtk/deprecated/gtkalignment.h:
+/usr/include/gtk-3.0/gdk/gdkkeys.h:
+
+/usr/include/c++/13/debug/debug.h:
+
+/usr/include/gtk-3.0/gtk/deprecated/gtkvbox.h:
+
+/usr/include/c++/13/type_traits:
+
+/usr/include/glib-2.0/glib/ghash.h:
+
+/usr/include/c++/13/bits/nested_exception.h:
+
+/usr/include/c++/13/ext/atomicity.h:
+
+/usr/include/c++/13/bits/deque.tcc:
+
+/usr/include/c++/13/bits/localefwd.h:
+
+/usr/include/c++/13/bits/range_access.h:
+
+/usr/include/c++/13/tr1/legendre_function.tcc:
+
+/usr/include/gtk-3.0/gtk/gtkpaned.h:
+
+/usr/include/glib-2.0/glib/grefstring.h:
+
+/usr/include/gtk-3.0/gtk/gtkentry.h:
 
 /usr/include/c++/13/limits:
 
@@ -5094,6 +5120,18 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/glib-2.0/glib/gtestutils.h:
 
+/home/brema026/Documentos/GitHub/TankAttack/Projectile.h:
+
+/usr/include/gtk-3.0/gtk/gtkeventcontrollermotion.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
+
+/usr/include/glib-2.0/gio/gbytesicon.h:
+
+/usr/include/gtk-3.0/gtk/gtkcellrendererspinner.h:
+
+/usr/include/gtk-3.0/gtk/gtkglarea.h:
+
 /usr/include/gtk-3.0/gtk/gtkprogressbar.h:
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
@@ -5185,6 +5223,10 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h:
 
 /usr/include/c++/13/vector:
+
+/usr/include/glib-2.0/gio/gvfs.h:
+
+/usr/include/gtk-3.0/gtk/gtkpadcontroller.h:
 
 /usr/include/glib-2.0/gio/gvolume.h:
 
@@ -5446,8 +5488,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/gtk-3.0/gdk/gdkmain.h:
 
-/usr/include/gtk-3.0/gtk/gtkstyleprovider.h:
-
 /usr/include/glib-2.0/gmodule/gmodule-visibility.h:
 
 /usr/include/gtk-3.0/gdk/gdkpango.h:
@@ -5626,9 +5666,9 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 
 /usr/include/gtk-3.0/gtk/gtkcolorbutton.h:
 
-/usr/include/glib-2.0/glib/gstringchunk.h:
-
 /usr/include/glib-2.0/gio/gapplication.h:
+
+/usr/include/glib-2.0/glib/gstringchunk.h:
 
 /usr/include/gtk-3.0/gtk/gtkcolorchooserdialog.h:
 
@@ -5691,16 +5731,6 @@ CMakeFiles/TankAttack.dir/main.cpp.o: /home/brema026/Documentos/GitHub/TankAttac
 /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
 
 /usr/include/gtk-3.0/gtk/gtkeventcontrollerkey.h:
-
-/usr/include/gtk-3.0/gtk/gtkeventcontrollermotion.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
-
-/usr/include/glib-2.0/gio/gbytesicon.h:
-
-/usr/include/gtk-3.0/gtk/gtkcellrendererspinner.h:
-
-/usr/include/gtk-3.0/gtk/gtkglarea.h:
 
 /usr/include/glib-2.0/gobject/gparam.h:
 

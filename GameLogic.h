@@ -7,6 +7,7 @@
 #include "Pathfinding.h"
 #include <glib.h>
 #include <gtk/gtk.h>
+#include "Projectile.h"
 
 class GameLogic {
 public:
@@ -30,6 +31,13 @@ public:
 
     // Obtener la referencia a la lista de tanques
     std::vector<Tank>& get_tanks();
+
+    // Otros métodos y variables...
+    std::vector<Projectile> projectiles; // Lista de proyectiles
+
+    // Método para disparar
+    void shoot(Tank& tank);
+    void update_projectiles();
 
     // Obtener el puntero al mapa
     Map* get_map() const;

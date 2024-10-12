@@ -806,6 +806,7 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: \
  /usr/include/c++/13/cerrno /usr/include/c++/13/bits/charconv.h \
  /usr/include/c++/13/bits/basic_string.tcc \
  /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Projectile.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/ostream \
  /usr/include/c++/13/ios /usr/include/c++/13/exception \
  /usr/include/c++/13/bits/exception_ptr.h \

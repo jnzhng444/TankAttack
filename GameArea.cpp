@@ -134,6 +134,12 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         cairo_line_to(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + 2);  // Cañón hacia arriba
         cairo_stroke(cr);
     }
+    // Dibujar proyectiles
+    cairo_set_source_rgb(cr, 1, 0, 0); // Color rojo para los proyectiles
+    for (const Projectile& projectile : game_logic->projectiles) {
+        cairo_arc(cr, projectile.y * cell_width + cell_width / 2, projectile.x * cell_height + cell_height / 2, 3, 0, 2 * M_PI);
+        cairo_fill(cr);
+    }
 
     // Dibujar la línea de dirección si hay un tanque seleccionado y el cursor no está encima del tanque
     if (selected_tank != nullptr) {
@@ -176,34 +182,42 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
 }
 
 
-
-
 gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
     int clicked_x = event->y / 25;  // Dividir la posición del clic por el tamaño de las celdas
     int clicked_y = event->x / 25;
 
     GameLogic* game_logic = static_cast<GameLogic*>(user_data);  // Obtener el puntero a la lógica del juego
 
-    if (event->button == 1) {  // Clic derecho para seleccionar el tanque
-        for (Tank& tank : game_logic->get_tanks()) {
-            if (tank.x == clicked_x && tank.y == clicked_y && tank.player == game_logic->current_player) {
-                selected_tank = &tank;
-                selected_tank->widget = widget;  // Asociar el área de dibujo al tanque seleccionado
-                std::cout << "Tanque del jugador " << tank.player << " seleccionado en (" << clicked_x << ", " << clicked_y << ")" << std::endl;
-                return TRUE;
+    if (event->button == 1) {  // Clic izquierdo para seleccionar o mover
+        if (selected_tank == nullptr) {  // Si no hay tanque seleccionado, seleccionar uno
+            for (Tank& tank : game_logic->get_tanks()) {
+                if (tank.x == clicked_x && tank.y == clicked_y && tank.player == game_logic->current_player) {
+                    selected_tank = &tank;
+                    selected_tank->widget = widget;  // Asociar el área de dibujo al tanque seleccionado
+                    std::cout << "Tanque del jugador " << tank.player << " seleccionado en ("
+                              << clicked_x << ", " << clicked_y << ")" << std::endl;
+                    return TRUE; // Fin de la función al seleccionar el tanque
+                }
+            }
+        } else {  // Si ya hay un tanque seleccionado, moverlo
+            if (selected_tank->player == game_logic->current_player) {
+                selected_tank->widget = widget;  // Asegurarse de que el widget esté asociado antes de mover
+                game_logic->calculate_route(*selected_tank, clicked_x, clicked_y);  // Calcular la ruta hacia el destino
+                g_timeout_add(100, GameLogic::move_tank_step_by_step, selected_tank);  // Mover tanque paso a paso
+                game_logic->end_turn();  // Cambiar turno
+                selected_tank = nullptr;  // Reiniciar la selección del tanque después de mover
+                return TRUE; // Fin de la función al mover el tanque
             }
         }
-    } else if (event->button == 3 && selected_tank != nullptr && selected_tank->player == game_logic->current_player) {  // Clic izquierdo para mover
-        selected_tank->widget = widget;  // Asegurarse de que el widget esté asociado antes de mover
-        game_logic->calculate_route(*selected_tank, clicked_x, clicked_y);  // Calcular la ruta hacia el destino
-        g_timeout_add(100, GameLogic::move_tank_step_by_step, selected_tank);  // Mover tanque paso a paso
-        game_logic->end_turn();  // Cambiar turno
-        return TRUE;
+    } else if (event->button == 3 && selected_tank != nullptr && selected_tank->player == game_logic->current_player) {  // Clic derecho para disparar
+        game_logic->aim_target_x = clicked_x; // Establecer el objetivo de disparo
+        game_logic->aim_target_y = clicked_y; // Establecer el objetivo de disparo
+        game_logic->shoot(*selected_tank); // Disparar hacia el objetivo
+        std::cout << "Tanque del jugador " << selected_tank->player << " disparando desde ("
+                  << selected_tank->x << ", " << selected_tank->y << ") hacia ("
+                  << clicked_x << ", " << clicked_y << ")" << std::endl;
+        return TRUE; // Fin de la función al disparar
     }
 
-    return FALSE;
+    return FALSE; // Ninguna acción se realizó
 }
-
-
-
-

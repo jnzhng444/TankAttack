@@ -5,29 +5,41 @@
 
 GameLogic* GameArea::game_logic = nullptr;  // Inicializar el puntero estático
 Tank* selected_tank = nullptr;  // Tanque seleccionado por el jugador
+GtkWidget* GameArea::game_area = nullptr;  // Definir la variable estática
 
+// En GameArea.cpp
 GtkWidget* GameArea::create(GameLogic* logic) {
-    GtkWidget *area = gtk_drawing_area_new();
-    gtk_widget_set_size_request(area, 800, 600);
+    game_area = gtk_fixed_new();  // Cambiar a GtkFixed, que es un contenedor válido
+    gtk_widget_set_size_request(game_area, 800, 600);  // Establecer tamaño
+
+    if (!game_area) {
+        std::cerr << "Error al crear el widget del área de juego." << std::endl;
+        return nullptr;  // Retornar nulo si no se pudo crear correctamente
+    }
 
     // Almacenar el puntero a GameLogic
     game_logic = logic;
 
-    // Conectar señales de dibujo y eventos del mouse
-    g_signal_connect(area, "draw", G_CALLBACK(GameArea::on_draw), NULL);
-    g_signal_connect(area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
-    g_signal_connect(area, "motion-notify-event", G_CALLBACK(GameArea::on_motion_notify), game_logic);  // Conectar el evento de movimiento
-    gtk_widget_add_events(area, GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
+    // Crear un área de dibujo sobre el contenedor
+    GtkWidget *drawing_area = gtk_drawing_area_new();
+    gtk_widget_set_size_request(drawing_area, 800, 600);
+    gtk_fixed_put(GTK_FIXED(game_area), drawing_area, 0, 0);
 
-    return area;
+    // Conectar señales de dibujo y eventos del mouse a drawing_area
+    g_signal_connect(drawing_area, "draw", G_CALLBACK(GameArea::on_draw), NULL);
+    g_signal_connect(drawing_area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
+    g_signal_connect(drawing_area, "motion-notify-event", G_CALLBACK(GameArea::on_motion_notify), game_logic);
+    gtk_widget_add_events(drawing_area, GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
+
+    return game_area;
 }
 
 gboolean GameArea::on_motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data) {
     GameLogic* game_logic = static_cast<GameLogic*>(user_data);
 
     if (selected_tank != nullptr) {  // Solo dibujamos la línea si hay un tanque seleccionado
-        int mouse_x = event->x / 25;
-        int mouse_y = event->y / 25;
+        int mouse_x = event->x / 25;  // Convertir la posición del mouse en coordenadas de celda
+        int mouse_y = event->y / 25;  // Convertir la posición del mouse en coordenadas de celda
 
         // Guardar las coordenadas del objetivo (el punto al que se apunta)
         game_logic->aim_target_x = mouse_x;
@@ -39,6 +51,7 @@ gboolean GameArea::on_motion_notify(GtkWidget *widget, GdkEventMotion *event, gp
 
     return TRUE;
 }
+
 
 gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
     // Definir el tamaño de cada celda
@@ -206,13 +219,18 @@ gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpo
             }
         }
     } else if (event->button == 3 && selected_tank != nullptr && selected_tank->player == game_logic->current_player) {  // Clic derecho para disparar
-        game_logic->aim_target_x = clicked_x; // Establecer el objetivo de disparo
-        game_logic->aim_target_y = clicked_y; // Establecer el objetivo de disparo
-        game_logic->shoot(*selected_tank, event->x / 25, event->y / 25); // Disparar hacia el objetivo
+        // Convertir las coordenadas del clic en términos de celdas del mapa
+        int clicked_x = static_cast<int>(event->x / 25);
+        int clicked_y = static_cast<int>(event->y / 25);
+
+        // Establecer el objetivo de disparo con las coordenadas del clic
+        game_logic->shoot(*selected_tank, clicked_x, clicked_y); // Disparar hacia el objetivo
+
         std::cout << "Tanque del jugador " << selected_tank->player << " disparando desde ("
                   << selected_tank->x << ", " << selected_tank->y << ") hacia ("
                   << clicked_x << ", " << clicked_y << ")" << std::endl;
         return TRUE; // Fin de la función al disparar
+
     }
     return FALSE; // Ninguna acción se realizó
 }
@@ -221,16 +239,23 @@ GtkWidget* GameArea::create_projectile_widget(Projectile& projectile) {
     GtkWidget *projectile_widget = gtk_drawing_area_new();
     gtk_widget_set_size_request(projectile_widget, 10, 10);  // Tamaño del proyectil
 
-    // Conectar la señal de dibujo
-    g_signal_connect(projectile_widget, "draw", G_CALLBACK(on_draw_projectile), &projectile);
+    // Conectar la señal de dibujo solo si se crea correctamente el widget
+    if (GTK_IS_WIDGET(projectile_widget)) {
+        g_signal_connect(projectile_widget, "draw", G_CALLBACK(on_draw_projectile), &projectile);
+    } else {
+        std::cerr << "Error: No se pudo crear el widget del proyectil." << std::endl;
+    }
 
     return projectile_widget;
 }
 
 gboolean GameArea::on_draw_projectile(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
     Projectile* projectile = static_cast<Projectile*>(user_data);
+
+    // Dibujar el proyectil como un círculo rojo
     cairo_set_source_rgb(cr, 1, 0, 0); // Color rojo para el proyectil
-    cairo_arc(cr, projectile->x * 25 + 5, projectile->y * 25 + 5, 5, 0, 2 * M_PI); // Dibuja el proyectil
+    cairo_arc(cr, 5, 5, 5, 0, 2 * M_PI); // Dibujar el proyectil en el centro del widget (10x10 px)
     cairo_fill(cr);
+
     return FALSE;
 }

@@ -28,7 +28,8 @@ add_executable(TankAttack main.cpp
         Pathfinding.cpp
         Pathfinding.h
         Tank.h
-        Projectile.h)
+        Projectile.h
+        Projectile.cpp)
 
 # Enlaza las bibliotecas de GTK3 con el ejecutable
 target_link_libraries(TankAttack ${GTK3_LIBRARIES})

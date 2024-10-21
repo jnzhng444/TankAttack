@@ -32,7 +32,7 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 34,
+				"line" : 35,
 				"parent" : 0
 			},
 			{
@@ -151,7 +151,8 @@
 				3,
 				5,
 				7,
-				9
+				9,
+				13
 			]
 		}
 	],
@@ -254,7 +255,8 @@
 				3,
 				5,
 				7,
-				9
+				9,
+				13
 			]
 		},
 		{
@@ -343,6 +345,12 @@
 			"backtrace" : 1,
 			"path" : "Projectile.h",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Projectile.cpp",
+			"sourceGroupIndex" : 0
 		}
 	],
 	"type" : "EXECUTABLE"

@@ -238,10 +238,12 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
     }
 }
 
+// En GameLogic.cpp, dentro de la función `shoot` y `update`
 void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
-    // Calcular la dirección del proyectil
-    double dx = aim_target_x - tank.x;
-    double dy = aim_target_y - tank.y;
+    // Calcular la dirección del disparo basada en la posición del tanque y el objetivo (minilínea guía)
+    double dx = aim_target_x - tank.y;  // Diferencia en X
+    double dy = aim_target_y - tank.x;  // Diferencia en Y
+
     double length = sqrt(dx * dx + dy * dy);
 
     if (length > 0) {
@@ -249,53 +251,89 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
         dy /= length;
     }
 
-    // Crear un proyectil en la posición del tanque
-    Projectile projectile(tank.x, tank.y, dx, dy, 5.0, map->get_width()); // 5.0 es la velocidad
+    // Crear un proyectil en la posición del tanque, con la dirección calculada
+    Projectile projectile(tank.x, tank.y, dx, dy, 0.2, map->get_width()); // Colocar correctamente la posición inicial
+    projectile.active = true;  // Marcar como activo
     projectiles.emplace_back(projectile);
 
     // Crear el widget del proyectil y agregarlo al área de juego
-    GtkWidget* projectile_widget = GameArea::create_projectile_widget(projectiles.back()); // Usar el último proyectil
-    projectiles.back().widget = projectile_widget; // Asignar el widget al proyectil
-    gtk_container_add(GTK_CONTAINER(GameArea::game_area), projectile_widget); // Agregar el widget al área de juego
-    gtk_widget_show_all(GameArea::game_area); // Mostrar el widget del proyectil
+    GtkWidget* projectile_widget = GameArea::create_projectile_widget(projectiles.back());
+    projectiles.back().widget = projectile_widget;
 
-    // Asignar la ruta si es necesario (ejemplo de uso de A* o cualquier otro algoritmo)
-    std::vector<int> path = Pathfinding::a_star(map, tank.x, tank.y, aim_target_x, aim_target_y);
-    projectiles.back().route = path; // Asignar la ruta calculada
+    GtkWidget* game_area = GameArea::get_game_area();
+    if (GTK_IS_FIXED(game_area)) {
+        gtk_fixed_put(GTK_FIXED(game_area), projectile_widget, tank.y * 25, tank.x * 25); // Ajustar las coordenadas iniciales
+        gtk_widget_show_all(game_area);
+
+        // Añadir un temporizador para mover el proyectil
+        g_timeout_add(50, [](gpointer data) -> gboolean {
+            Projectile* proj = static_cast<Projectile*>(data);
+            proj->update();
+
+            // Verificar si las nuevas coordenadas están dentro de los límites del mapa
+            if (!proj->active) {
+                // Eliminar el widget si está fuera del área
+                if (GTK_IS_WIDGET(proj->widget)) {
+                    gtk_widget_destroy(proj->widget);
+                    proj->widget = nullptr;
+                }
+                return FALSE; // Detener el temporizador
+            }
+
+            // Redibujar el widget del proyectil si sigue en el área de juego
+            if (GTK_IS_WIDGET(proj->widget)) {
+                gtk_fixed_move(GTK_FIXED(GameArea::get_game_area()), proj->widget, proj->y * 25, proj->x * 25);
+                gtk_widget_queue_draw(proj->widget);
+            }
+
+            return TRUE; // Continuar el temporizador
+        }, &projectiles.back());
+    } else {
+        std::cerr << "Error: game_area no es un contenedor GtkFixed válido." << std::endl;
+    }
 }
 
+
 void GameLogic::update() {
-    update_projectiles(); // Actualiza la posición de los proyectiles
+    update_projectiles();
 
     // Redibujar el área de juego
     for (Tank& tank : tanks) {
         if (GTK_IS_WIDGET(tank.widget)) {
-            gtk_widget_queue_draw(tank.widget); // Redibujar el widget del tanque
+            gtk_widget_queue_draw(tank.widget);
         }
     }
 
-    // Asegúrate de redibujar el área de juego
-    gtk_widget_queue_draw(GameArea::game_area); // Asegúrate de que este sea el widget correcto
+    // Redibujar el área de juego
+    gtk_widget_queue_draw(GameArea::get_game_area());
 }
 
 void GameLogic::update_projectiles() {
     for (auto it = projectiles.begin(); it != projectiles.end();) {
         it->update(); // Actualiza la posición del proyectil
 
-        // Verificar si el proyectil ha salido del mapa
-        if (it->x < 0 || it->x >= map->get_width() || it->y < 0 || it->y >= map->get_height()) {
-            // Eliminar el proyectil si está fuera de los límites
-            gtk_widget_destroy(it->widget); // Eliminar el widget del proyectil
-            it = projectiles.erase(it); // Eliminar proyectil de la lista
-        } else {
-            // Redibujar el widget del proyectil
-            if (GTK_IS_WIDGET(it->widget)) {
-                gtk_widget_queue_draw(it->widget); // Redibujar el widget del proyectil
+        // Verificar si el proyectil ha salido del mapa o está inactivo
+        if (!it->active || it->x < 0 || it->x >= map->get_width() || it->y < 0 || it->y >= map->get_height()) {
+            // Comprobar si el widget del proyectil es válido antes de destruirlo
+            if (it->widget && GTK_IS_WIDGET(it->widget)) {
+                gtk_widget_destroy(it->widget); // Destruir el widget del proyectil de manera segura
+                it->widget = nullptr; // Marcar el widget como nulo para evitar accesos futuros
             }
-            ++it;
+            it = projectiles.erase(it); // Eliminar el proyectil de la lista y avanzar al siguiente
+        } else {
+            // Comprobar si el widget es válido antes de redibujarlo o moverlo
+            if (it->widget && GTK_IS_WIDGET(it->widget)) {
+                gtk_fixed_move(GTK_FIXED(GameArea::get_game_area()), it->widget, it->y * 25, it->x * 25);
+                gtk_widget_queue_draw(it->widget);
+            }
+            ++it; // Avanzar al siguiente proyectil
         }
     }
 }
+
+
+
+
 
 
 std::vector<Tank>& GameLogic::get_tanks() {

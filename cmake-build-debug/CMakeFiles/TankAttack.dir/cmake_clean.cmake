@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/TankAttack.dir/Map.cpp.o.d"
   "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o"
   "CMakeFiles/TankAttack.dir/Pathfinding.cpp.o.d"
+  "CMakeFiles/TankAttack.dir/Projectile.cpp.o"
+  "CMakeFiles/TankAttack.dir/Projectile.cpp.o.d"
   "CMakeFiles/TankAttack.dir/main.cpp.o"
   "CMakeFiles/TankAttack.dir/main.cpp.o.d"
   "TankAttack"

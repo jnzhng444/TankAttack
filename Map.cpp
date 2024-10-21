@@ -131,7 +131,9 @@ void Map::print_map() {
 }
 
 bool Map::is_accessible(int x, int y) {
-    // Chequear si la celda (x, y) es accesible
+    if (x < 0 || x >= height || y < 0 || y >= width) {
+        return false; // Verificar límites
+    }
     int index = x * width + y;
     for (int i = 0; i < width * height; ++i) {
         if (adj_matrix[index][i] == 1) {

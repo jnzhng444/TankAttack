@@ -35,9 +35,12 @@ public:
     // Otros métodos y variables...
     std::vector<Projectile> projectiles; // Lista de proyectiles
 
-    // Método para disparar
-    void shoot(Tank& tank);
     void update_projectiles();
+    void update();
+
+    // Método para disparar
+    void shoot(Tank& tank, int aim_target_x, int aim_target_y);
+
 
     // Obtener el puntero al mapa
     Map* get_map() const;

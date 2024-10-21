@@ -134,12 +134,6 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         cairo_line_to(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + 2);  // Cañón hacia arriba
         cairo_stroke(cr);
     }
-    // Dibujar proyectiles
-    cairo_set_source_rgb(cr, 1, 0, 0); // Color rojo para los proyectiles
-    for (const Projectile& projectile : game_logic->projectiles) {
-        cairo_arc(cr, projectile.y * cell_width + cell_width / 2, projectile.x * cell_height + cell_height / 2, 3, 0, 2 * M_PI);
-        cairo_fill(cr);
-    }
 
     // Dibujar la línea de dirección si hay un tanque seleccionado y el cursor no está encima del tanque
     if (selected_tank != nullptr) {
@@ -177,9 +171,11 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
               }
     }
 
+
     return FALSE;
 
 }
+
 
 
 gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
@@ -212,12 +208,29 @@ gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpo
     } else if (event->button == 3 && selected_tank != nullptr && selected_tank->player == game_logic->current_player) {  // Clic derecho para disparar
         game_logic->aim_target_x = clicked_x; // Establecer el objetivo de disparo
         game_logic->aim_target_y = clicked_y; // Establecer el objetivo de disparo
-        game_logic->shoot(*selected_tank); // Disparar hacia el objetivo
+        game_logic->shoot(*selected_tank, event->x / 25, event->y / 25); // Disparar hacia el objetivo
         std::cout << "Tanque del jugador " << selected_tank->player << " disparando desde ("
                   << selected_tank->x << ", " << selected_tank->y << ") hacia ("
                   << clicked_x << ", " << clicked_y << ")" << std::endl;
         return TRUE; // Fin de la función al disparar
     }
-
     return FALSE; // Ninguna acción se realizó
+}
+
+GtkWidget* GameArea::create_projectile_widget(Projectile& projectile) {
+    GtkWidget *projectile_widget = gtk_drawing_area_new();
+    gtk_widget_set_size_request(projectile_widget, 10, 10);  // Tamaño del proyectil
+
+    // Conectar la señal de dibujo
+    g_signal_connect(projectile_widget, "draw", G_CALLBACK(on_draw_projectile), &projectile);
+
+    return projectile_widget;
+}
+
+gboolean GameArea::on_draw_projectile(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
+    Projectile* projectile = static_cast<Projectile*>(user_data);
+    cairo_set_source_rgb(cr, 1, 0, 0); // Color rojo para el proyectil
+    cairo_arc(cr, projectile->x * 25 + 5, projectile->y * 25 + 5, 5, 0, 2 * M_PI); // Dibuja el proyectil
+    cairo_fill(cr);
+    return FALSE;
 }

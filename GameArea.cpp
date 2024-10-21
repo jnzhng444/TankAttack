@@ -184,7 +184,25 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
               }
     }
 
+    // Dibujar el trazo de la bala
+    for (const Projectile& projectile : game_logic->projectiles) {
+        if (projectile.active) {
+            cairo_set_source_rgb(cr, 1, 1, 1);  // Color blanco para el trazo
+            cairo_set_line_width(cr, 1);
+            cairo_move_to(cr, projectile.x, projectile.y);  // Comienza desde la posición actual
+            cairo_line_to(cr, projectile.x - projectile.direction_x * 10, projectile.y - projectile.direction_y * 10);  // Dibujar la dirección
+            cairo_stroke(cr);
+        }
+    }
 
+    // Mostrar el daño total de cada tanque
+    for (const Tank& tank : game_logic->get_tanks()) {
+        char damage_str[32];
+        snprintf(damage_str, sizeof(damage_str), "Daño: %d", tank.total_damage_taken);
+        cairo_set_source_rgb(cr, 1, 0, 0);  // Color rojo para el texto
+        cairo_move_to(cr, tank.x * 25, tank.y * 25);  // Coloca el texto cerca del tanque
+        cairo_show_text(cr, damage_str);
+    }
     return FALSE;
 
 }

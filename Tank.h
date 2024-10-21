@@ -21,7 +21,9 @@ public:
     // Constructor por defecto
     Tank() : id(-1), player(-1), x(0), y(0), widget(nullptr), game_logic(nullptr) {}
 
-    // Métodos adicionales (si los necesitas)
+    int max_health = 100;
+    int health = 100;  // Salud actual
+    int total_damage_taken = 0;  // Daño total recibido
 };
 
 #endif // TANK_H

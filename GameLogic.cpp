@@ -262,8 +262,8 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
         dy /= length;
     }
 
-    // Crear el proyectil en la posición actual del tanque
-    Projectile projectile(tank_center_x, tank_center_y, dx, dy, 18.0, map->get_width() * 25);  // Velocidad ajustada a píxeles
+    // Crear el proyectil en la posición actual del tanque y pasar `this` como GameLogic*
+    Projectile projectile(tank_center_x, tank_center_y, dx, dy, 18.0, map->get_width() * 25, map->get_height() * 25, this);
     projectile.active = true;
     projectiles.emplace_back(projectile);
 
@@ -285,7 +285,7 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
             if (!proj->active) {
                 // Eliminar el widget del proyectil de manera segura
                 if (GTK_IS_WIDGET(proj->widget)) {
-                    gtk_widget_destroy(proj->widget);  // Destruir el widget
+                    gtk_widget_destroy(proj->widget);
                     proj->widget = nullptr;
                 }
                 return FALSE;  // Detener el temporizador
@@ -306,6 +306,7 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     // Cambiar el turno inmediatamente después de disparar
     end_turn();
 }
+
 
 
 void GameLogic::update() {

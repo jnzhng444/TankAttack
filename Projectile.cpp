@@ -12,4 +12,6 @@ void Projectile::update() {
         active = false;  // Desactivar el proyectil si está fuera del mapa
         return;
     }
+
+    // (Opcional) Aquí podrías manejar colisiones con tanques u otros objetos.
 }

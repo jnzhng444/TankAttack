@@ -239,7 +239,6 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
 }
 
 // En GameLogic.cpp, dentro de la función `shoot` y `update`
-// GameLogic.cpp
 
 void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     // Convertir las coordenadas de clic (en celdas) a píxeles
@@ -280,10 +279,11 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
             Projectile* proj = static_cast<Projectile*>(data);
             proj->update();
 
-            // Desactivar el proyectil si sale del mapa
+            // Si el proyectil ya no está activo (fuera del mapa o colisionó)
             if (!proj->active) {
+                // Eliminar el widget del proyectil de manera segura
                 if (GTK_IS_WIDGET(proj->widget)) {
-                    gtk_widget_destroy(proj->widget);
+                    gtk_widget_destroy(proj->widget);  // Destruir el widget
                     proj->widget = nullptr;
                 }
                 return FALSE;  // Detener el temporizador
@@ -295,7 +295,7 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
                 gtk_widget_queue_draw(proj->widget);
             }
 
-            return TRUE;  // Continuar el temporizador
+            return TRUE;  // Continuar el temporizador mientras el proyectil esté activo
         }, &projectiles.back());
     } else {
         std::cerr << "Error: game_area no es un contenedor GtkFixed válido." << std::endl;

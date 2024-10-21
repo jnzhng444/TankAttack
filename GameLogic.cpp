@@ -240,6 +240,8 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
 
 // En GameLogic.cpp, dentro de la función `shoot` y `update`
 
+// GameLogic.cpp
+
 void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     // Convertir las coordenadas de clic (en celdas) a píxeles
     double tank_center_x = tank.y * 25 + 12.5;  // Centro del tanque en píxeles
@@ -261,7 +263,7 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     }
 
     // Crear el proyectil en la posición actual del tanque
-    Projectile projectile(tank_center_x, tank_center_y, dx, dy, 5.0, map->get_width() * 25);  // Velocidad ajustada a píxeles
+    Projectile projectile(tank_center_x, tank_center_y, dx, dy, 18.0, map->get_width() * 25);  // Velocidad ajustada a píxeles
     projectile.active = true;
     projectiles.emplace_back(projectile);
 
@@ -300,6 +302,9 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     } else {
         std::cerr << "Error: game_area no es un contenedor GtkFixed válido." << std::endl;
     }
+
+    // Cambiar el turno inmediatamente después de disparar
+    end_turn();
 }
 
 

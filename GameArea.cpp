@@ -219,20 +219,29 @@ gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpo
             }
         }
     } else if (event->button == 3 && selected_tank != nullptr && selected_tank->player == game_logic->current_player) {  // Clic derecho para disparar
+        if (!selected_tank) {
+            std::cout << "No hay tanque seleccionado para disparar." << std::endl;
+            return FALSE;  // No hacer nada si no hay tanque seleccionado
+        }
+
         // Convertir las coordenadas del clic en términos de celdas del mapa
         int clicked_x = static_cast<int>(event->x / 25);
         int clicked_y = static_cast<int>(event->y / 25);
 
         // Establecer el objetivo de disparo con las coordenadas del clic
-        game_logic->shoot(*selected_tank, clicked_x, clicked_y); // Disparar hacia el objetivo
+        game_logic->shoot(*selected_tank, clicked_x, clicked_y);  // Disparar hacia el objetivo
 
         std::cout << "Tanque del jugador " << selected_tank->player << " disparando desde ("
                   << selected_tank->x << ", " << selected_tank->y << ") hacia ("
                   << clicked_x << ", " << clicked_y << ")" << std::endl;
-        return TRUE; // Fin de la función al disparar
 
+        // Cambiar turno inmediatamente después del disparo
+        selected_tank = nullptr;  // Reiniciar la selección del tanque después del disparo
+
+        return TRUE;  // Fin de la función al disparar
     }
-    return FALSE; // Ninguna acción se realizó
+
+    return FALSE;  // Ninguna acción se realizó
 }
 
 GtkWidget* GameArea::create_projectile_widget(Projectile& projectile) {

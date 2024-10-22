@@ -80,36 +80,65 @@ void GameLogic::end_game() {
 }
 
 void GameLogic::generate_tanks() {
+    int player1_column = 1;  // Columna para el jugador 1
+    int player2_column = map->get_width() - 2;  // Columna para el jugador 2
+    int row_offset = 7;  // Separación entre tanques por filas
+
+    int player1_row = 0;  // Primera fila para el jugador 1
+    int player2_row = 0;  // Primera fila para el jugador 2
+
     for (int player = 1; player <= 2; ++player) {
-        for (int i = 0; i < 2; ++i) {  // 2 tanques de cada color
-            for (int j = 0; j < 2; ++j) {  // 2 tanques de cada jugador
+        for (int i = 0; i < 2; ++i) {  // 2 colores por jugador
+            for (int j = 0; j < 2; ++j) {  // 2 tanques por color
                 Tank tank;
                 tank.id = player * 10 + i * 2 + j;  // ID único para cada tanque
                 tank.player = player;
-                tank.game_logic = this;  // Asignar puntero a game_logic
-                tank.widget = nullptr;  // Asignar widget más adelante cuando se pase el área de juego
+                tank.game_logic = this;
 
-                // Definir color del tanque basado en el jugador
-                if (player == 1) {
-                    tank.color = (j == 0) ? "blue" : "red";  // Colores para el jugador 1
-                } else {
-                    tank.color = (j == 0) ? "lightblue" : "yellow";  // Colores para el jugador 2
+                bool found_position = false;
+
+                // Intentar encontrar una fila sin obstáculos para el tanque
+                while (!found_position) {
+                    // Definir color del tanque basado en el jugador
+                    if (player == 1) {
+                        tank.color = (j == 0) ? "blue" : "red";  // Colores para el jugador 1
+                        tank.x = player1_row;  // Asignar fila
+                        tank.y = player1_column;  // Asignar columna
+
+                        // Verificar si la posición tiene un obstáculo
+                        if (!map->has_obstacle(tank.x, tank.y)) {
+                            found_position = true;
+                        } else {
+                            player1_row += 1;  // Mover una fila abajo si hay un obstáculo
+                        }
+                    } else {
+                        tank.color = (j == 0) ? "lightblue" : "yellow";  // Colores para el jugador 2
+                        tank.x = player2_row;  // Asignar fila
+                        tank.y = player2_column;  // Asignar columna
+
+                        // Verificar si la posición tiene un obstáculo
+                        if (!map->has_obstacle(tank.x, tank.y)) {
+                            found_position = true;
+                        } else {
+                            player2_row += 1;  // Mover una fila abajo si hay un obstáculo
+                        }
+                    }
                 }
 
-                // Encontrar una posición accesible para el tanque
-                int x, y;
-                do {
-                    x = std::rand() % map->get_width();  // Usar get_width()
-                    y = std::rand() % map->get_height();  // Usar get_height()
-                } while (!map->is_accessible(x, y) || map->has_obstacle(x, y));
+                // Incrementar la fila para el siguiente tanque después de encontrar una posición válida
+                if (player == 1) {
+                    player1_row += row_offset;
+                } else {
+                    player2_row += row_offset;
+                }
 
-                tank.x = x;
-                tank.y = y;
                 tanks.push_back(tank);  // Agregar el tanque al vector
             }
         }
     }
 }
+
+
 
 
 void GameLogic::move_tank(int tank_id, int x, int y) {
@@ -313,9 +342,16 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
         std::cerr << "Error: game_area no es un contenedor GtkFixed válido." << std::endl;
     }
 
+    // Limpiar la ruta actual
+    current_route.clear();
+
+    // Redibujar el área de juego para que se borre la línea de movimiento
+    gtk_widget_queue_draw(GameArea::get_game_area());
+
     // Cambiar el turno inmediatamente después de disparar
     end_turn();
 }
+
 
 void GameLogic::remove_tank(Tank& tank) {
     if (tank.widget && GTK_IS_WIDGET(tank.widget)) {

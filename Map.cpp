@@ -13,8 +13,8 @@ Map::Map(int width, int height) : width(width), height(height) {
 }
 
 void Map::generate_random_map() {
-    int min_obstacles = 70;  // Número mínimo de bloques totales
-    int max_obstacles = 90;  // Número máximo de bloques totales
+    int min_obstacles = 90;  // Número mínimo de bloques totales
+    int max_obstacles = 100;  // Número máximo de bloques totales
     int num_obstacles = 0;
 
     // Generar un número aleatorio de bloques entre min_obstacles y max_obstacles

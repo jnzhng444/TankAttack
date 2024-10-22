@@ -20,38 +20,46 @@ void Projectile::update() {
 
     // Comprobar si el proyectil está a punto de colisionar con un obstáculo
     if (game_logic->get_map()->has_obstacle(cell_x, cell_y)) {
-        // Calcular las posiciones de los bordes del obstáculo
-        double obstacle_left = cell_y * 25;
-        double obstacle_right = obstacle_left + 25;
-        double obstacle_top = cell_x * 25;
-        double obstacle_bottom = obstacle_top + 25;
+        // Comprobar la colisión en todas las celdas adyacentes (incluyendo esquinas)
+        for (int offset_x = -1; offset_x <= 1; ++offset_x) {
+            for (int offset_y = -1; offset_y <= 1; ++offset_y) {
+                int adj_cell_x = cell_x + offset_x;
+                int adj_cell_y = cell_y + offset_y;
 
-        // Comprobar si colisiona
-        bool will_collide_horizontally = (x >= obstacle_left && x <= obstacle_right) &&
-                                         ((future_y <= obstacle_bottom && future_y >= obstacle_top) ||
-                                          (y >= obstacle_top && y <= obstacle_bottom));
-        bool will_collide_vertically = (y >= obstacle_top && y <= obstacle_bottom) &&
-                                       ((future_x <= obstacle_right && future_x >= obstacle_left) ||
-                                        (x >= obstacle_left && x <= obstacle_right));
+                // Verificar si esta celda es un obstáculo
+                if (game_logic->get_map()->has_obstacle(adj_cell_x, adj_cell_y)) {
+                    // Calcular las posiciones de los bordes del obstáculo
+                    double obstacle_left = adj_cell_y * 25;
+                    double obstacle_right = obstacle_left + 25;
+                    double obstacle_top = adj_cell_x * 25;
+                    double obstacle_bottom = obstacle_top + 25;
 
-        // Manejo de rebotes
-        if (will_collide_horizontally || will_collide_vertically) {
-            // Ajustar rebote y mover el proyectil fuera del obstáculo
-            if (will_collide_horizontally) {
-                direction_y = -direction_y;  // Rebote vertical
-                y = direction_y > 0 ? obstacle_bottom + 0.1 : obstacle_top - 0.1;  // Ajustar posición
+                    // Comprobar si colisiona
+                    bool will_collide_horizontally = (x >= obstacle_left && x <= obstacle_right) &&
+                                                     ((future_y <= obstacle_bottom && future_y >= obstacle_top) ||
+                                                      (y >= obstacle_top && y <= obstacle_bottom));
+                    bool will_collide_vertically = (y >= obstacle_top && y <= obstacle_bottom) &&
+                                                   ((future_x <= obstacle_right && future_x >= obstacle_left) ||
+                                                    (x >= obstacle_left && x <= obstacle_right));
+
+                    // Manejo de rebotes
+                    if (will_collide_horizontally || will_collide_vertically) {
+                        // Ajustar rebote y mover el proyectil fuera del obstáculo
+                        if (will_collide_horizontally) {
+                            direction_y = -direction_y;  // Rebote vertical
+                            y = direction_y > 0 ? obstacle_bottom + 0.1 : obstacle_top - 0.1;  // Ajustar posición
+                        }
+
+                        if (will_collide_vertically) {
+                            direction_x = -direction_x;  // Rebote horizontal
+                            x = direction_x > 0 ? obstacle_right + 0.1 : obstacle_left - 0.1;  // Ajustar posición
+                        }
+
+                        rebotes--;  // Reducir el número de rebotes permitidos
+                        return;  // Salir de la función de actualización para evitar múltiples rebotes en un solo frame
+                    }
+                }
             }
-
-            if (will_collide_vertically) {
-                direction_x = -direction_x;  // Rebote horizontal
-                x = direction_x > 0 ? obstacle_right + 0.1 : obstacle_left - 0.1;  // Ajustar posición
-            }
-
-            rebotes--;  // Reducir el número de rebotes permitidos
-
-            // Asegurarse de que no se mueva en caso de colisión
-            future_x = x;
-            future_y = y;
         }
     }
 
@@ -79,6 +87,7 @@ void Projectile::update() {
     // Verificar colisiones con tanques
     handle_collision();
 }
+
 
 void Projectile::handle_collision() {
     const double collision_radius = 12.0;  // Ajustar el radio de colisión al tamaño del tanque

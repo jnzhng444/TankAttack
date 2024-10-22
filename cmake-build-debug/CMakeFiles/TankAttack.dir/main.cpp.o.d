@@ -1,7 +1,6 @@
 CMakeFiles/TankAttack.dir/main.cpp.o: \
- /home/brema026/Documentos/GitHub/TankAttack/main.cpp \
- /usr/include/stdc-predef.h \
- /home/brema026/Documentos/GitHub/TankAttack/GameWindow.h \
+ /home/jian/Desktop/TankAttack/main.cpp /usr/include/stdc-predef.h \
+ /home/jian/Desktop/TankAttack/GameWindow.h \
  /usr/include/gtk-3.0/gtk/gtk.h /usr/include/gtk-3.0/gdk/gdk.h \
  /usr/include/gtk-3.0/gdk/gdkconfig.h /usr/include/glib-2.0/glib.h \
  /usr/include/glib-2.0/glib/galloca.h /usr/include/glib-2.0/glib/gtypes.h \

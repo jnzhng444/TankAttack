@@ -1,10 +1,9 @@
 CMakeFiles/TankAttack.dir/GameArea.cpp.o: \
- /home/brema026/Documentos/GitHub/TankAttack/GameArea.cpp \
- /usr/include/stdc-predef.h \
- /home/brema026/Documentos/GitHub/TankAttack/GameArea.h \
- /usr/include/gtk-3.0/gtk/gtk.h /usr/include/gtk-3.0/gdk/gdk.h \
- /usr/include/gtk-3.0/gdk/gdkconfig.h /usr/include/glib-2.0/glib.h \
- /usr/include/glib-2.0/glib/galloca.h /usr/include/glib-2.0/glib/gtypes.h \
+ /home/jian/Desktop/TankAttack/GameArea.cpp /usr/include/stdc-predef.h \
+ /home/jian/Desktop/TankAttack/GameArea.h /usr/include/gtk-3.0/gtk/gtk.h \
+ /usr/include/gtk-3.0/gdk/gdk.h /usr/include/gtk-3.0/gdk/gdkconfig.h \
+ /usr/include/glib-2.0/glib.h /usr/include/glib-2.0/glib/galloca.h \
+ /usr/include/glib-2.0/glib/gtypes.h \
  /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h \
  /usr/include/glib-2.0/glib/gmacros.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
@@ -739,8 +738,8 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: \
  /usr/include/gtk-3.0/gtk/deprecated/gtkvscrollbar.h \
  /usr/include/gtk-3.0/gtk/deprecated/gtkvseparator.h \
  /usr/include/gtk-3.0/gtk/gtk-autocleanups.h \
- /home/brema026/Documentos/GitHub/TankAttack/GameLogic.h \
- /usr/include/c++/13/vector /usr/include/c++/13/bits/requires_hosted.h \
+ /home/jian/Desktop/TankAttack/GameLogic.h /usr/include/c++/13/vector \
+ /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/c++/13/bits/stl_algobase.h \
  /usr/include/c++/13/bits/functexcept.h \
  /usr/include/c++/13/bits/exception_defines.h \
@@ -785,10 +784,9 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: \
  /usr/include/c++/13/bits/ranges_util.h \
  /usr/include/c++/13/bits/ranges_base.h \
  /usr/include/c++/13/bits/max_size_type.h /usr/include/c++/13/numbers \
- /home/brema026/Documentos/GitHub/TankAttack/Map.h \
- /usr/include/c++/13/ctime \
- /home/brema026/Documentos/GitHub/TankAttack/Tank.h \
- /usr/include/c++/13/string /usr/include/c++/13/bits/stringfwd.h \
+ /home/jian/Desktop/TankAttack/Map.h /usr/include/c++/13/ctime \
+ /home/jian/Desktop/TankAttack/Tank.h /usr/include/c++/13/string \
+ /usr/include/c++/13/bits/stringfwd.h \
  /usr/include/c++/13/bits/char_traits.h \
  /usr/include/c++/13/bits/postypes.h /usr/include/c++/13/cwchar \
  /usr/include/wchar.h /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
@@ -805,11 +803,10 @@ CMakeFiles/TankAttack.dir/GameArea.cpp.o: \
  /usr/include/c++/13/ext/string_conversions.h /usr/include/c++/13/cstdio \
  /usr/include/c++/13/cerrno /usr/include/c++/13/bits/charconv.h \
  /usr/include/c++/13/bits/basic_string.tcc \
- /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
- /home/brema026/Documentos/GitHub/TankAttack/Projectile.h \
- /usr/include/c++/13/iostream /usr/include/c++/13/ostream \
- /usr/include/c++/13/ios /usr/include/c++/13/exception \
- /usr/include/c++/13/bits/exception_ptr.h \
+ /home/jian/Desktop/TankAttack/Pathfinding.h \
+ /home/jian/Desktop/TankAttack/Projectile.h /usr/include/c++/13/iostream \
+ /usr/include/c++/13/ostream /usr/include/c++/13/ios \
+ /usr/include/c++/13/exception /usr/include/c++/13/bits/exception_ptr.h \
  /usr/include/c++/13/bits/cxxabi_init_exception.h \
  /usr/include/c++/13/typeinfo /usr/include/c++/13/bits/nested_exception.h \
  /usr/include/c++/13/bits/ios_base.h /usr/include/c++/13/ext/atomicity.h \

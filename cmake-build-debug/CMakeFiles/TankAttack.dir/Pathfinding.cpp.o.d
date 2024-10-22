@@ -1,8 +1,7 @@
 CMakeFiles/TankAttack.dir/Pathfinding.cpp.o: \
- /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.cpp \
- /usr/include/stdc-predef.h \
- /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
- /usr/include/c++/13/vector /usr/include/c++/13/bits/requires_hosted.h \
+ /home/jian/Desktop/TankAttack/Pathfinding.cpp /usr/include/stdc-predef.h \
+ /home/jian/Desktop/TankAttack/Pathfinding.h /usr/include/c++/13/vector \
+ /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -59,8 +58,8 @@ CMakeFiles/TankAttack.dir/Pathfinding.cpp.o: \
  /usr/include/c++/13/bits/ranges_util.h \
  /usr/include/c++/13/bits/ranges_base.h \
  /usr/include/c++/13/bits/max_size_type.h /usr/include/c++/13/numbers \
- /home/brema026/Documentos/GitHub/TankAttack/Map.h \
- /usr/include/c++/13/cstdlib /usr/include/stdlib.h \
+ /home/jian/Desktop/TankAttack/Map.h /usr/include/c++/13/cstdlib \
+ /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \

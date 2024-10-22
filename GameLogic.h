@@ -56,6 +56,11 @@ public:
     GtkWidget* time_label;    // Etiqueta para mostrar el tiempo restante en la interfaz
     int aim_target_x;  // Coordenada X del objetivo
     int aim_target_y;  // Coordenada Y del objetivo
+    std::vector<Tank*> tanks_to_remove;      // Lista de tanques para eliminar
+    std::vector<Projectile*> projectiles_to_remove;  // Lista de proyectiles para eliminar
+    void mark_tank_for_removal(Tank* tank);      // Nuevo método para marcar tanques para eliminación
+    void mark_projectile_for_removal(Projectile* projectile); // Nuevo método para marcar proyectiles
+    void process_removals();    // Procesa las eliminaciones pendientes
 
 private:
     int num_tanks_per_player;       // Número de tanques por jugador

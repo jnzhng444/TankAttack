@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/brema026/Documentos/GitHub/TankAttack/cmake-build-debug",
-		"source" : "/home/brema026/Documentos/GitHub/TankAttack"
+		"build" : "/home/jian/Desktop/TankAttack/cmake-build-debug",
+		"source" : "/home/jian/Desktop/TankAttack"
 	},
 	"version" : 
 	{

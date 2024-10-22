@@ -52,7 +52,6 @@ gboolean GameArea::on_motion_notify(GtkWidget *widget, GdkEventMotion *event, gp
     return TRUE;
 }
 
-
 gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
     // Definir el tamaño de cada celda
     int cell_width = 25;  // Ajusta el ancho de la celda
@@ -102,7 +101,7 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         }
     }
 
-        // Dibujar tanques más detallados
+    // Dibujar tanques más detallados
     const std::vector<Tank>& tanks = game_logic->get_tanks();
     for (const Tank& tank : tanks) {
         if (!tank.is_active) continue; // Ignorar tanques inactivos
@@ -143,8 +142,42 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         cairo_move_to(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + cell_height / 2);
         cairo_line_to(cr, tank.y * cell_width + cell_width / 2, tank.x * cell_height + 2);  // Cañón hacia arriba
         cairo_stroke(cr);
+
+        // Dibujar la barra de salud del tanque (solo si está activo)
+        double health_ratio = static_cast<double>(tank.health) / tank.max_health; // Proporción de salud
+        int health_bar_length = static_cast<int>(health_ratio * (cell_width - 4)); // Longitud de la barra de salud
+
+        // Posición de la barra de salud
+        int bar_x = tank.y * cell_width + 2; // Un poco dentro del contorno
+        int bar_y = tank.x * cell_height + cell_height; // Justo arriba del fondo del tanque
+
+        // Dibujar fondo de la barra de salud
+        cairo_set_source_rgb(cr, 0.5, 0.5, 0.5); // Color gris para el fondo
+        cairo_rectangle(cr, bar_x, bar_y, cell_width - 4, 4); // Bar rectángulo de fondo
+        cairo_fill(cr);
+
+        // Dibujar la barra de salud
+        cairo_set_source_rgb(cr, 0, 1, 0); // Color verde para la barra de salud
+        cairo_rectangle(cr, bar_x, bar_y, health_bar_length, 4); // Bar rectángulo de salud
+        cairo_fill(cr);
+
+        // **Dibujar el símbolo de daño (solo si el tanque está activo)**
+        if (tank.is_active) {
+            int icon_x = tank.y * 25; // Coordenada X para el símbolo de daño
+            int icon_y = tank.x * 25 - 10; // Coordenada Y para el símbolo de daño
+
+            draw_damage_icon(cr, icon_x, icon_y); // Dibuja la "X" o símbolo de daño
+
+            // Mostrar el valor numérico del daño
+            char damage_str[32];
+            snprintf(damage_str, sizeof(damage_str), "%d", tank.total_damage_taken);
+            cairo_set_source_rgb(cr, 1, 0, 0);  // Color rojo para el texto
+            cairo_move_to(cr, tank.y * 25 + 12, tank.x * 25 - 5);  // Coloca el texto cerca del ícono
+            cairo_show_text(cr, damage_str);
+        }
     }
-    // Dibujar la línea de dirección si hay un tanque seleccionado y el cursor no está encima del tanque
+
+    // Dibujar la línea de dirección si hay un tanque seleccionado
     if (selected_tank != nullptr) {
         // Coordenadas del tanque
         int tank_center_x = selected_tank->y * cell_width + cell_width / 2;
@@ -190,44 +223,10 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
             cairo_stroke(cr);
         }
     }
-    // Mostrar el daño total de cada tanque
-    for (const Tank& tank : game_logic->get_tanks()) {
-        // Dibuja el icono de la espada
-        int icon_x = tank.y * 25; // Coordenada X
-        int icon_y = tank.x * 25; // Coordenada Y
-        draw_damage_icon(cr, icon_x , icon_y - 10); // Ajusta la posición del ícono según sea necesario
-
-        // Mostrar el valor numérico del daño
-        char damage_str[32];
-        snprintf(damage_str, sizeof(damage_str), "%d", tank.total_damage_taken);
-        cairo_set_source_rgb(cr, 1, 0, 0);  // Color rojo para el texto
-        cairo_move_to(cr, tank.y * 25 + 12, tank.x * 25 - 5);  // Coloca el texto cerca del ícono
-        cairo_show_text(cr, damage_str);
-    }
-
-    // Mostrar la salud del tanque
-    for (const Tank& tank : game_logic->get_tanks()) {
-        // Dibujar la línea de salud encima del tanque
-        double health_ratio = static_cast<double>(tank.health) / tank.max_health; // Proporción de salud
-        int health_bar_length = static_cast<int>(health_ratio * (cell_width - 4)); // Longitud de la barra de salud
-
-        // Posición de la barra de salud
-        int bar_x = tank.y * cell_width + 2; // Un poco dentro del contorno
-        int bar_y = tank.x * cell_height + cell_height; // Justo arriba del fondo del tanque
-
-        // Dibujar fondo de la barra de salud
-        cairo_set_source_rgb(cr, 0.5, 0.5, 0.5); // Color gris para el fondo
-        cairo_rectangle(cr, bar_x, bar_y, cell_width - 4, 4); // Bar rectángulo de fondo
-        cairo_fill(cr);
-
-        // Dibujar la barra de salud
-        cairo_set_source_rgb(cr, 0, 1, 0); // Color verde para la barra de salud
-        cairo_rectangle(cr, bar_x, bar_y, health_bar_length, 4); // Bar rectángulo de salud
-        cairo_fill(cr);
-    }
 
     return FALSE;
 }
+
 
 
 void GameArea::draw_damage_icon(cairo_t *cr, int x, int y) {

@@ -80,44 +80,29 @@ void Projectile::update() {
     handle_collision();
 }
 
-
-
-
 void Projectile::handle_collision() {
-    const double collision_radius = 12.0;  // Ajustar el radio de colisión al tamaño del tanque (en píxeles)
+    const double collision_radius = 12.0;  // Ajustar el radio de colisión al tamaño del tanque
 
-    for (auto it = game_logic->get_tanks().begin(); it != game_logic->get_tanks().end();) {
-        // Verificar si el tanque está activo antes de calcular la colisión
-        if (!it->is_active) {
-            ++it;
-            continue;  // Saltar tanques inactivos
-        }
+    for (Tank& tank : game_logic->get_tanks()) {
+        if (!tank.is_active) continue;  // Ignorar tanques inactivos
 
-        // Calcular la distancia entre el proyectil y el tanque
-        double distance = sqrt(pow(x - (it->y * 25 + 12.5), 2) + pow(y - (it->x * 25 + 12.5), 2));
-
-        if (distance <= collision_radius) {  // Si la distancia es menor o igual al radio de colisión
-            // Aplicar daño
-            if (it->color == "blue" || it->color == "lightblue") {
-                it->health -= 0.25 * it->max_health;  // Daño de 25%
-            } else if (it->color == "red" || it->color == "yellow") {
-                it->health -= 0.50 * it->max_health;  // Daño de 50%
+        double distance = sqrt(pow(x - (tank.y * 25 + 12.5), 2) + pow(y - (tank.x * 25 + 12.5), 2));
+        if (distance <= collision_radius) {
+            if (tank.color == "blue" || tank.color == "lightblue") {
+                tank.health -= 0.25 * tank.max_health;  // Daño de 25%
+            } else if (tank.color == "red" || tank.color == "yellow") {
+                tank.health -= 0.50 * tank.max_health;  // Daño de 50%
             }
 
-            // Comprobar si el tanque ha sido destruido
-            if (it->is_destroyed()) {
-                game_logic->remove_tank(*it);  // Llamar a la función para eliminar el tanque
-                it = game_logic->get_tanks().erase(it);  // Eliminar el tanque de la lista
-            } else {
-                ++it;  // Solo avanza si no se eliminó el tanque
+            if (tank.is_destroyed()) {
+                game_logic->mark_tank_for_removal(&tank);  // Marcar el tanque para eliminación
             }
 
-            // Desactivar el proyectil
-            active = false;
-            return;  // Salir después de aplicar daño
-        } else {
-            ++it;  // Avanzar al siguiente tanque
+            game_logic->mark_projectile_for_removal(this);  // Marcar el proyectil para eliminación
+            return;
         }
     }
 }
+
+
 

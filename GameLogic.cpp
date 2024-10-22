@@ -158,6 +158,10 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
 gboolean GameLogic::move_tank_step_by_step(gpointer data) {
     Tank* tank = static_cast<Tank*>(data);
 
+    if (!tank->is_active) {
+        return FALSE;  // Si el tanque ya no está activo, detener el temporizador
+    }
+
     if (!tank->route.empty()) {
         int next_pos = tank->route.front();
         tank->route.erase(tank->route.begin());  // Eliminar el primer punto de la ruta
@@ -167,18 +171,14 @@ gboolean GameLogic::move_tank_step_by_step(gpointer data) {
         // Mover el tanque a la nueva posición
         tank->game_logic->move_tank(tank->id, new_x, new_y);
 
-        // Forzar el redibujado solo si el widget es válido
-        if (GTK_IS_WIDGET(tank->widget)) {
-            gtk_widget_queue_draw(tank->widget);  // Redibujar el área de dibujo
-        } else {
-            std::cout << "Widget no válido para redibujar." << std::endl;
-        }
+        gtk_widget_queue_draw(GameArea::get_game_area());  // Redibujar el área de dibujo
 
-        return TRUE;  // Mantener el temporizador activo hasta que la ruta esté vacía
+        return TRUE;  // Continuar con el temporizador
     }
 
-    return FALSE;  // Detener el temporizador cuando no haya más movimientos
+    return FALSE;  // Detener el temporizador si no hay más movimientos
 }
+
 
 void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y) {
     int new_x, new_y;
@@ -313,55 +313,81 @@ void GameLogic::remove_tank(Tank& tank) {
         gtk_widget_hide(tank.widget);  // Ocultar el widget en lugar de destruirlo
     }
     tank.is_active = false;  // Marcar el tanque como inactivo
+
 }
 
 
 // Luego, en la función de actualización, elimina el tanque del vector después de verificar si está destruido
-void GameLogic::update() {
-    update_projectiles();
+void GameLogic::update_projectiles() {
+    std::vector<Projectile> active_projectiles;
 
-    // Usar iteradores para eliminar tanques destruidos
-    for (auto it = tanks.begin(); it != tanks.end();) {
-        if (it->is_destroyed()) {
-            remove_tank(*it);  // Llamar a la función para eliminar el tanque
-            it = tanks.erase(it);  // Eliminar el tanque de la lista
+    for (auto& projectile : projectiles) {
+        projectile.update();  // Actualizar la posición del proyectil
+
+        if (projectile.active) {
+            active_projectiles.push_back(projectile);  // Mantener proyectiles activos
         } else {
-            ++it;  // Solo avanza si no se eliminó el tanque
+            // Destruir el widget del proyectil si está inactivo
+            if (projectile.widget && GTK_IS_WIDGET(projectile.widget)) {
+                gtk_widget_destroy(projectile.widget);  // Destruir el widget del proyectil
+                projectile.widget = nullptr;
+            }
         }
     }
 
-    // Redibujar el área de juego, incluso si no hay tanques
+    projectiles = std::move(active_projectiles);  // Reemplazar con los proyectiles activos
+}
+
+void GameLogic::update() {
+    // Actualizar proyectiles y tanques como de costumbre...
+    update_projectiles();
+
+    // Procesar eliminaciones diferidas
+    process_removals();
+
+    // Redibujar el área de juego
     gtk_widget_queue_draw(GameArea::get_game_area());
 }
 
 
 
-void GameLogic::update_projectiles() {
-    for (auto it = projectiles.begin(); it != projectiles.end();) {
-        it->update(); // Actualiza la posición del proyectil
-
-        // Verificar si el proyectil ha salido del mapa o está inactivo
-        if (!it->active || it->x < 0 || it->x >= map->get_width() || it->y < 0 || it->y >= map->get_height()) {
-            // Comprobar si el widget del proyectil es válido antes de destruirlo
-            if (it->widget && GTK_IS_WIDGET(it->widget)) {
-                gtk_widget_destroy(it->widget); // Destruir el widget del proyectil de manera segura
-                it->widget = nullptr; // Marcar el widget como nulo para evitar accesos futuros
-            }
-            it = projectiles.erase(it); // Eliminar el proyectil de la lista y avanzar al siguiente
-        } else {
-            // Comprobar si el widget es válido antes de redibujarlo o moverlo
-            if (it->widget && GTK_IS_WIDGET(it->widget)) {
-                gtk_fixed_move(GTK_FIXED(GameArea::get_game_area()), it->widget, it->y * 25, it->x * 25);
-                gtk_widget_queue_draw(it->widget);
-            }
-            ++it; // Avanzar al siguiente proyectil
-        }
+void GameLogic::mark_tank_for_removal(Tank* tank) {
+    if (tank && tank->is_active) {
+        tank->is_active = false;  // Marcar el tanque como inactivo
+        tanks_to_remove.push_back(tank);  // Añadir a la lista de eliminación diferida
     }
 }
 
+void GameLogic::mark_projectile_for_removal(Projectile* projectile) {
+    if (projectile && projectile->active) {
+        projectile->active = false;  // Marcar el proyectil como inactivo
+        projectiles_to_remove.push_back(projectile);  // Añadir a la lista de eliminación diferida
+    }
+}
 
+void GameLogic::process_removals() {
+    // Eliminar tanques marcados
+    for (Tank* tank : tanks_to_remove) {
+        if (tank->widget && GTK_IS_WIDGET(tank->widget)) {
+            gtk_widget_destroy(tank->widget);  // Destruir el widget del tanque
+        }
+        // Opcional: eliminar el tanque del vector de tanques si es necesario
+        auto it = std::remove_if(tanks.begin(), tanks.end(), [tank](const Tank& t) { return &t == tank; });
+        tanks.erase(it, tanks.end());
+    }
+    tanks_to_remove.clear();  // Limpiar la lista de tanques eliminados
 
-
+    // Eliminar proyectiles marcados
+    for (Projectile* projectile : projectiles_to_remove) {
+        if (projectile->widget && GTK_IS_WIDGET(projectile->widget)) {
+            gtk_widget_destroy(projectile->widget);  // Destruir el widget del proyectil
+        }
+        // Eliminar el proyectil del vector de proyectiles
+        auto it = std::remove_if(projectiles.begin(), projectiles.end(), [projectile](const Projectile& p) { return &p == projectile; });
+        projectiles.erase(it, projectiles.end());
+    }
+    projectiles_to_remove.clear();  // Limpiar la lista de proyectiles eliminados
+}
 
 
 std::vector<Tank>& GameLogic::get_tanks() {

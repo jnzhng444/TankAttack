@@ -5,38 +5,76 @@
 #include "Tank.h"
 
 Projectile::Projectile(double start_x, double start_y, double dir_x, double dir_y, double spd, int map_width, int map_height, GameLogic* logic)
-    : x(start_x), y(start_y), direction_x(dir_x), direction_y(dir_y), speed(spd), map_width(map_width), map_height(map_height), game_logic(logic), rebotes(3) {
+    : x(start_x), y(start_y), direction_x(dir_x), direction_y(dir_y), speed(spd), map_width(map_width), map_height(map_height), game_logic(logic), rebotes(2) {
     // Constructor completo
 }
 
 void Projectile::update() {
-    // Mover el proyectil en la dirección calculada
-    x += direction_x * speed;
-    y += direction_y * speed;
+    // Calcular la posición futura del proyectil
+    double future_x = x + direction_x * speed;
+    double future_y = y + direction_y * speed;
 
-    // Verificar si toca las paredes del mapa
-    if (x < 0 || x >= map_width) {
-        direction_x = -direction_x;  // Rebote horizontal
+    // Convertir las coordenadas de píxeles del proyectil a coordenadas de celdas del mapa
+    int cell_x = static_cast<int>(future_y / 25);  // Coordenadas de celda Y
+    int cell_y = static_cast<int>(future_x / 25);  // Coordenadas de celda X
+
+    // Verificar si el proyectil toca un obstáculo (antes de entrar completamente en él)
+    if (game_logic->get_map()->has_obstacle(cell_x, cell_y)) {
+        // Calcular las posiciones de los bordes del obstáculo
+        double obstacle_left = cell_y * 25;
+        double obstacle_right = obstacle_left + 25;
+        double obstacle_top = cell_x * 25;
+        double obstacle_bottom = obstacle_top + 25;
+
+        // Verificar si el proyectil toca el borde del obstáculo
+        bool will_collide_horizontally = (x >= obstacle_left && x <= obstacle_right) &&
+                                         ((future_y <= obstacle_bottom && future_y >= obstacle_top) ||  // Verificar si colisiona con la parte superior/inferior
+                                          (y >= obstacle_top && y <= obstacle_bottom));
+        bool will_collide_vertically = (y >= obstacle_top && y <= obstacle_bottom) &&
+                                       ((future_x <= obstacle_right && future_x >= obstacle_left) ||  // Verificar si colisiona con los lados izquierdo/derecho
+                                        (x >= obstacle_left && x <= obstacle_right));
+
+        // Ajustar el rebote solo si colisiona con los bordes
+        if (will_collide_horizontally) {
+            direction_y = -direction_y;  // Rebote vertical en el borde superior/inferior
+            y = direction_y > 0 ? obstacle_bottom + 0.1 : obstacle_top - 0.1;  // Alinearlo fuera del borde del obstáculo
+        }
+
+        if (will_collide_vertically) {
+            direction_x = -direction_x;  // Rebote horizontal en los lados izquierdo/derecho
+            x = direction_x > 0 ? obstacle_right + 0.1 : obstacle_left - 0.1;  // Alinearlo fuera del borde del obstáculo
+        }
+
+        rebotes--;  // Reducir el número de rebotes permitidos
+    }
+
+    // Rebote en las paredes del mapa
+    if (future_x < 0 || future_x >= map_width) {
+        direction_x = -direction_x;  // Rebote horizontal en las paredes
         rebotes--;
     }
 
-    if (y < 0 || y >= map_height) {
-        direction_y = -direction_y;  // Rebote vertical
+    if (future_y < 0 || future_y >= map_height) {
+        direction_y = -direction_y;  // Rebote vertical en las paredes
         rebotes--;
     }
 
-    // Si ya no tiene más rebotes permitidos, desactivar el proyectil
-    if (rebotes <= 0) {
+    // Mover el proyectil solo si no se desactivó por falta de rebotes
+    if (rebotes > 0) {
+        x = future_x;
+        y = future_y;
+    } else {
         active = false;
-        return;
     }
 
     // Verificar colisiones con tanques
     handle_collision();
 }
 
+
+
 void Projectile::handle_collision() {
-    const double collision_radius = 12.5;  // Radio de colisión (ajústalo según sea necesario)
+    const double collision_radius = 12.0;  // Ajustar el radio de colisión al tamaño del tanque (en píxeles)
 
     for (Tank& tank : game_logic->get_tanks()) {
         // Calcular la distancia entre el proyectil y el tanque
@@ -56,3 +94,4 @@ void Projectile::handle_collision() {
         }
     }
 }
+

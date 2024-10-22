@@ -17,9 +17,10 @@ public:
     bool active = true;
     int rebotes; // Rebotes permitidos
     GameLogic* game_logic;  // Puntero a la lógica del juego
+    Tank* shooter;  // Tanque que disparó el proyectil
 
     // Constructor
-    Projectile(double start_x, double start_y, double dir_x, double dir_y, double spd, int map_width, int map_height, GameLogic* logic);
+    Projectile(double start_x, double start_y, double dir_x, double dir_y, double spd, int map_width, int map_height, GameLogic* logic, Tank* shooter);
 
     // Método para actualizar la posición del proyectil
     void update();

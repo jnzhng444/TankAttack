@@ -1,13 +1,16 @@
 // Projectile.cpp
 #include "Projectile.h"
 #include <cmath>
+#include <iostream>
+
 #include "GameLogic.h"  // Ahora puedes usar los métodos de GameLogic
 #include "Tank.h"
 
-Projectile::Projectile(double start_x, double start_y, double dir_x, double dir_y, double spd, int map_width, int map_height, GameLogic* logic)
-    : x(start_x), y(start_y), direction_x(dir_x), direction_y(dir_y), speed(spd), map_width(map_width), map_height(map_height), game_logic(logic), rebotes(2) {
+Projectile::Projectile(double start_x, double start_y, double dir_x, double dir_y, double spd, int map_width, int map_height, GameLogic* logic, Tank* shooter)
+    : x(start_x), y(start_y), direction_x(dir_x), direction_y(dir_y), speed(spd), map_width(map_width), map_height(map_height), game_logic(logic), rebotes(2), shooter(shooter) {
     // Constructor completo
 }
+
 
 void Projectile::update() {
     // Calcular la posición futura del proyectil
@@ -88,7 +91,6 @@ void Projectile::update() {
     handle_collision();
 }
 
-
 void Projectile::handle_collision() {
     const double collision_radius = 12.0;  // Ajustar el radio de colisión al tamaño del tanque
 
@@ -97,21 +99,52 @@ void Projectile::handle_collision() {
 
         double distance = sqrt(pow(x - (tank.y * 25 + 12.5), 2) + pow(y - (tank.x * 25 + 12.5), 2));
         if (distance <= collision_radius) {
+            double damage = 0.0;
+
+            // Calcular el daño basado en el color del tanque impactado
             if (tank.color == "blue" || tank.color == "lightblue") {
-                tank.health -= 0.25 * tank.max_health;  // Daño de 25%
+                damage = 0.25 * tank.max_health;  // Daño de 25% a tanques celeste/azul
             } else if (tank.color == "red" || tank.color == "yellow") {
-                tank.health -= 0.50 * tank.max_health;  // Daño de 50%
+                damage = 0.50 * tank.max_health;  // Daño de 50% a tanques amarillo/rojo
             }
 
-            if (tank.is_destroyed()) {
-                game_logic->mark_tank_for_removal(&tank);  // Marcar el tanque para eliminación
+            // Reducir la salud del tanque impactado
+            tank.health -= static_cast<int>(damage);
+            if (tank.health < 0) {
+                tank.health = 0;  // Asegurarse de que la salud no sea negativa
             }
 
-            game_logic->mark_projectile_for_removal(this);  // Marcar el proyectil para eliminación
+            // Incrementar el daño total hecho por el tanque que disparó (shooter)
+            shooter->total_damage_taken += static_cast<int>(damage);
+
+            // **Verificar si el tanque ha sido destruido**
+            if (tank.health == 0) {
+                // Marcar el tanque como inactivo (destruido)
+                tank.is_active = false;
+
+                // **Marcar el tanque para ser eliminado**
+                game_logic->mark_tank_for_removal(&tank);
+            }
+
+            // Redibujar el tanque impactado
+            if (GTK_IS_WIDGET(tank.widget)) {
+                gtk_widget_queue_draw(tank.widget);  // Redibujar el tanque impactado
+            }
+
+            // Redibujar el tanque que disparó
+            if (GTK_IS_WIDGET(shooter->widget)) {
+                gtk_widget_queue_draw(shooter->widget);  // Redibujar el tanque que disparó
+            }
+
+            // Marcar el proyectil para ser eliminado después de la colisión
+            game_logic->mark_projectile_for_removal(this);
             return;
         }
     }
 }
+
+
+
 
 
 

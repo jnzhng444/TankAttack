@@ -280,7 +280,6 @@ void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y)
 // En GameLogic.cpp, dentro de la función `shoot` y `update`
 
 // GameLogic.cpp
-
 void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     // Convertir las coordenadas de clic (en celdas) a píxeles
     double tank_center_x = tank.y * 25 + 12.5;  // Centro del tanque en píxeles
@@ -301,8 +300,8 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
         dy /= length;
     }
 
-    // Crear el proyectil en la posición actual del tanque y pasar `this` como GameLogic*
-    Projectile projectile(tank_center_x, tank_center_y, dx, dy, 18.0, map->get_width() * 25, map->get_height() * 25, this);
+    // Crear el proyectil en la posición actual del tanque y pasar el tanque que disparó
+    Projectile projectile(tank_center_x, tank_center_y, dx, dy, 18.0, map->get_width() * 25, map->get_height() * 25, this, &tank);
     projectile.active = true;
     projectiles.emplace_back(projectile);
 

@@ -218,16 +218,7 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         }
     }
 
-    // Dibujar el trazo de la bala
-    for (const Projectile& projectile : game_logic->projectiles) {
-        if (projectile.active) {
-            cairo_set_source_rgb(cr, 1, 1, 1);  // Color blanco para el trazo
-            cairo_set_line_width(cr, 1);
-            cairo_move_to(cr, projectile.x, projectile.y);  // Comienza desde la posición actual
-            cairo_line_to(cr, projectile.x - projectile.direction_x * 10, projectile.y - projectile.direction_y * 10);  // Dibujar la dirección
-            cairo_stroke(cr);
-        }
-    }
+
 
     return FALSE;
 }

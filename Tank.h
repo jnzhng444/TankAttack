@@ -10,20 +10,28 @@ class GameLogic;  // Forward declaration para evitar dependencias circulares
 class Tank {
 public:
     // Atributos del tanque
-    int id;                     // ID único para el tanque
-    int player;                 // Jugador que controla el tanque
-    int x, y;                   // Posición del tanque en el mapa
-    std::string color;          // Color del tanque
-    GtkWidget* widget;          // Widget para dibujar el tanque
-    std::vector<int> route;     // Ruta calculada para el tanque
-    GameLogic* game_logic;      // Puntero a la lógica del juego para referenciarla si es necesario
+    int id;
+    int player;
+    int x, y;
+    std::string color;
+    GtkWidget* widget;
+    std::vector<int> route;
+    GameLogic* game_logic;
+
+    int max_health = 100;
+    int health = 100;
+    int total_damage_taken = 0;
+    bool destroyed = false;  // Nuevo atributo
+    bool is_active = true;
 
     // Constructor por defecto
     Tank() : id(-1), player(-1), x(0), y(0), widget(nullptr), game_logic(nullptr) {}
 
-    int max_health = 100;
-    int health = 100;  // Salud actual
-    int total_damage_taken = 0;  // Daño total recibido
+    // Método para verificar si el tanque está destruido
+    bool is_destroyed() const {
+        return health <= 0;  // Considerar el tanque destruido si su salud es 0 o menos
+    }
 };
+
 
 #endif // TANK_H

@@ -40,6 +40,8 @@ public:
 
     // Método para disparar
     void shoot(Tank& tank, int aim_target_x, int aim_target_y);
+    // Metodo para destruir el tanque
+    void remove_tank(Tank& tank) ;
 
 
     // Obtener el puntero al mapa

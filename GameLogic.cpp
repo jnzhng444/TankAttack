@@ -1,5 +1,6 @@
 #include "GameLogic.h"
 
+#include <algorithm>
 #include <cmath>
 
 #include "Pathfinding.h"  // Incluir el archivo de pathfinding
@@ -307,21 +308,33 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     end_turn();
 }
 
+void GameLogic::remove_tank(Tank& tank) {
+    if (tank.widget && GTK_IS_WIDGET(tank.widget)) {
+        gtk_widget_hide(tank.widget);  // Ocultar el widget en lugar de destruirlo
+    }
+    tank.is_active = false;  // Marcar el tanque como inactivo
+}
 
 
+// Luego, en la función de actualización, elimina el tanque del vector después de verificar si está destruido
 void GameLogic::update() {
     update_projectiles();
 
-    // Redibujar el área de juego
-    for (Tank& tank : tanks) {
-        if (GTK_IS_WIDGET(tank.widget)) {
-            gtk_widget_queue_draw(tank.widget);
+    // Usar iteradores para eliminar tanques destruidos
+    for (auto it = tanks.begin(); it != tanks.end();) {
+        if (it->is_destroyed()) {
+            remove_tank(*it);  // Llamar a la función para eliminar el tanque
+            it = tanks.erase(it);  // Eliminar el tanque de la lista
+        } else {
+            ++it;  // Solo avanza si no se eliminó el tanque
         }
     }
 
-    // Redibujar el área de juego
+    // Redibujar el área de juego, incluso si no hay tanques
     gtk_widget_queue_draw(GameArea::get_game_area());
 }
+
+
 
 void GameLogic::update_projectiles() {
     for (auto it = projectiles.begin(); it != projectiles.end();) {

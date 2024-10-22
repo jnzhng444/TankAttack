@@ -16,7 +16,7 @@ public:
     static gboolean on_draw_projectile(GtkWidget *widget, cairo_t *cr, gpointer user_data); // Prototipo de la función de dibujo del proyectil
     static GtkWidget* get_game_area() { return game_area; }
     static GtkWidget* create_tank_widget(Tank& tank);
-
+    static GtkWidget* timer_label;  // NUEVO: Label para mostrar el temporizador
 private:
     static GameLogic* game_logic;  // Agregar referencia a GameLogic
     static GtkWidget* game_area;  // Almacenar el widget del área de juego

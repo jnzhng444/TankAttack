@@ -6,26 +6,30 @@
 GameLogic* GameArea::game_logic = nullptr;  // Inicializar el puntero estático
 Tank* selected_tank = nullptr;  // Tanque seleccionado por el jugador
 GtkWidget* GameArea::game_area = nullptr;  // Definir la variable estática
+GtkWidget* GameArea::timer_label = nullptr;  // Definir la variable estática
 
 // En GameArea.cpp
 GtkWidget* GameArea::create(GameLogic* logic) {
-    game_area = gtk_fixed_new();  // Cambiar a GtkFixed, que es un contenedor válido
+    game_area = gtk_fixed_new();  // Crear el contenedor para el área de juego
     gtk_widget_set_size_request(game_area, 800, 600);  // Establecer tamaño
 
     if (!game_area) {
         std::cerr << "Error al crear el widget del área de juego." << std::endl;
-        return nullptr;  // Retornar nulo si no se pudo crear correctamente
+        return nullptr;
     }
 
-    // Almacenar el puntero a GameLogic
     game_logic = logic;
 
-    // Crear un área de dibujo sobre el contenedor
+    // Crear el área de dibujo sobre el contenedor
     GtkWidget *drawing_area = gtk_drawing_area_new();
     gtk_widget_set_size_request(drawing_area, 800, 600);
     gtk_fixed_put(GTK_FIXED(game_area), drawing_area, 0, 0);
 
-    // Conectar señales de dibujo y eventos del mouse a drawing_area
+    // **Crear el GtkLabel para el temporizador**
+    timer_label = gtk_label_new("Tiempo restante: 05:00");  // Asegúrate de crear el label
+    gtk_fixed_put(GTK_FIXED(game_area), timer_label, 760, 5);  // Posicionarlo en la interfaz
+
+    // Conectar señales de eventos del mouse a drawing_area
     g_signal_connect(drawing_area, "draw", G_CALLBACK(GameArea::on_draw), NULL);
     g_signal_connect(drawing_area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
     g_signal_connect(drawing_area, "motion-notify-event", G_CALLBACK(GameArea::on_motion_notify), game_logic);
@@ -33,6 +37,7 @@ GtkWidget* GameArea::create(GameLogic* logic) {
 
     return game_area;
 }
+
 
 gboolean GameArea::on_motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data) {
     GameLogic* game_logic = static_cast<GameLogic*>(user_data);

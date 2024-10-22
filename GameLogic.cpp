@@ -12,6 +12,9 @@
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
     : num_tanks_per_player(num_tanks_per_player), map(map), current_player(1), game_time_left(300) {
     std::srand(std::time(0));  // Inicializar el generador aleatorio
+
+    start_game_timer();
+
 }
 
 void GameLogic::end_turn() {
@@ -20,6 +23,7 @@ void GameLogic::end_turn() {
 }
 
 void GameLogic::start_game_timer() {
+    // Configurar un temporizador que se actualiza cada segundo
     g_timeout_add_seconds(1, GameLogic::update_timer, this);  // Iniciar temporizador
 }
 
@@ -33,10 +37,15 @@ gboolean GameLogic::update_timer(gpointer user_data) {
     int minutes = logic->game_time_left / 60;
     int seconds = logic->game_time_left % 60;
 
-    // Aumentar el tamaño de time_str para evitar truncamientos
-    char time_str[32];  // Ahora tiene espacio suficiente para el formato
-    snprintf(time_str, sizeof(time_str), "Tiempo restante: %02d:%02d", minutes, seconds);
-    gtk_label_set_text(GTK_LABEL(logic->time_label), time_str);
+    // Asegurarse de que el timer_label es un GtkLabel antes de actualizarlo
+    if (GTK_IS_LABEL(GameArea::timer_label)) {
+        // Aumentar el tamaño de time_str para evitar truncamientos
+        char time_str[32];  // Ahora tiene espacio suficiente para el formato
+        snprintf(time_str, sizeof(time_str), "Tiempo restante: %02d:%02d", minutes, seconds);
+        gtk_label_set_text(GTK_LABEL(GameArea::timer_label), time_str);
+    } else {
+        std::cerr << "timer_label no es un GtkLabel válido." << std::endl;
+    }
 
     // Verificar si el tiempo se ha agotado
     if (logic->game_time_left <= 0) {

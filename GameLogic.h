@@ -53,7 +53,7 @@ public:
     // Obtener el puntero al mapa
     Map* get_map() const;
     std::vector<std::pair<double, double>> projectile_trail;  // Guarda las posiciones de las balas (trazas)
-
+    void show_start_player_dialog();
     std::vector<int> current_route; // Ruta actual calculada
     void end_turn();               // Alternar turnos entre jugadores
     void start_game_timer();        // Iniciar el temporizador del juego

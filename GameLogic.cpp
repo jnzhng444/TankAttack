@@ -12,12 +12,26 @@
 #include "GameArea.h"
 
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
-    : num_tanks_per_player(num_tanks_per_player), map(map), current_player(1), game_time_left(300) {
+    : num_tanks_per_player(num_tanks_per_player), map(map), game_time_left(300) {
     std::srand(std::time(0));  // Inicializar el generador aleatorio
 
-    start_game_timer();
+    // Seleccionar aleatoriamente quién empieza primero
+    current_player = (std::rand() % 2) + 1;  // Jugador 1 o 2
 
+    // Mostrar un diálogo emergente indicando quién empieza primero
+    show_start_player_dialog();
+
+    start_game_timer();
 }
+
+void GameLogic::show_start_player_dialog() {
+    // Crear y mostrar un diálogo emergente con el jugador que empieza primero
+    GtkWidget* dialog = gtk_message_dialog_new(nullptr, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
+                                               "El jugador %d empieza primero.", current_player);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
 
 void GameLogic::end_turn() {
     current_player = (current_player == 1) ? 2 : 1;  // Alternar entre jugador 1 y 2

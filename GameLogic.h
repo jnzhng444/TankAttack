@@ -34,7 +34,8 @@ public:
 
     // Otros métodos y variables...
     std::vector<Projectile> projectiles; // Lista de proyectiles
-
+    bool check_victory();  // Declaración de check_victory
+    void show_victory_dialog(int winning_player);  // Declaración de show_victory_dialog
     void update_projectiles();
     void update();
     void on_click(int click_x, int click_y);

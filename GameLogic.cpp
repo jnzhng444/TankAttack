@@ -20,9 +20,60 @@ GameLogic::GameLogic(int num_tanks_per_player, Map* map)
 }
 
 void GameLogic::end_turn() {
+
     current_player = (current_player == 1) ? 2 : 1;  // Alternar entre jugador 1 y 2
     std::cout << "Es el turno del jugador " << current_player << std::endl;
 }
+
+bool GameLogic::check_victory() {
+    int player1_tanks = 0;
+    int player2_tanks = 0;
+
+    // Contar los tanques activos de cada jugador
+    for (const Tank& tank : tanks) {
+        if (tank.is_active) {
+            if (tank.player == 1) {
+                player1_tanks++;
+            } else if (tank.player == 2) {
+                player2_tanks++;
+            }
+        }
+    }
+
+    // Si un jugador no tiene tanques activos, el otro gana
+    if (player1_tanks == 0) {
+        show_victory_dialog(2);  // Jugador 2 gana
+        return true;
+    } else if (player2_tanks == 0) {
+        show_victory_dialog(1);  // Jugador 1 gana
+        return true;
+    }
+
+    // Si el tiempo se acaba, gana el jugador con más tanques
+    if (game_time_left <= 0) {
+        if (player1_tanks > player2_tanks) {
+            show_victory_dialog(1);  // Jugador 1 gana por tener más tanques
+        } else if (player2_tanks > player1_tanks) {
+            show_victory_dialog(2);  // Jugador 2 gana por tener más tanques
+        } else {
+            show_victory_dialog(0);  // Empate
+        }
+        return true;
+    }
+
+    return false;  // No hay ganador todavía
+}
+
+
+void GameLogic::show_victory_dialog(int winning_player) {
+    // Crear y mostrar un diálogo emergente con el jugador ganador
+    GtkWidget* dialog = gtk_message_dialog_new(nullptr, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "¡El jugador %d ha ganado!", winning_player);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+
+    // Detener el juego aquí si es necesario
+}
+
 
 void GameLogic::start_game_timer() {
     // Configurar un temporizador que se actualiza cada segundo
@@ -41,7 +92,6 @@ gboolean GameLogic::update_timer(gpointer user_data) {
 
     // Asegurarse de que el timer_label es un GtkLabel antes de actualizarlo
     if (GTK_IS_LABEL(GameArea::timer_label)) {
-        // Aumentar el tamaño de time_str para evitar truncamientos
         char time_str[32];  // Ahora tiene espacio suficiente para el formato
         snprintf(time_str, sizeof(time_str), "Tiempo restante: %02d:%02d", minutes, seconds);
         gtk_label_set_text(GTK_LABEL(GameArea::timer_label), time_str);
@@ -51,12 +101,19 @@ gboolean GameLogic::update_timer(gpointer user_data) {
 
     // Verificar si el tiempo se ha agotado
     if (logic->game_time_left <= 0) {
-        logic->end_game();
+        // Si se agota el tiempo, verificar qué jugador tiene más tanques
+        logic->check_victory();  // Verifica la condición de victoria basada en los tanques restantes
         return FALSE;  // Detener el temporizador
+    }
+
+    // Verificar la condición de victoria en cada ciclo del temporizador
+    if (logic->check_victory()) {
+        return FALSE;  // Si hay un ganador, detener el temporizador
     }
 
     return TRUE;  // Mantener el temporizador activo
 }
+
 
 
 void GameLogic::end_game() {

@@ -37,13 +37,18 @@ public:
 
     void update_projectiles();
     void update();
-
+    void on_click(int click_x, int click_y);
     // Método para disparar
     void shoot(Tank& tank, int aim_target_x, int aim_target_y);
     // Metodo para destruir el tanque
     void remove_tank(Tank& tank) ;
-
-
+    std::vector<int> random_move(Tank& tank, int target_x, int target_y);  // Devuelve una lista de posiciones para el movimiento aleatorio
+    void random_move_step_by_step(Tank& tank, int target_x, int target_y);  // Movimiento aleatorio controlado por temporizador
+    // Declaraciones de las funciones nuevas
+    bool check_line_of_sight(Tank& tank, int target_x, int target_y);   // Verifica la línea de vista
+    std::pair<int, int> get_random_position(int x, int y, int radius);  // Genera una posición aleatoria
+    void move_tank_towards(Tank& tank, int target_x, int target_y);     // Mueve el tanque hacia el objetivo
+    void move_tank_towards_step_by_step(Tank& tank, int target_x, int target_y, int step_distance);  // Nueva función
     // Obtener el puntero al mapa
     Map* get_map() const;
 

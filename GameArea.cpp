@@ -256,6 +256,8 @@ void GameArea::draw_damage_icon(cairo_t *cr, int x, int y) {
 gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
     int clicked_x = event->y / 25;  // Dividir la posición del clic por el tamaño de las celdas
     int clicked_y = event->x / 25;
+    // Imprimir las coordenadas del clic y las coordenadas calculadas del destino
+    std::cout << "Coordenadas del clic: (" << clicked_x << ", " << clicked_y << ")" << std::endl;
 
     GameLogic* game_logic = static_cast<GameLogic*>(user_data);  // Obtener el puntero a la lógica del juego
 

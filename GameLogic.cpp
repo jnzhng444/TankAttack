@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <queue>
+
 #include "GameArea.h"
 
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
@@ -163,8 +165,7 @@ void GameLogic::move_tank(int tank_id, int x, int y) {
 }
 
 void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
-    // Borrar la ruta anterior
-    current_route.clear();
+    current_route.clear();  // Limpiar la ruta actual
 
     int prob = std::rand() % 100;
 
@@ -174,10 +175,10 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
             if (!path.empty()) {
                 tank.route = path;
                 current_route = path;  // Guardar la ruta actual
-                g_timeout_add(100, move_tank_step_by_step, &tank);
+                g_timeout_add(100, move_tank_step_by_step, &tank);  // Mover paso a paso
             }
         } else {
-            random_movement_with_los(tank, target_x, target_y);
+            random_move_step_by_step(tank, target_x, target_y);  // Movimiento aleatorio paso a paso con temporizador
         }
     } else if (tank.color == "red" || tank.color == "yellow") {
         if (prob < 80) {
@@ -185,19 +186,89 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
             if (!path.empty()) {
                 tank.route = path;
                 current_route = path;  // Guardar la ruta actual
-                g_timeout_add(100, move_tank_step_by_step, &tank);
+                g_timeout_add(100, move_tank_step_by_step, &tank);  // Mover paso a paso
             }
         } else {
-            random_movement_with_los(tank, target_x, target_y);
+            random_move_step_by_step(tank, target_x, target_y);  // Movimiento aleatorio paso a paso con temporizador
         }
     }
 }
+
+void GameLogic::random_move_step_by_step(Tank& tank, int target_x, int target_y) {
+    static int attempt_count = 0;  // Contador de intentos
+
+    // Limitar el número de intentos para evitar bucles
+    const int max_attempts = 10;  // Define el número máximo de intentos permitidos
+
+    if (attempt_count >= max_attempts) {
+        std::cout << "Movimiento aleatorio detenido: se alcanzó el número máximo de intentos (" << max_attempts << ")" << std::endl;
+        attempt_count = 0;  // Reiniciar el contador para el próximo movimiento
+        return;  // Detener el movimiento
+    }
+
+    if (tank.x == target_y && tank.y == target_x) {
+        std::cout << "Tanque ha llegado al destino: (" << target_x << ", " << target_y << ")" << std::endl;
+        attempt_count = 0;  // Reiniciar el contador al alcanzar el destino
+        return;
+    }
+
+    if (check_line_of_sight(tank, target_x, target_y)) {
+        std::cout << "Línea de vista despejada hacia (" << target_x << ", " << target_y << ")" << std::endl;
+        move_tank_towards_step_by_step(tank, target_x, target_y, 1);
+
+        // Añadir a la ruta para dibujar la traza
+        int current_pos = tank.x * map->get_width() + tank.y;
+        current_route.push_back(current_pos);  // Guardar la posición actual
+    } else {
+        std::cout << "Línea de vista bloqueada, seleccionando destino aleatorio..." << std::endl;
+        std::pair<int, int> random_position = get_random_position(tank.x, tank.y, 4);
+
+        if (random_position.first != tank.x || random_position.second != tank.y) {
+            std::cout << "Intentando mover aleatoriamente de (" << tank.x << ", " << tank.y << ") a (" << random_position.first << ", " << random_position.second << ")" << std::endl;
+            move_tank_towards_step_by_step(tank, random_position.first, random_position.second, 1);
+
+            // Añadir a la ruta para dibujar la traza
+            int current_pos = tank.x * map->get_width() + tank.y;
+            current_route.push_back(current_pos);
+        }
+    }
+
+    // Incrementar el contador de intentos
+    attempt_count++;
+
+    // Redibujar el área para mostrar el trazo
+    gtk_widget_queue_draw(GameArea::get_game_area());
+
+    if (tank.x == target_x && tank.y == target_y) {
+        std::cout << "Tanque alcanzó el destino: (" << target_x << ", " << target_y << ")" << std::endl;
+        attempt_count = 0;  // Reiniciar el contador al alcanzar el destino
+        return;
+    }
+
+    g_timeout_add(100, [](gpointer data) -> gboolean {
+        Tank* tank = static_cast<Tank*>(data);
+        tank->game_logic->random_move_step_by_step(*tank, tank->game_logic->aim_target_x, tank->game_logic->aim_target_y);
+        return FALSE;
+    }, &tank);
+}
+
+
+
 
 gboolean GameLogic::move_tank_step_by_step(gpointer data) {
     Tank* tank = static_cast<Tank*>(data);
 
     if (!tank->is_active) {
         return FALSE;  // Si el tanque ya no está activo, detener el temporizador
+    }
+
+    static int max_steps = 30;  // Máximo número de pasos permitidos por movimiento
+    static int step_count = 0;
+
+    if (step_count > max_steps) {
+        std::cout << "Movimiento detenido por exceso de pasos" << std::endl;
+        step_count = 0;  // Reiniciar el contador para el siguiente movimiento
+        return FALSE;    // Detener el movimiento
     }
 
     if (!tank->route.empty()) {
@@ -208,74 +279,96 @@ gboolean GameLogic::move_tank_step_by_step(gpointer data) {
 
         // Mover el tanque a la nueva posición
         tank->game_logic->move_tank(tank->id, new_x, new_y);
+        step_count++;
 
         gtk_widget_queue_draw(GameArea::get_game_area());  // Redibujar el área de dibujo
 
         return TRUE;  // Continuar con el temporizador
     }
 
+    step_count = 0;  // Reiniciar el contador al completar el movimiento
     return FALSE;  // Detener el temporizador si no hay más movimientos
 }
 
+void GameLogic::move_tank_towards_step_by_step(Tank& tank, int target_x, int target_y, int step_distance) {
+    std::cout << "Antes de mover: Tank en (" << tank.x << ", " << tank.y << ") hacia destino (" << target_x << ", " << target_y << ")" << std::endl;
 
-void GameLogic::random_movement_with_los(Tank& tank, int target_x, int target_y) {
-    int new_x, new_y;
-    bool moved = false;
-    const int radius = 2;  // Definir el radio para el movimiento aleatorio
+    int dx = (target_x > tank.x) ? step_distance : (target_x < tank.x) ? -step_distance : 0;
+    int dy = (target_y > tank.y) ? step_distance : (target_y < tank.y) ? -step_distance : 0;
 
-    // Primer intento: Mover en línea recta hacia el objetivo (sin romper línea de vista)
-    if (target_x > tank.x) {
-        new_x = tank.x + 1;
-    } else if (target_x < tank.x) {
-        new_x = tank.x - 1;
-    } else {
-        new_x = tank.x;
+    // Mover en diagonal si no hay obstáculos
+    if (dx != 0 && dy != 0 && !map->has_obstacle(tank.x + dx, tank.y + dy)) {
+        tank.x += dx;
+        tank.y += dy;
+        std::cout << "Tanque movido en diagonal a (" << tank.x << ", " << tank.y << ")" << std::endl;
+    }
+    // Mover en la dirección de x si no hay obstáculos
+    else if (dx != 0 && !map->has_obstacle(tank.x + dx, tank.y)) {
+        tank.x += dx;
+        std::cout << "Tanque movido en el eje X a (" << tank.x << ", " << tank.y << ")" << std::endl;
+    }
+    // Mover en la dirección de y si no hay obstáculos
+    else if (dy != 0 && !map->has_obstacle(tank.x, tank.y + dy)) {
+        tank.y += dy;
+        std::cout << "Tanque movido en el eje Y a (" << tank.x << ", " << tank.y << ")" << std::endl;
     }
 
-    if (target_y > tank.y) {
-        new_y = tank.y + 1;
-    } else if (target_y < tank.y) {
-        new_y = tank.y - 1;
-    } else {
-        new_y = tank.y;
-    }
+    // Verifica la nueva posición del tanque
+    std::cout << "Después de mover: Tank en (" << tank.x << ", " << tank.y << ")" << std::endl;
 
-    // Verificar si la nueva posición está dentro del mapa y no tiene obstáculos
-    if (new_x >= 0 && new_x < map->get_width() && new_y >= 0 && new_y < map->get_height() && !map->has_obstacle(new_x, new_y)) {
-        // Mover el tanque a la nueva posición
-        move_tank(tank.id, new_x, new_y);
-        moved = true;
-    } else {
-        // Si no se pudo mover en línea recta, hacer un intento de movimiento aleatorio dentro del radio
-        int rand_x = tank.x + (std::rand() % (2 * radius + 1)) - radius;
-        int rand_y = tank.y + (std::rand() % (2 * radius + 1)) - radius;
+    // Actualiza la posición del tanque en el mapa
+    move_tank(tank.id, tank.x, tank.y);
 
-        // Verificar que la posición aleatoria es válida y no tiene obstáculos
-        if (rand_x >= 0 && rand_x < map->get_width() && rand_y >= 0 && rand_y < map->get_height() && !map->has_obstacle(rand_x, rand_y)) {
-            // Mover el tanque a la posición aleatoria
-            move_tank(tank.id, rand_x, rand_y);
-            moved = true;
-        }
-
-        // Segundo intento: Si no se pudo mover aleatoriamente, avanzar hasta donde sea posible
-        if (!moved) {
-            if (target_x > tank.x && tank.x + 1 < map->get_width() && !map->has_obstacle(tank.x + 1, tank.y)) {
-                move_tank(tank.id, tank.x + 1, tank.y);
-            } else if (target_x < tank.x && tank.x - 1 >= 0 && !map->has_obstacle(tank.x - 1, tank.y)) {
-                move_tank(tank.id, tank.x - 1, tank.y);
-            } else if (target_y > tank.y && tank.y + 1 < map->get_height() && !map->has_obstacle(tank.x, tank.y + 1)) {
-                move_tank(tank.id, tank.x, tank.y + 1);
-            } else if (target_y < tank.y && tank.y - 1 >= 0 && !map->has_obstacle(tank.x, tank.y - 1)) {
-                move_tank(tank.id, tank.x, tank.y - 1);
-            }
-        }
-    }
-
-    // Forzar redibujado del área del juego si el widget del tanque es válido
-    if (GTK_IS_WIDGET(tank.widget)) {
-        gtk_widget_queue_draw(tank.widget);
+    // Si el tanque ha alcanzado su destino, detener el movimiento
+    if (tank.x == target_x && tank.y == target_y) {
+        std::cout << "Tanque alcanzó el destino: (" << target_x << ", " << target_y << ")" << std::endl;
     }
 }
+
+
+
+bool GameLogic::check_line_of_sight(Tank& tank, int target_x, int target_y) {
+    // Verificar si hay línea de vista desde el tanque hasta el objetivo
+    int dx = target_x - tank.x;  // Diferencia en filas
+    int dy = target_y - tank.y;  // Diferencia en columnas
+    int steps = std::max(abs(dx), abs(dy));
+    float step_x = dx / static_cast<float>(steps);
+    float step_y = dy / static_cast<float>(steps);
+
+    std::cout << "Verificando línea de vista desde (" << tank.x << ", " << tank.y << ") hacia (" << target_x << ", " << target_y << ")" << std::endl;
+
+    for (int i = 1; i <= steps; ++i) {
+        int x = static_cast<int>(tank.x + i * step_x);
+        int y = static_cast<int>(tank.y + i * step_y);
+
+        std::cout << "Verificando posición (" << x << ", " << y << ") en la línea de vista" << std::endl;
+
+        // Asegurarse de que `x` sea la fila y `y` sea la columna
+        if (map->has_obstacle(x, y)) {
+            std::cout << "¡Obstáculo encontrado en (" << x << ", " << y << ")!" << std::endl;
+            return false;  // Hay un obstáculo en el camino
+        }
+    }
+
+    return true;  // No hay obstáculos, línea de vista clara
+}
+
+
+std::pair<int, int> GameLogic::get_random_position(int x, int y, int radius) {
+    int rand_x = y + (std::rand() % (2 * radius + 1)) - radius;  // Intercambia x e y
+    int rand_y = x + (std::rand() % (2 * radius + 1)) - radius;  // Intercambia x e y
+
+    rand_x = std::clamp(rand_x, 0, map->get_width() - 1);
+    rand_y = std::clamp(rand_y, 0, map->get_height() - 1);
+
+    std::cout << "Posición aleatoria calculada desde (" << x << ", " << y << ") dentro de radio "
+              << radius << ": (" << rand_x << ", " << rand_y << ")" << std::endl;
+
+    return {rand_x, rand_y};
+}
+
+
+
 
 // En GameLogic.cpp, dentro de la función `shoot` y `update`
 

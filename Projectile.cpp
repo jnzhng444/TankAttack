@@ -14,8 +14,13 @@ Projectile::Projectile(double start_x, double start_y, double dir_x, double dir_
 
 void Projectile::update() {
     // Calcular la posición futura del proyectil
+    // Ajusta las coordenadas para centrar el proyectil
     double future_x = x + direction_x * speed;
     double future_y = y + direction_y * speed;
+
+
+    // Agregar la posición actual a las trazas antes de mover el proyectil
+    game_logic->projectile_trail.emplace_back(x, y);
 
     // Verificar si el proyectil está fuera de los límites del mapa
     if (future_x < 0 || future_x >= map_width || future_y < 0 || future_y >= map_height) {

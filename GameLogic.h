@@ -52,6 +52,7 @@ public:
     void move_tank_towards_step_by_step(Tank& tank, int target_x, int target_y, int step_distance);  // Nueva función
     // Obtener el puntero al mapa
     Map* get_map() const;
+    std::vector<std::pair<double, double>> projectile_trail;  // Guarda las posiciones de las balas (trazas)
 
     std::vector<int> current_route; // Ruta actual calculada
     void end_turn();               // Alternar turnos entre jugadores

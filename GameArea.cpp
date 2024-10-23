@@ -116,6 +116,26 @@ gboolean GameArea::on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
         }
     }
 
+    // Dibujar la traza de las balas
+    const std::vector<std::pair<double, double>>& projectile_trail = game_logic->projectile_trail;
+    if (!projectile_trail.empty()) {
+        cairo_set_source_rgb(cr, 1, 0, 0);  // Color rojo para la traza de las balas
+        cairo_set_line_width(cr, 1.5);  // Grosor de la línea
+
+        for (size_t i = 1; i < projectile_trail.size(); ++i) {
+            // Obtener las posiciones actuales y anteriores de la traza
+            double prev_x = projectile_trail[i - 1].first;
+            double prev_y = projectile_trail[i - 1].second;
+            double curr_x = projectile_trail[i].first;
+            double curr_y = projectile_trail[i].second;
+
+            // Dibujar una línea entre la posición anterior y la actual
+            cairo_move_to(cr, prev_x, prev_y);
+            cairo_line_to(cr, curr_x, curr_y);
+            cairo_stroke(cr);
+        }
+    }
+
     // Dibujar tanques más detallados
     const std::vector<Tank>& tanks = game_logic->get_tanks();
     for (const Tank& tank : tanks) {
@@ -325,10 +345,12 @@ GtkWidget* GameArea::create_projectile_widget(Projectile& projectile) {
 gboolean GameArea::on_draw_projectile(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
     Projectile* projectile = static_cast<Projectile*>(user_data);
 
-    // Dibujar el proyectil como un círculo rojo
+    // Dibujar el proyectil como un círculo rojo en el centro del widget de 10x10 píxeles
     cairo_set_source_rgb(cr, 1, 0, 0); // Color rojo para el proyectil
-    cairo_arc(cr, 5, 5, 5, 0, 2 * M_PI); // Dibujar el proyectil en el centro del widget (10x10 px)
+    cairo_arc(cr, 5, 5, 5, 0, 2 * M_PI); // Dibujar en el centro del widget de 10x10
     cairo_fill(cr);
 
     return FALSE;
 }
+
+

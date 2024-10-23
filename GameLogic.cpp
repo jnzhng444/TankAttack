@@ -20,10 +20,16 @@ GameLogic::GameLogic(int num_tanks_per_player, Map* map)
 }
 
 void GameLogic::end_turn() {
-
     current_player = (current_player == 1) ? 2 : 1;  // Alternar entre jugador 1 y 2
     std::cout << "Es el turno del jugador " << current_player << std::endl;
+
+    // Limpiar la traza de las balas al finalizar el turno
+    projectile_trail.clear();
+
+    // Redibujar el área de juego para reflejar los cambios
+    gtk_widget_queue_draw(GameArea::get_game_area());
 }
+
 
 bool GameLogic::check_victory() {
     int player1_tanks = 0;
@@ -451,6 +457,9 @@ std::pair<int, int> GameLogic::get_random_position(int x, int y, int radius) {
 
 // GameLogic.cpp
 void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
+
+    projectile_trail.clear();
+
     // Convertir las coordenadas de clic (en celdas) a píxeles
     double tank_center_x = tank.y * 25 + 12.5;  // Centro del tanque en píxeles
     double tank_center_y = tank.x * 25 + 12.5;  // Centro del tanque en píxeles
@@ -501,7 +510,11 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
 
             // Mover el proyectil si sigue activo
             if (GTK_IS_WIDGET(proj->widget)) {
-                gtk_fixed_move(GTK_FIXED(GameArea::get_game_area()), proj->widget, proj->x, proj->y);  // Mover en píxeles
+                // Aquí compensamos la posición para centrar el widget con la traza
+                int widget_x = proj->x - 5;  // Compensar por el radio del widget (5 píxeles)
+                int widget_y = proj->y - 5;  // Compensar por el radio del widget (5 píxeles)
+
+                gtk_fixed_move(GTK_FIXED(GameArea::get_game_area()), proj->widget, widget_x, widget_y);  // Mover en píxeles
                 gtk_widget_queue_draw(proj->widget);
             }
 
@@ -541,6 +554,9 @@ void GameLogic::update_projectiles() {
         if (projectile.active) {
             active_projectiles.push_back(projectile);  // Mantener proyectiles activos
         } else {
+            // Limpiar las trazas del proyectil inactivo
+            projectile_trail.clear();
+
             // Destruir el widget del proyectil si está inactivo
             if (projectile.widget && GTK_IS_WIDGET(projectile.widget)) {
                 gtk_widget_destroy(projectile.widget);  // Destruir el widget del proyectil
@@ -551,6 +567,7 @@ void GameLogic::update_projectiles() {
 
     projectiles = std::move(active_projectiles);  // Reemplazar con los proyectiles activos
 }
+
 
 void GameLogic::update() {
     // Actualizar proyectiles y tanques como de costumbre...

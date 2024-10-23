@@ -98,9 +98,12 @@ void GameLogic::generate_tanks() {
                 tank.game_logic = this;
 
                 bool found_position = false;
+                int attempts = 0;  // Contador de intentos
 
                 // Intentar encontrar una fila sin obstáculos para el tanque
-                while (!found_position) {
+                while (!found_position && attempts < 10) {  // Limitar los intentos a 10
+                    attempts++;
+
                     // Definir color del tanque basado en el jugador
                     if (player == 1) {
                         tank.color = (j == 0) ? "blue" : "red";  // Colores para el jugador 1
@@ -111,7 +114,16 @@ void GameLogic::generate_tanks() {
                         if (!map->has_obstacle(tank.x, tank.y)) {
                             found_position = true;
                         } else {
-                            player1_row += 1;  // Mover una fila abajo si hay un obstáculo
+                            // Intentar spawnear arriba o abajo del obstáculo
+                            if (tank.x > 0 && !map->has_obstacle(tank.x - 1, tank.y)) {
+                                tank.x -= 1;  // Mover una fila arriba
+                                found_position = true;
+                            } else if (tank.x < map->get_height() - 1 && !map->has_obstacle(tank.x + 1, tank.y)) {
+                                tank.x += 1;  // Mover una fila abajo
+                                found_position = true;
+                            } else {
+                                player1_row += 1;  // Mover una fila abajo si ambas posiciones están bloqueadas
+                            }
                         }
                     } else {
                         tank.color = (j == 0) ? "lightblue" : "yellow";  // Colores para el jugador 2
@@ -122,7 +134,16 @@ void GameLogic::generate_tanks() {
                         if (!map->has_obstacle(tank.x, tank.y)) {
                             found_position = true;
                         } else {
-                            player2_row += 1;  // Mover una fila abajo si hay un obstáculo
+                            // Intentar spawnear arriba o abajo del obstáculo
+                            if (tank.x > 0 && !map->has_obstacle(tank.x - 1, tank.y)) {
+                                tank.x -= 1;  // Mover una fila arriba
+                                found_position = true;
+                            } else if (tank.x < map->get_height() - 1 && !map->has_obstacle(tank.x + 1, tank.y)) {
+                                tank.x += 1;  // Mover una fila abajo
+                                found_position = true;
+                            } else {
+                                player2_row += 1;  // Mover una fila abajo si ambas posiciones están bloqueadas
+                            }
                         }
                     }
                 }
@@ -139,7 +160,6 @@ void GameLogic::generate_tanks() {
         }
     }
 }
-
 
 
 

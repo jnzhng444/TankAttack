@@ -17,6 +17,13 @@ void Projectile::update() {
     double future_x = x + direction_x * speed;
     double future_y = y + direction_y * speed;
 
+    // Verificar si el proyectil está fuera de los límites del mapa
+    if (future_x < 0 || future_x >= map_width || future_y < 0 || future_y >= map_height) {
+        // Si está fuera de los límites, marcarlo como inactivo para que desaparezca
+        active = false;
+        return;  // Salir de la función para evitar acceso a memoria inválida
+    }
+
     // Convertir las coordenadas de píxeles del proyectil a coordenadas de celdas del mapa
     int cell_x = static_cast<int>(future_y / 25);  // Coordenadas de celda Y
     int cell_y = static_cast<int>(future_x / 25);  // Coordenadas de celda X
@@ -45,7 +52,7 @@ void Projectile::update() {
                                                    ((future_x <= obstacle_right && future_x >= obstacle_left) ||
                                                     (x >= obstacle_left && x <= obstacle_right));
 
-                    // Manejo de rebotes
+                    // Manejo de colisiones con obstáculos
                     if (will_collide_horizontally || will_collide_vertically) {
                         // Ajustar rebote y mover el proyectil fuera del obstáculo
                         if (will_collide_horizontally) {
@@ -66,20 +73,7 @@ void Projectile::update() {
         }
     }
 
-    // Rebote en las paredes del mapa
-    if (future_x < 0 || future_x >= map_width) {
-        direction_x = -direction_x;  // Rebote horizontal en las paredes
-        rebotes--;
-        future_x = x;  // Asegurarse de que no se mueva en caso de colisión
-    }
-
-    if (future_y < 0 || future_y >= map_height) {
-        direction_y = -direction_y;  // Rebote vertical en las paredes
-        rebotes--;
-        future_y = y;  // Asegurarse de que no se mueva en caso de colisión
-    }
-
-    // Mover el proyectil solo si no se desactivó por falta de rebotes
+    // Actualizar la posición del proyectil si no se ha desactivado
     if (rebotes > 0) {
         x = future_x;
         y = future_y;
@@ -90,6 +84,7 @@ void Projectile::update() {
     // Verificar colisiones con tanques
     handle_collision();
 }
+
 
 void Projectile::handle_collision() {
     const double collision_radius = 12.0;  // Ajustar el radio de colisión al tamaño del tanque

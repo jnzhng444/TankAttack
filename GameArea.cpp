@@ -43,8 +43,12 @@ GtkWidget* GameArea::create(GameLogic* logic) {
     g_signal_connect(drawing_area, "draw", G_CALLBACK(GameArea::on_draw), NULL);
     g_signal_connect(drawing_area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
     g_signal_connect(drawing_area, "motion-notify-event", G_CALLBACK(GameArea::on_motion_notify), game_logic);
-    gtk_widget_add_events(drawing_area, GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
-
+    gtk_widget_add_events(drawing_area, GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
+    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(GameArea::on_key_press), game_logic);
+    gtk_widget_grab_focus(drawing_area);
+    gtk_widget_set_sensitive(drawing_area, TRUE);
+    gtk_widget_add_events(drawing_area, GDK_KEY_PRESS_MASK);
+    
     return game_area;
 }
 
@@ -353,4 +357,17 @@ gboolean GameArea::on_draw_projectile(GtkWidget *widget, cairo_t *cr, gpointer u
     return FALSE;
 }
 
+gboolean GameArea::on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data) {
+    GameLogic* game_logic = static_cast<GameLogic*>(user_data);
+
+    std::cout << "Tecla presionada: " << event->keyval << std::endl;
+
+    if (event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) {
+        std::cout << "Shift detectado!" << std::endl; // Depuración
+        game_logic->handle_shift_key(); // Llama al método para manejar el power-up
+        return TRUE; // Evita que se propague el evento
+    }
+
+    return FALSE; // Permitir que otros eventos se manejen normalmente
+}
 

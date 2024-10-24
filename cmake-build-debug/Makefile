@@ -57,10 +57,10 @@ RM = /snap/clion/296/bin/cmake/linux/x64/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jian/Desktop/TankAttack
+CMAKE_SOURCE_DIR = /home/brema026/Documentos/GitHub/TankAttack
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jian/Desktop/TankAttack/cmake-build-debug
+CMAKE_BINARY_DIR = /home/brema026/Documentos/GitHub/TankAttack/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jian/Desktop/TankAttack/cmake-build-debug/CMakeFiles /home/jian/Desktop/TankAttack/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/brema026/Documentos/GitHub/TankAttack/cmake-build-debug/CMakeFiles /home/brema026/Documentos/GitHub/TankAttack/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jian/Desktop/TankAttack/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/brema026/Documentos/GitHub/TankAttack/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -249,6 +249,30 @@ Pathfinding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/Pathfinding.cpp.s
 .PHONY : Pathfinding.cpp.s
 
+PowerUp.o: PowerUp.cpp.o
+.PHONY : PowerUp.o
+
+# target to build an object file
+PowerUp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/PowerUp.cpp.o
+.PHONY : PowerUp.cpp.o
+
+PowerUp.i: PowerUp.cpp.i
+.PHONY : PowerUp.i
+
+# target to preprocess a source file
+PowerUp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/PowerUp.cpp.i
+.PHONY : PowerUp.cpp.i
+
+PowerUp.s: PowerUp.cpp.s
+.PHONY : PowerUp.s
+
+# target to generate assembly for a file
+PowerUp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TankAttack.dir/build.make CMakeFiles/TankAttack.dir/PowerUp.cpp.s
+.PHONY : PowerUp.cpp.s
+
 Projectile.o: Projectile.cpp.o
 .PHONY : Projectile.o
 
@@ -321,6 +345,9 @@ help:
 	@echo "... Pathfinding.o"
 	@echo "... Pathfinding.i"
 	@echo "... Pathfinding.s"
+	@echo "... PowerUp.o"
+	@echo "... PowerUp.i"
+	@echo "... PowerUp.s"
 	@echo "... Projectile.o"
 	@echo "... Projectile.i"
 	@echo "... Projectile.s"

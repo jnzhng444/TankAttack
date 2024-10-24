@@ -1,8 +1,9 @@
 CMakeFiles/TankAttack.dir/Projectile.cpp.o: \
- /home/jian/Desktop/TankAttack/Projectile.cpp /usr/include/stdc-predef.h \
- /home/jian/Desktop/TankAttack/Projectile.h \
- /home/jian/Desktop/TankAttack/Map.h /usr/include/c++/13/vector \
- /usr/include/c++/13/bits/requires_hosted.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Projectile.cpp \
+ /usr/include/stdc-predef.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Projectile.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Map.h \
+ /usr/include/c++/13/vector /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -98,8 +99,8 @@ CMakeFiles/TankAttack.dir/Projectile.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/timex.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /home/jian/Desktop/TankAttack/Tank.h /usr/include/c++/13/string \
- /usr/include/c++/13/bits/stringfwd.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Tank.h \
+ /usr/include/c++/13/string /usr/include/c++/13/bits/stringfwd.h \
  /usr/include/c++/13/bits/char_traits.h \
  /usr/include/c++/13/bits/postypes.h /usr/include/c++/13/cwchar \
  /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
@@ -847,5 +848,9 @@ CMakeFiles/TankAttack.dir/Projectile.cpp.o: \
  /usr/include/c++/13/bits/basic_ios.tcc \
  /usr/include/c++/13/bits/ostream.tcc /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/jian/Desktop/TankAttack/GameLogic.h \
- /home/jian/Desktop/TankAttack/Pathfinding.h
+ /home/brema026/Documentos/GitHub/TankAttack/GameLogic.h \
+ /home/brema026/Documentos/GitHub/TankAttack/Pathfinding.h \
+ /usr/include/c++/13/queue /usr/include/c++/13/deque \
+ /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
+ /usr/include/c++/13/bits/stl_heap.h /usr/include/c++/13/bits/stl_queue.h \
+ /home/brema026/Documentos/GitHub/TankAttack/PowerUp.h

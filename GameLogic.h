@@ -6,8 +6,10 @@
 #include "Tank.h"  // Asegúrate de incluir la definición de Tank
 #include "Pathfinding.h"
 #include <glib.h>
+#include <queue>
 #include <gtk/gtk.h>
 #include "Projectile.h"
+#include "PowerUp.h"
 
 class GameLogic {
 public:
@@ -55,7 +57,6 @@ public:
     std::vector<std::pair<double, double>> projectile_trail;  // Guarda las posiciones de las balas (trazas)
     void show_start_player_dialog();
     std::vector<int> current_route; // Ruta actual calculada
-    void end_turn();               // Alternar turnos entre jugadores
     void start_game_timer();        // Iniciar el temporizador del juego
     static gboolean update_timer(gpointer user_data);  // Actualizar el temporizador
     void end_game();               // Termina el juego y determina el ganador
@@ -68,12 +69,20 @@ public:
     void mark_tank_for_removal(Tank* tank);      // Nuevo método para marcar tanques para eliminación
     void mark_projectile_for_removal(Projectile* projectile); // Nuevo método para marcar proyectiles
     void process_removals();    // Procesa las eliminaciones pendientes
+    void apply_power_up(PowerUp& powerUp); // Aplicar un power-up
+    void handle_shift_key(); // Manejar la tecla Shift
+    void end_turn();
+    void generate_power_ups();
+    void assign_power_ups();
 
 private:
     int num_tanks_per_player;       // Número de tanques por jugador
     std::vector<Tank> tanks;        // Vector de tanques
     int game_time_left;            // Tiempo restante en segundos
     Map* map;                       // Puntero al mapa de juego
+    std::vector<PowerUp> powerUps; // Lista de power-ups disponibles
+    std::queue<PowerUp> powerUpQueue; // Cola para aplicar power-ups
+    PowerUp currentPlayerPowerUps[2][5];
 };
 
 #endif // GAMELOGIC_H

@@ -17,6 +17,7 @@ public:
     static GtkWidget* get_game_area() { return game_area; }
     static GtkWidget* create_tank_widget(Tank& tank);
     static GtkWidget* timer_label;  // NUEVO: Label para mostrar el temporizador
+    static gboolean on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 private:
     static GameLogic* game_logic;  // Agregar referencia a GameLogic
     static GtkWidget* game_area;  // Almacenar el widget del área de juego

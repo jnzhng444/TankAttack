@@ -11,6 +11,7 @@
 
 #include "GameArea.h"
 
+
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
     : num_tanks_per_player(num_tanks_per_player), map(map), game_time_left(300) {
     std::srand(std::time(0));  // Inicializar el generador aleatorio
@@ -20,6 +21,7 @@ GameLogic::GameLogic(int num_tanks_per_player, Map* map)
 
     // Mostrar un diálogo emergente indicando quién empieza primero
     show_start_player_dialog();
+    generate_power_ups();
 
     start_game_timer();
 }
@@ -34,7 +36,8 @@ void GameLogic::show_start_player_dialog() {
 
 
 void GameLogic::end_turn() {
-    current_player = (current_player == 1) ? 2 : 1;  // Alternar entre jugador 1 y 2
+    // Alternar entre jugadores
+    current_player = (current_player == 1) ? 2 : 1;
     std::cout << "Es el turno del jugador " << current_player << std::endl;
 
     // Limpiar la traza de las balas al finalizar el turno
@@ -43,7 +46,6 @@ void GameLogic::end_turn() {
     // Redibujar el área de juego para reflejar los cambios
     gtk_widget_queue_draw(GameArea::get_game_area());
 }
-
 
 bool GameLogic::check_victory() {
     int player1_tanks = 0;
@@ -634,6 +636,58 @@ void GameLogic::process_removals() {
     projectiles_to_remove.clear();  // Limpiar la lista de proyectiles eliminados
 }
 
+// Método para manejar la tecla Shift
+void GameLogic::handle_shift_key() {
+    if (!powerUpQueue.empty()) {
+        PowerUp powerUp = powerUpQueue.front();
+        powerUpQueue.pop();
+        apply_power_up(powerUp);
+    }
+}
+
+void GameLogic::generate_power_ups() {
+    powerUps.clear();
+    for (int i = 0; i < 5; ++i) {
+        PowerUp::Type type = static_cast<PowerUp::Type>(std::rand() % 4);
+        powerUps.emplace_back(type);
+    }
+    assign_power_ups(); // Asignar los power-ups generados a los jugadores
+}
+
+void GameLogic::assign_power_ups() {
+    for (int player = 0; player < 2; ++player) {
+        for (int i = 0; i < 5; ++i) {
+            if (!powerUps.empty()) {
+                currentPlayerPowerUps[player][i] = powerUps.back(); // Asignar el objeto PowerUp
+                powerUps.pop_back(); // Remover el power-up de la lista
+            } else {
+                // Inicializar con un valor predeterminado si no hay más power-ups
+                currentPlayerPowerUps[player][i] = PowerUp(PowerUp::Type::DobleTurno); // Ejemplo de inicialización
+            }
+        }
+    }
+}
+
+void GameLogic::apply_power_up(PowerUp& powerUp) {
+    switch (powerUp.type) {
+        case PowerUp::DobleTurno:
+            // Lógica para Doble Turno
+                std::cout << "Doble Turno Aplicado" << std::endl;
+                break;
+        case PowerUp::PrecisionMovimiento:
+            // Lógica para Precisión de Movimiento
+                std::cout << "Precision de Movimiento aplicado" << std::endl;
+                break;
+        case PowerUp::PrecisionAtaque:
+            // Lógica para Precisión de Ataque
+                std::cout << "Presicion de ataque aplicado" << std::endl;
+                break;
+        case PowerUp::PoderAtaque:
+            // Lógica para Poder de Ataque
+                std::cout << "Poder de ataque aplicado" << std::endl;
+                break;
+    }
+}
 
 std::vector<Tank>& GameLogic::get_tanks() {
     return tanks;  // Devolver referencia no constante

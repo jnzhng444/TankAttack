@@ -13,7 +13,7 @@
 
 
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
-    : num_tanks_per_player(num_tanks_per_player), map(map), game_time_left(300), double_turn_active(false), precision_movement_active(false){
+    : num_tanks_per_player(num_tanks_per_player), map(map), game_time_left(300), double_turn_active(false), precision_movement_active(false),power_attack_active(false){
     std::srand(std::time(0));  // Inicializar el generador aleatorio
 
     // Seleccionar aleatoriamente quién empieza primero
@@ -707,6 +707,7 @@ void GameLogic::apply_power_up(PowerUp& powerUp) {
         case PowerUp::PoderAtaque:
             // Lógica para Poder de Ataque
                 std::cout << "Poder de ataque aplicado" << std::endl;
+                power_attack_active = true;  // Activar el poder de ataque
                 break;
     }
 }

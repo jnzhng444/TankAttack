@@ -74,8 +74,10 @@ public:
     void end_turn(bool force = false);
     void generate_power_ups();
     void assign_power_ups();
+    bool power_attack_active;  // Indica si el power-up de poder de ataque está activo
 
 private:
+
     bool precision_movement_active; // Indica si el power-up de precisión de movimiento está activo
     bool double_turn_active;        // Indica si el jugador tiene un doble turno activo
     int num_tanks_per_player;       // Número de tanques por jugador

@@ -7,7 +7,7 @@
 #include "Tank.h"
 
 Projectile::Projectile(double start_x, double start_y, double dir_x, double dir_y, double spd, int map_width, int map_height, GameLogic* logic, Tank* shooter)
-    : x(start_x), y(start_y), direction_x(dir_x), direction_y(dir_y), speed(spd), map_width(map_width), map_height(map_height), game_logic(logic), rebotes(2), shooter(shooter) {
+    : x(start_x), y(start_y), direction_x(dir_x), direction_y(dir_y), speed(spd), map_width(map_width), map_height(map_height), game_logic(logic), shooter(shooter), rebotes(2), active(true) {
     // Constructor completo
 }
 
@@ -102,10 +102,14 @@ void Projectile::handle_collision() {
             double damage = 0.0;
 
             // Calcular el daño basado en el color del tanque impactado
-            if (tank.color == "blue" || tank.color == "lightblue") {
-                damage = 0.25 * tank.max_health;  // Daño de 25% a tanques celeste/azul
-            } else if (tank.color == "red" || tank.color == "yellow") {
-                damage = 0.50 * tank.max_health;  // Daño de 50% a tanques amarillo/rojo
+            if (game_logic->power_attack_active) {
+                damage = tank.max_health;  // Daño del 100% si el poder de ataque está activo
+            } else {
+                if (tank.color == "blue" || tank.color == "lightblue") {
+                    damage = 0.25 * tank.max_health;  // Daño de 25% a tanques celeste/azul
+                } else if (tank.color == "red" || tank.color == "yellow") {
+                    damage = 0.50 * tank.max_health;  // Daño de 50% a tanques amarillo/rojo
+                }
             }
 
             // Reducir la salud del tanque impactado
@@ -134,11 +138,11 @@ void Projectile::handle_collision() {
             // Redibujar el tanque que disparó
             if (GTK_IS_WIDGET(shooter->widget)) {
                 gtk_widget_queue_draw(shooter->widget);  // Redibujar el tanque que disparó
-            }
 
-            // Marcar el proyectil para ser eliminado después de la colisión
-            game_logic->mark_projectile_for_removal(this);
-            return;
+                // Marcar el proyectil para ser eliminado después de la colisión
+                game_logic->mark_projectile_for_removal(this);
+                return;
+            }
         }
     }
 }

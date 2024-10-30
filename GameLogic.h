@@ -71,16 +71,18 @@ public:
     void process_removals();    // Procesa las eliminaciones pendientes
     void apply_power_up(PowerUp& powerUp); // Aplicar un power-up
     void handle_shift_key(); // Manejar la tecla Shift
-    void end_turn();
+    void end_turn(bool force = false);
     void generate_power_ups();
     void assign_power_ups();
 
 private:
+    bool precision_movement_active; // Indica si el power-up de precisión de movimiento está activo
+    bool double_turn_active;        // Indica si el jugador tiene un doble turno activo
     int num_tanks_per_player;       // Número de tanques por jugador
     std::vector<Tank> tanks;        // Vector de tanques
-    int game_time_left;            // Tiempo restante en segundos
+    int game_time_left;             // Tiempo restante en segundos
     Map* map;                       // Puntero al mapa de juego
-    std::vector<PowerUp> powerUps; // Lista de power-ups disponibles
+    std::vector<PowerUp> powerUps;  // Lista de power-ups disponibles
     std::queue<PowerUp> powerUpQueue; // Cola para aplicar power-ups
     PowerUp currentPlayerPowerUps[2][5];
 };

@@ -13,7 +13,7 @@
 
 
 GameLogic::GameLogic(int num_tanks_per_player, Map* map)
-    : num_tanks_per_player(num_tanks_per_player), map(map), game_time_left(300) {
+    : num_tanks_per_player(num_tanks_per_player), map(map), game_time_left(300), double_turn_active(false), precision_movement_active(false){
     std::srand(std::time(0));  // Inicializar el generador aleatorio
 
     // Seleccionar aleatoriamente quién empieza primero
@@ -35,7 +35,13 @@ void GameLogic::show_start_player_dialog() {
 }
 
 
-void GameLogic::end_turn() {
+void GameLogic::end_turn(bool force) {
+    if (double_turn_active && !force) {
+        // Si el doble turno está activo, no cambiamos de jugador
+        std::cout << "Doble turno activo. Jugador " << current_player << " tiene otro turno." << std::endl;
+        double_turn_active = false;  // Desactivar el doble turno después de usarlo
+        return;  // No cambiar de jugador
+    }
     // Alternar entre jugadores
     current_player = (current_player == 1) ? 2 : 1;
     std::cout << "Es el turno del jugador " << current_player << std::endl;
@@ -266,10 +272,21 @@ void GameLogic::move_tank(int tank_id, int x, int y) {
 void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
     current_route.clear();  // Limpiar la ruta actual
 
-    int prob = std::rand() % 100;
+    int prob = std::rand() % 100;  // Generar un número aleatorio entre 0 y 99
 
+    // Verificar si el power-up de precisión de movimiento está activo para el jugador del tanque
+    bool precision_movement_active = std::any_of(
+        std::begin(currentPlayerPowerUps[tank.player - 1]),
+        std::end(currentPlayerPowerUps[tank.player - 1]),
+        [](const PowerUp& p) { return p.type == PowerUp::PrecisionMovimiento; }
+    );
+
+    // Ajustar probabilidades dependiendo de si el power-up está activo
+    int probability_threshold = precision_movement_active ? 90 : (tank.color == "blue" || tank.color == "lightblue" ? 50 : 80);
+
+    // Determinar el algoritmo de movimiento basado en el color y probabilidad
     if (tank.color == "blue" || tank.color == "lightblue") {
-        if (prob < 50) {
+        if (prob < probability_threshold) {
             std::vector<int> path = Pathfinding::bfs(map, tank.x, tank.y, target_x, target_y);
             if (!path.empty()) {
                 tank.route = path;
@@ -277,10 +294,10 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
                 g_timeout_add(100, move_tank_step_by_step, &tank);  // Mover paso a paso
             }
         } else {
-            random_move_step_by_step(tank, target_x, target_y);  // Movimiento aleatorio paso a paso con temporizador
+            random_move_step_by_step(tank, target_x, target_y);  // Movimiento aleatorio paso a paso
         }
     } else if (tank.color == "red" || tank.color == "yellow") {
-        if (prob < 80) {
+        if (prob < probability_threshold) {
             std::vector<int> path = Pathfinding::dijkstra(map, tank.x, tank.y, target_x, target_y);
             if (!path.empty()) {
                 tank.route = path;
@@ -288,10 +305,11 @@ void GameLogic::calculate_route(Tank& tank, int target_x, int target_y) {
                 g_timeout_add(100, move_tank_step_by_step, &tank);  // Mover paso a paso
             }
         } else {
-            random_move_step_by_step(tank, target_x, target_y);  // Movimiento aleatorio paso a paso con temporizador
+            random_move_step_by_step(tank, target_x, target_y);  // Movimiento aleatorio paso a paso
         }
     }
 }
+
 
 void GameLogic::random_move_step_by_step(Tank& tank, int target_x, int target_y) {
     static int attempt_count = 0;  // Contador de intentos
@@ -547,7 +565,7 @@ void GameLogic::shoot(Tank& tank, int aim_target_x, int aim_target_y) {
     gtk_widget_queue_draw(GameArea::get_game_area());
 
     // Cambiar el turno inmediatamente después de disparar
-    end_turn();
+    end_turn(double_turn_active);
 }
 
 
@@ -649,7 +667,9 @@ void GameLogic::generate_power_ups() {
     powerUps.clear();
     for (int i = 0; i < 5; ++i) {
         PowerUp::Type type = static_cast<PowerUp::Type>(std::rand() % 4);
-        powerUps.emplace_back(type);
+        PowerUp powerUp(type);
+        powerUps.push_back(powerUp);  // Agregar a la lista
+        powerUpQueue.push(powerUp);   // Agregar también a la cola para su uso
     }
     assign_power_ups(); // Asignar los power-ups generados a los jugadores
 }
@@ -673,10 +693,12 @@ void GameLogic::apply_power_up(PowerUp& powerUp) {
         case PowerUp::DobleTurno:
             // Lógica para Doble Turno
                 std::cout << "Doble Turno Aplicado" << std::endl;
+                double_turn_active = true;  // Activar el doble turno
                 break;
         case PowerUp::PrecisionMovimiento:
             // Lógica para Precisión de Movimiento
                 std::cout << "Precision de Movimiento aplicado" << std::endl;
+                precision_movement_active = true;  // Activar la precisión de movimiento
                 break;
         case PowerUp::PrecisionAtaque:
             // Lógica para Precisión de Ataque

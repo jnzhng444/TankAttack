@@ -44,10 +44,8 @@ GtkWidget* GameArea::create(GameLogic* logic) {
     g_signal_connect(drawing_area, "button-press-event", G_CALLBACK(GameArea::on_button_press), game_logic);
     g_signal_connect(drawing_area, "motion-notify-event", G_CALLBACK(GameArea::on_motion_notify), game_logic);
     gtk_widget_add_events(drawing_area, GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK);
-    g_signal_connect(drawing_area, "key-press-event", G_CALLBACK(GameArea::on_key_press), game_logic);
     gtk_widget_grab_focus(drawing_area);
     gtk_widget_set_sensitive(drawing_area, TRUE);
-    gtk_widget_add_events(drawing_area, GDK_KEY_PRESS_MASK);
     
     return game_area;
 }
@@ -327,6 +325,12 @@ gboolean GameArea::on_button_press(GtkWidget *widget, GdkEventButton *event, gpo
         selected_tank = nullptr;  // Reiniciar la selección del tanque después del disparo
 
         return TRUE;  // Fin de la función al disparar
+    }
+    // Verificar clic de la rueda del ratón para manejar el power-up
+    else if (event->button == GDK_BUTTON_MIDDLE) {
+        std::cout << "Botón de la rueda del ratón detectado!" << std::endl; // Depuración
+        game_logic->handle_shift_key();  // Llama al método para manejar el power-up
+        return TRUE;  // Evita que se propague el evento
     }
 
     return FALSE;  // Ninguna acción se realizó

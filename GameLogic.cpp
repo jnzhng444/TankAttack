@@ -48,6 +48,7 @@ void GameLogic::end_turn(bool force) {
 
     // Limpiar la traza de las balas al finalizar el turno
     projectile_trail.clear();
+    reset_power_ups();
 
     // Redibujar el área de juego para reflejar los cambios
     gtk_widget_queue_draw(GameArea::get_game_area());
@@ -710,6 +711,10 @@ void GameLogic::apply_power_up(PowerUp& powerUp) {
                 power_attack_active = true;  // Activar el poder de ataque
                 break;
     }
+}
+
+void GameLogic::reset_power_ups() {
+    precision_movement_active = false;
 }
 
 std::vector<Tank>& GameLogic::get_tanks() {

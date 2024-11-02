@@ -104,6 +104,7 @@ void Projectile::handle_collision() {
             // Calcular el daño basado en el color del tanque impactado
             if (game_logic->power_attack_active) {
                 damage = tank.max_health;  // Daño del 100% si el poder de ataque está activo
+                game_logic->power_attack_active = false;  // Desactivar el poder de ataque después de usarlo
             } else {
                 if (tank.color == "blue" || tank.color == "lightblue") {
                     damage = 0.25 * tank.max_health;  // Daño de 25% a tanques celeste/azul

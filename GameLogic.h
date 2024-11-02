@@ -74,6 +74,7 @@ public:
     void end_turn(bool force = false);
     void generate_power_ups();
     void assign_power_ups();
+    void reset_power_ups();
     bool power_attack_active;  // Indica si el power-up de poder de ataque está activo
 
 private:
